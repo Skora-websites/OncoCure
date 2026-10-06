@@ -1,0 +1,231 @@
+@import 'tailwindcss';
+
+/*
+ * Onco Cure Clinic — design tokens.
+ *
+ * The structural language (cream ground, ink type, generous whitespace, a dark
+ * full-bleed band for contrast) follows the editorial template the layout is
+ * based on. The accent palette is Onco Cure's own, sampled from the supplied
+ * logo artwork: teal #005454 and plum #54186C.
+ */
+@theme {
+  /* Neutrals — the page ground. Deliberately never pure white: every surface
+     is a warm paper tone or a faint brand tint. */
+  --color-cream: #f6f3ec;
+  --color-cream-deep: #efeade;
+  --color-paper: #faf8f3;
+  --color-ink: #13181c;
+  --color-ink-70: #55606a;
+  --color-ink-45: #8a939b;
+  --color-line: #ded8cc;
+
+  /* Brand — deep teal (replaces the reference's navy) */
+  --color-navy-900: #062e2d;
+  --color-navy-800: #0a3f3d;
+  --color-navy-700: #0f5552;
+  --color-navy-600: #16716d;
+  --color-navy-200: #bdd6d3;
+
+  /* Accent — medical purple */
+  --color-plum-900: #2e0b3f;
+  --color-plum-800: #4a1470;
+  --color-plum-700: #5f1d86;
+  --color-plum-600: #7a3399;
+  --color-plum-400: #9c54b4;
+  --color-plum-200: #ddcbe7;
+  --color-plum-100: #efe7f4;
+
+  /* Accent — teal */
+  --color-teal-900: #023f3d;
+  --color-teal-800: #005654;
+  --color-teal-700: #0a6f6b;
+  --color-teal-600: #128a85;
+  --color-teal-400: #3f9c98;
+  --color-teal-200: #b0d4d1;
+  --color-teal-100: #deeeec;
+
+  /* Soft supporting tints — used instead of white */
+  --color-lavender: #f2ecf8;
+  --color-mist: #eaf2f4;
+  --color-sage: #eaf1ec;
+
+  /*
+   * Type.
+   * The template pairs a bold neo-grotesque display face with a serif used for
+   * the wordmark and quieter headings. Inter stands in for the display face
+   * and Fraunces for the serif.
+   */
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --shadow-soft: 0 1px 2px rgb(16 18 15 / 0.04), 0 10px 30px -18px rgb(16 18 15 / 0.25);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Lenis drives scrolling; native smooth scrolling would fight it. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* `clip` rather than `hidden`: a hidden overflow makes the body a scroll
+       container, which silently breaks every `position: sticky` descendant. */
+    overflow-x: clip;
+  }
+
+  /* Display headlines: tight, heavy, optically corrected. */
+  .h-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    color: var(--color-ink);
+  }
+
+  /* Very fine paper grain, so large flat fields read as stock rather than as
+     dead digital colour. Applied via the .paper utility. */
+  .paper {
+    position: relative;
+  }
+
+  .paper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23p)' opacity='0.045'/%3E%3C/svg%3E");
+  }
+
+  .h-serif {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-plum-800);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  /* Wide-tracked uppercase micro-label — the template's signature label. */
+  .label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+  }
+
+  .label-sm {
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  /* Arch shape used for the hero and section imagery. */
+  .arch {
+    border-radius: 999px 999px 8px 8px;
+  }
+
+  /*
+   * Paper textures.
+   *
+   * Both are pure CSS (SVG turbulence + gradients), so they cost no requests
+   * and tile cleanly. `texture-creases` is a whisper of diagonal crease
+   * shading for large open fields like the hero; `texture-crumple` is the
+   * full scrunched-paper treatment — creases, coarse mottling and fine grain
+   * — for card surfaces.
+   */
+  .texture-creases {
+    background-image:
+      linear-gradient(
+        115deg,
+        rgb(19 24 28 / 0.05) 0%,
+        transparent 18%,
+        rgb(19 24 28 / 0.04) 36%,
+        transparent 52%,
+        rgb(19 24 28 / 0.05) 68%,
+        transparent 86%,
+        rgb(19 24 28 / 0.03) 100%
+      ),
+      linear-gradient(
+        65deg,
+        transparent 22%,
+        rgb(19 24 28 / 0.03) 38%,
+        transparent 55%,
+        rgb(19 24 28 / 0.025) 74%,
+        transparent 92%
+      ),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011 0.014' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.28 0 0 0 0 0.26 0 0 0 0 0.22 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23m)' opacity='0.14'/%3E%3C/svg%3E");
+  }
+
+  .texture-crumple {
+    background-image:
+      linear-gradient(
+        115deg,
+        rgb(19 24 28 / 0.03) 0%,
+        transparent 15%,
+        rgb(19 24 28 / 0.024) 33%,
+        transparent 51%,
+        rgb(19 24 28 / 0.03) 67%,
+        transparent 85%,
+        rgb(19 24 28 / 0.02) 100%
+      ),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011 0.014' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.28 0 0 0 0 0.26 0 0 0 0 0.22 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23c)' opacity='0.18'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .circle-mask {
+    border-radius: 999px;
+  }
+}
+
+/*
+ * Words are split by JS for staggered reveals. Before the script runs they must
+ * not collapse the layout, so they stay inline and simply animate in place.
+ */
+.split-line {
+  display: block;
+  overflow: hidden;
+}
+
+.split-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
