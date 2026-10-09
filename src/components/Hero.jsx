@@ -83,6 +83,15 @@ export default function Hero() {
           },
         );
       });
+
+      // Ornament motion: the dashed registration ring turns at a pace you
+      // can actually see the dashes travel.
+      gsap.to('[data-hero-ring]', {
+        rotation: 360,
+        duration: 45,
+        repeat: -1,
+        ease: 'none',
+      });
     }, el);
 
     return () => ctx.revert();
@@ -91,7 +100,7 @@ export default function Hero() {
   return (
     <section
       ref={root}
-      className="paper texture-creases relative overflow-x-clip bg-cream pt-32 pb-16 sm:pt-40 sm:pb-20 lg:pt-44 lg:pb-24"
+      className="paper texture-creases relative overflow-x-clip bg-cream pt-40 pb-16 sm:pt-48 sm:pb-20 lg:pt-52 lg:pb-24"
     >
       {/* Soft brand wash. The wash wrapper carries the clipping (not the
           section itself) because an `overflow: hidden` ancestor would kill
@@ -100,22 +109,83 @@ export default function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
-        <div className="absolute -top-48 left-1/2 h-[38rem] w-[38rem] -translate-x-1/2 rounded-full bg-lavender opacity-80 blur-3xl" />
-        <div className="absolute top-1/3 -left-40 h-[28rem] w-[28rem] rounded-full bg-mist opacity-70 blur-3xl" />
+        <div className="absolute -top-48 left-1/2 h-[38rem] w-[38rem] -translate-x-1/2 rounded-full bg-plum-100 opacity-80 blur-3xl" />
+        <div className="absolute top-1/3 -left-40 h-[28rem] w-[28rem] rounded-full bg-teal-100 opacity-80 blur-3xl" />
+
+        {/* Botanical line-art — the reference plate's corner foliage,
+             drawn in the brand's teal and plum hairlines. Desktop only. */}
+        <div className="absolute -left-24 -top-28 hidden w-[22rem] opacity-90 sm:block lg:w-[27rem]">
+          <svg viewBox="0 0 340 480" fill="none" className="h-auto w-full">
+            <defs>
+              <path id="oc-leaf-a" d="M0 0 C 16 -13 38 -20 56 -17 C 48 4 20 14 0 0 Z" />
+            </defs>
+            <path d="M40 16 C 110 130 150 260 132 470" stroke="#3f9c98" strokeOpacity="0.5" strokeWidth="1.3" />
+            <g stroke="#3f9c98" strokeOpacity="0.5" strokeWidth="1.2">
+              <use href="#oc-leaf-a" transform="translate(78 80) rotate(-40) scale(1.15)" fill="#eaf1ec" fillOpacity="0.9" />
+              <use href="#oc-leaf-a" transform="translate(104 150) rotate(-20) scale(1.3)" fill="#efe7f4" fillOpacity="0.85" />
+              <use href="#oc-leaf-a" transform="translate(124 230) rotate(-5) scale(1.35)" fill="#eaf1ec" fillOpacity="0.9" />
+              <use href="#oc-leaf-a" transform="translate(134 310) rotate(12) scale(1.3)" fill="none" />
+              <use href="#oc-leaf-a" transform="translate(132 395) rotate(28) scale(1.15)" fill="#efe7f4" fillOpacity="0.85" />
+              <use href="#oc-leaf-a" transform="translate(62 132) scale(-1.1 1.1) rotate(-30)" fill="#eaf1ec" fillOpacity="0.9" />
+              <use href="#oc-leaf-a" transform="translate(100 300) scale(-1.15 1.15) rotate(-15)" fill="#efe7f4" fillOpacity="0.85" />
+            </g>
+          </svg>
+        </div>
+        <div className="absolute -right-32 top-10 hidden w-[26rem] -scale-x-100 opacity-80 lg:block xl:w-[30rem]">
+          <svg viewBox="0 0 340 480" fill="none" className="h-auto w-full">
+            <defs>
+              <path id="oc-leaf-b" d="M0 0 C 16 -13 38 -20 56 -17 C 48 4 20 14 0 0 Z" />
+            </defs>
+            <path d="M40 16 C 110 130 150 260 132 470" stroke="#3f9c98" strokeOpacity="0.45" strokeWidth="1.3" />
+            <g stroke="#3f9c98" strokeOpacity="0.45" strokeWidth="1.2">
+              <use href="#oc-leaf-b" transform="translate(82 92) rotate(-34) scale(1.2)" fill="#efe7f4" fillOpacity="0.85" />
+              <use href="#oc-leaf-b" transform="translate(108 170) rotate(-14) scale(1.35)" fill="#eaf1ec" fillOpacity="0.9" />
+              <use href="#oc-leaf-b" transform="translate(126 250) rotate(4) scale(1.3)" fill="none" />
+              <use href="#oc-leaf-b" transform="translate(132 330) rotate(18) scale(1.25)" fill="#efe7f4" fillOpacity="0.85" />
+              <use href="#oc-leaf-b" transform="translate(64 140) scale(-1.15 1.15) rotate(-26)" fill="#eaf1ec" fillOpacity="0.9" />
+            </g>
+          </svg>
+        </div>
+        <div className="absolute -left-16 bottom-4 hidden w-60 rotate-[14deg] opacity-85 lg:block">
+          <svg viewBox="0 0 340 480" fill="none" className="h-auto w-full">
+            <defs>
+              <path id="oc-leaf-c" d="M0 0 C 16 -13 38 -20 56 -17 C 48 4 20 14 0 0 Z" />
+            </defs>
+            <path d="M40 16 C 110 130 150 260 132 470" stroke="#9c54b4" strokeOpacity="0.4" strokeWidth="1.6" />
+            <g stroke="#9c54b4" strokeOpacity="0.45" strokeWidth="1.5">
+              <use href="#oc-leaf-c" transform="translate(84 96) rotate(-36) scale(1.3)" fill="#efe7f4" fillOpacity="0.9" />
+              <use href="#oc-leaf-c" transform="translate(110 180) rotate(-12) scale(1.4)" fill="none" />
+              <use href="#oc-leaf-c" transform="translate(124 260) rotate(6) scale(1.3)" fill="#efe7f4" fillOpacity="0.9" />
+              <use href="#oc-leaf-c" transform="translate(64 148) scale(-1.2 1.2) rotate(-28)" fill="none" />
+            </g>
+          </svg>
+        </div>
       </div>
 
       {/* Headline */}
       <div data-hero-headline className="mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12">
+        {/* Eyebrow, as the reference plate: one tracked line between two
+            hairlines — no pill, no dots. */}
+        <RevealBlock delay={0.1} y={14}>
+          <span className="flex items-center justify-center gap-4">
+            <span aria-hidden="true" className="h-px w-10 bg-ink/25 sm:w-16" />
+            <span className="label text-ink-70">
+              Specialist Oncology Care · Greater Noida
+            </span>
+            <span aria-hidden="true" className="h-px w-10 bg-ink/25 sm:w-16" />
+          </span>
+        </RevealBlock>
+
         <SplitReveal
           as="h1"
-          className="h-display mx-auto max-w-3xl text-center font-semibold text-[clamp(1.9rem,4.6vw,3.6rem)] leading-[1.16] sm:leading-[1.1] lg:leading-none"
+          className="h-serif mx-auto max-w-3xl text-center font-normal text-teal-900 text-[clamp(3.15rem,5vw,3.9rem)] leading-[1.08] sm:leading-[1.02] lg:leading-none"
           start="top 99%"
           stagger={0.06}
           direction="down"
         >
           {hero.headline.map((part, i) =>
             part.accent ? (
-              <span key={i} className="font-serif text-plum-800">
+              <span key={i} className="text-plum-800">
                 {part.text}
               </span>
             ) : (
@@ -141,7 +211,7 @@ export default function Hero() {
                 (viewport-height minus the space the headline block takes), so
                 only headline + photograph are visible before scrolling. From
                 sm up it returns to the reference's fixed aspect ratio. */}
-            <div className="relative mx-auto h-[min(36rem,calc(100dvh-19.5rem))] w-[78vw] max-w-[21.5rem] sm:h-auto sm:w-auto sm:max-w-[26rem] lg:max-w-[40rem]">
+            <div className="relative mx-auto h-[min(36rem,max(16rem,calc(100dvh-26rem)))] w-[80vw] max-w-[23rem] sm:h-auto sm:w-auto sm:max-w-[26rem] lg:max-w-[40rem]">
               {/* Action button: on mobile it straddles the capsule's top edge,
                   dead-centre — the reference's mobile arrangement; from lg up
                   it moves to the right edge. */}
@@ -165,6 +235,14 @@ export default function Hero() {
                 className="absolute -inset-5 rounded-[999px] border border-ink/10 sm:-inset-7"
               />
 
+              {/* Outer dashed ring — a rotating ornament, tinted so the
+                  dashes actually read against the cream. */}
+              <div
+                data-hero-ring
+                aria-hidden="true"
+                className="absolute -inset-9 rounded-[999px] border border-dashed border-teal-600/60 sm:-inset-14"
+              />
+
               <div
                 data-hero-capsule
                 className="relative h-full w-full overflow-hidden rounded-[999px] bg-cream-deep shadow-soft sm:h-auto sm:aspect-[3/5.4]"
@@ -174,7 +252,7 @@ export default function Hero() {
                   className="absolute -inset-y-[8%] inset-x-0"
                 >
                   <img
-                    src="/images/photo/hands-support.jpg"
+                    src="/images/photo/doctor-writing.png"
                     alt="A clinician in a white coat gently holding a patient's hand during a consultation."
                     className="h-full w-full object-cover"
                     width={800}
@@ -202,10 +280,14 @@ export default function Hero() {
                 {/* Mobile: below the capsule, centred, sans name — as the
                     reference. Desktop: the narrow sticky serif column left. */}
                 <div className="mx-auto mt-14 max-w-sm px-5 pb-4 text-center sm:px-8 lg:mx-0 lg:mt-0 lg:max-w-[17rem] lg:px-0 lg:pb-0 lg:text-left">
-                  <p className="text-[1.65rem] font-medium leading-tight tracking-tight text-ink lg:text-[1.35rem]">
+                  <p className="font-serif text-[1.85rem] font-normal leading-tight tracking-tight text-ink lg:text-[1.4rem]">
                     {hero.name}
                   </p>
-                  <p className="mx-auto mt-5 max-w-[16.5rem] text-[1.0625rem] leading-[1.8] text-ink-70 lg:mx-0">
+                  <span
+                    aria-hidden="true"
+                    className="mx-auto mt-4 block h-0.5 w-10 rounded-full bg-plum-600 lg:mx-0"
+                  />
+                  <p className="mx-auto mt-5 max-w-[16.5rem] text-[1.125rem] leading-[1.8] text-ink-70 lg:mx-0 lg:text-[1.0625rem]">
                     {hero.description}
                   </p>
                 </div>

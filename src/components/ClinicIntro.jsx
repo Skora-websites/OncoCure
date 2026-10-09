@@ -12,27 +12,14 @@ export default function ClinicIntro() {
       <SectionIntro label={intro.eyebrow} title={intro.heading} />
 
       <div className="mt-12 grid items-center gap-12 lg:mt-16 lg:grid-cols-12 lg:gap-16 xl:gap-24">
-        {/* Body copy, held to a narrow measure so clear space separates it
-            from the photograph */}
-        <div className="lg:col-span-5">
-          <StaggerGroup className="space-y-4" stagger={0.1}>
-            {intro.paragraphs.map((para, i) => (
-              <p
-                key={i}
-                className={
-                  i === 0
-                    ? 'h-serif text-lg leading-[1.6] text-ink sm:text-xl'
-                    : 'text-[0.9375rem] leading-[1.8] text-ink-70'
-                }
-              >
-                {para}
-              </p>
-            ))}
-          </StaggerGroup>
-        </div>
-
-        {/* Circular photograph, sized to match the description column */}
-        <RevealBlock className="lg:col-span-5 lg:col-start-8" y={32}>
+        {/* Circular photograph, sized to match the description column.
+            First in the DOM so mobile flows title → image → description
+            (DESIGN_RULES.md §1); explicit placement keeps the desktop
+            columns exactly where they were (text left, photo right). */}
+        <RevealBlock
+          className="lg:col-span-5 lg:col-start-8 lg:row-start-1"
+          y={32}
+        >
           <div className="relative mx-auto w-full max-w-[19rem] sm:max-w-[22rem] lg:max-w-none">
             <div className="circle-mask overflow-hidden bg-cream-deep shadow-soft">
               <Parallax strength={22}>
@@ -50,6 +37,25 @@ export default function ClinicIntro() {
             />
           </div>
         </RevealBlock>
+
+        {/* Body copy, held to a narrow measure so clear space separates it
+            from the photograph */}
+        <div className="lg:col-span-5 lg:col-start-1 lg:row-start-1">
+          <StaggerGroup className="space-y-4" stagger={0.1}>
+            {intro.paragraphs.map((para, i) => (
+              <p
+                key={i}
+                className={
+                  i === 0
+                    ? 'h-serif text-lg leading-[1.6] text-ink sm:text-xl'
+                    : 'text-[0.9375rem] leading-[1.8] text-ink-70'
+                }
+              >
+                {para}
+              </p>
+            ))}
+          </StaggerGroup>
+        </div>
       </div>
 
       {/* Clinic facts */}
@@ -89,7 +95,7 @@ function Fact({ label, value, href, linkLabel }) {
           href={href}
           target="_blank"
           rel="noreferrer noopener"
-          className="label-sm mt-2.5 inline-block text-plum-600 underline decoration-plum-400 decoration-1 underline-offset-4 transition-colors hover:text-plum-800"
+          className="label-sm mt-2.5 inline-block py-4 -my-4 text-plum-600 underline decoration-plum-400 decoration-1 underline-offset-4 transition-colors hover:text-plum-800"
         >
           {linkLabel}
         </a>

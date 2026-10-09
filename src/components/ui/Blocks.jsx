@@ -17,11 +17,15 @@ export default function Section({
     lavender: 'bg-lavender text-ink',
     mist: 'bg-mist text-ink',
     ink: 'bg-teal-900 text-cream',
+    /* The palette's purple showcase: the logo ribbon's plum, full-bleed. */
+    plum: 'bg-plum-800 text-cream',
   };
+  /* Compact on phones, untouched from sm up — the mobile rhythm keeps
+     sections to roughly one viewport each. */
   const rhythm = {
-    tight: 'py-16 sm:py-20',
-    normal: 'py-24 sm:py-28 lg:py-36',
-    tall: 'py-28 sm:py-36 lg:py-44',
+    tight: 'py-10 sm:py-20',
+    normal: 'py-12 sm:py-28 lg:py-36',
+    tall: 'py-14 sm:py-36 lg:py-44',
   };
 
   return (
@@ -72,13 +76,25 @@ export function SectionIntro({
     >
       {label ? (
         <RevealBlock y={16}>
-          <Label tone={isDark ? 'light' : 'ink'}>{label}</Label>
+          <span
+            className={`inline-flex items-center gap-3 ${centred ? 'justify-center' : ''}`}
+          >
+            <span
+              aria-hidden="true"
+              className={`h-px w-8 ${isDark ? 'bg-cream/30' : 'bg-plum-200/80'}`}
+            />
+            <Label tone={isDark ? 'light' : 'ink'}>{label}</Label>
+            <span
+              aria-hidden="true"
+              className={`h-px w-8 ${isDark ? 'bg-cream/30' : 'bg-plum-200/80'}`}
+            />
+          </span>
         </RevealBlock>
       ) : null}
 
       <SplitReveal
         as="h2"
-        className={`h-serif mt-6 text-[clamp(2rem,5vw,3.75rem)] leading-[1.06] ${
+        className={`h-serif mt-6 text-[clamp(1.6rem,3.4vw,2.4rem)] leading-[1.1] ${
           isDark ? 'text-cream' : 'text-ink'
         } ${titleClass}`}
       >

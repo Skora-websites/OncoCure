@@ -3,8 +3,14 @@ import { clinic, navLinks, cta } from '../data/clinic.js';
 import PillButton from './ui/PillButton.jsx';
 import { openConsult } from '../lib/consultBus.js';
 
-/** Hash-route targets for the links that exist so far; the rest stay inert. */
-const NAV_HREFS = { home: '#/', contact: '#/contact' };
+/** Hash-route targets; every nav link is now live. */
+const NAV_HREFS = {
+  home: '#/',
+  about: '#/about',
+  services: '#/services',
+  blogs: '#/blogs',
+  contact: '#/contact',
+};
 const navHref = (id) => NAV_HREFS[id];
 const onNavClick = () => window.dispatchEvent(new Event('occ:scroll-top'));
 
@@ -79,27 +85,16 @@ export default function Navbar() {
             {/* Desktop navigation */}
             <div className="flex items-center gap-8">
               <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
-                {navLinks.map((link) =>
-                  navHref(link.id) ? (
-                    <a
-                      key={link.id}
-                      href={navHref(link.id)}
-                      onClick={onNavClick}
-                      className="label-sm text-ink-70 transition-colors duration-300 hover:text-ink"
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <span
-                      key={link.id}
-                      aria-disabled="true"
-                      title="Navigation links are added in a later stage"
-                      className="label-sm cursor-default text-ink-70 transition-colors duration-300 hover:text-ink"
-                    >
-                      {link.label}
-                    </span>
-                  ),
-                )}
+                {navLinks.map((link) => (
+                  <a
+                    key={link.id}
+                    href={navHref(link.id)}
+                    onClick={onNavClick}
+                    className="label-sm text-ink-70 transition-colors duration-300 hover:text-ink"
+                  >
+                    {link.label}
+                  </a>
+                ))}
               </nav>
 
               <div className="hidden lg:block">
@@ -164,41 +159,24 @@ export default function Navbar() {
           <ul className="mt-6 flex flex-col gap-1">
             {navLinks.map((link, i) => (
               <li key={link.id} className="overflow-hidden border-b border-cream/10">
-                {navHref(link.id) ? (
-                  <a
-                    href={navHref(link.id)}
-                    onClick={() => {
-                      setOpen(false);
-                      onNavClick();
-                    }}
-                    style={{
-                      display: 'block',
-                      padding: '0.9rem 0',
-                    }}
-                    className="h-display block text-[clamp(1.75rem,8vw,2.5rem)] text-cream"
-                    data-index={i}
-                  >
-                    <span className="label-sm mr-4 align-middle text-teal-400">
-                      0{i + 1}
-                    </span>
-                    {link.label}
-                  </a>
-                ) : (
-                  <span
-                    aria-disabled="true"
-                    style={{
-                      display: 'block',
-                      padding: '0.9rem 0',
-                    }}
-                    className="h-display block cursor-default text-[clamp(1.75rem,8vw,2.5rem)] text-cream"
-                    data-index={i}
-                  >
-                    <span className="label-sm mr-4 align-middle text-teal-400">
-                      0{i + 1}
-                    </span>
-                    {link.label}
+                <a
+                  href={navHref(link.id)}
+                  onClick={() => {
+                    setOpen(false);
+                    onNavClick();
+                  }}
+                  style={{
+                    display: 'block',
+                    padding: '0.9rem 0',
+                  }}
+                  className="h-display block text-[clamp(1.75rem,8vw,2.5rem)] text-cream"
+                  data-index={i}
+                >
+                  <span className="label-sm mr-4 align-middle text-teal-400">
+                    0{i + 1}
                   </span>
-                )}
+                  {link.label}
+                </a>
               </li>
             ))}
           </ul>

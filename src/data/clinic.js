@@ -36,7 +36,7 @@ export const clinic = {
   meta: {
     title: 'Onco Cure Clinic — Specialist Cancer Care in Greater Noida',
     description:
-      'Onco Cure Clinic is a patient-centred cancer care clinic in Greater Noida, led by Consultant Medical Oncologist Dr Sahil Bambroo, offering compassionate, personalised and evidence-based oncology care.',
+      'Onco Cure Clinic is a patient-centred cancer care clinic in Greater Noida, led by Medical Oncologist Dr Sahil Bambroo, offering compassionate, personalised and evidence-based oncology care.',
   },
 
   contact: {
@@ -101,7 +101,7 @@ export const doctors = [
   {
     id: 'sahil-bambroo',
     name: 'Dr Sahil Bambroo',
-    role: 'Consultant Medical Oncologist',
+    role: 'Medical Oncologist',
     roleLine: 'Physician and Cancer Specialist',
     credentials: ['M.B.B.S', 'MD (Medicine)', 'DM (Medical Oncology)'],
     affiliation: 'Manipal Hospitals, Dwarka & Ghaziabad',
@@ -146,7 +146,7 @@ export const hero = {
   ],
   /** Short description, set left beneath the headline as the template does. */
   description:
-    'A patient-centred cancer care clinic in Greater Noida — compassionate, personalised and evidence-based oncology care, led by a consultant medical oncologist.',
+    'A patient-centred cancer care clinic in Greater Noida — compassionate, personalised and evidence-based oncology care, led by a medical oncologist.',
   /** The circular badge that sits astride the arch. Length is tuned to fill the ring. */
   badge: 'BOOK A CONSULTATION · CALL · WHATSAPP · ',
 };
@@ -156,7 +156,7 @@ export const intro = {
   eyebrow: 'The Clinic',
   heading: 'Care for the person, not only the disease',
   paragraphs: [
-    'Onco Cure Clinic is a patient-centred cancer care clinic in Greater Noida, led by Consultant Medical Oncologist Dr Sahil Bambroo.',
+    'Onco Cure Clinic is a patient-centred cancer care clinic in Greater Noida, led by Medical Oncologist Dr Sahil Bambroo.',
     'We believe cancer care is not only about treating the disease, but about supporting the person through every step of the journey — with empathy, transparency and dignity.',
   ],
 };
@@ -324,7 +324,7 @@ export const reasons = [
     id: 'consultant-led',
     title: 'Consultant-led oncology care',
     text:
-      'Your consultation is led by a Consultant Medical Oncologist with MBBS, MD and DM qualifications, working to evidence-based practice.',
+      'Your consultation is led by a Medical Oncologist with MBBS, MD and DM qualifications, working to evidence-based practice.',
   },
   {
     id: 'personalised',
@@ -460,9 +460,9 @@ export const inlineCta = {
   description:
     'Speak with our team about your diagnosis, treatment options, or a second opinion.',
   href: '#contact',
-  linkLabel: 'Let’s Talk',
-  image: '/images/photo/reception-plants.jpg',
-  imageAlt: 'The calm clinic reception, ready to welcome patients.',
+  linkLabel: 'Book an Appointment',
+  image: '/images/photo/care-hands.jpg',
+  imageAlt: 'A patient’s hand held gently in a clinician’s — quiet reassurance.',
   tone: 'paper',
 };
 
@@ -480,7 +480,7 @@ export const closing = {
 export const footer = {
   blurb:
     'Onco Cure Clinic is a patient-centred cancer care clinic in Greater Noida, dedicated to providing compassionate, personalised and evidence-based oncology care.',
-  navLabel: 'Navigation links are placeholders and will be connected in a later stage.',
+  navLabel: 'All pages are now connected.',
   disclaimer:
     'This website provides general information only and is not a substitute for professional medical advice, diagnosis or treatment. Always consult your physician or healthcare provider before making any decision about your care.',
   copyright: `© ${new Date().getFullYear()} Onco Cure Clinic. All rights reserved.`,
@@ -539,6 +539,216 @@ export const consult = {
     'Preview only — this form is not connected to the clinic yet. Please call or WhatsApp us to book.',
   privacy:
     'Please do not share sensitive medical details until a consultation is confirmed.',
+};
+
+/**
+ * About Us page copy (src/pages/AboutPage.jsx).
+ *
+ * PROVENANCE
+ * ----------
+ * Narrative copy follows the approved About mockup and the clinic's own
+ * existing wording. Dr Bambroo's profile is taken verbatim-in-substance from
+ * the CV material the clinic supplied.
+ *
+ * The impact figures are EXPLICITLY MARKED PLACEHOLDERS: the clinic has not
+ * verified any patient totals or years-in-practice figures, so they carry a
+ * visible placeholder note in the UI (same policy as the testimonials).
+ */
+export const aboutPage = {
+  label: 'About Onco Cure',
+  title: 'Care built around',
+  titleAccent: 'the patient.',
+  intro:
+    'Personalised, evidence-based cancer care with clarity, compassion and continuity.',
+  heroCta: 'Our approach',
+  heroImage: '/images/photo/about-consult.jpg',
+  heroImageAlt:
+    'A clinician warmly going through reports with a patient — the everyday welcome at the clinic.',
+
+  story: {
+    label: 'Our Story',
+    title: 'A patient-centred cancer care clinic in Greater Noida.',
+    body: 'Onco Cure Clinic was founded on a simple belief — that every patient deserves expert care, clear guidance and a supportive environment throughout their cancer journey. We combine clinical expertise with a compassionate approach to help you make informed decisions at every step.',
+    /** CV seam: the community-oncology work behind the founding belief. */
+    clinical:
+      'Dr Bambroo has been closely associated with community oncology — serving people through outreach OPDs at peripheral centres in NCR and across the country, and starting medical oncology services and daycare chemotherapy units at centres including ESIC Hospital, Okhla, Delhi.',
+    cta: 'Meet our specialists',
+    image: '/images/photo/about-building.jpg',
+    imageAlt:
+      'The modern clinic building seen from the approach road — care close to home in Greater Noida.',
+  },
+
+  values: {
+    label: 'What Guides Us',
+    title: 'Our values in care',
+    items: [
+      {
+        id: 'patient-first',
+        icon: 'people',
+        title: 'Patient-first',
+        text: 'Your comfort, privacy and well-being are at the centre of everything we do.',
+      },
+      {
+        id: 'evidence-based',
+        icon: 'shield',
+        title: 'Evidence-based care',
+        text: 'We follow the latest medical guidelines and proven practices.',
+      },
+      {
+        id: 'clear-communication',
+        icon: 'chat',
+        title: 'Clear communication',
+        text: 'We take time to explain options and answer your questions.',
+      },
+      {
+        id: 'compassionate-support',
+        icon: 'heart',
+        title: 'Compassionate support',
+        text: 'We stand by you through every stage of your journey.',
+      },
+    ],
+  },
+
+  journey: {
+    label: 'Our Approach',
+    title: 'Personalised care at',
+    titleAccent: 'every step.',
+    lead: 'We take a holistic and coordinated approach to cancer care, combining medical expertise, advanced treatment options and ongoing support to help you through your journey.',
+    /** CV seam: how Dr Bambroo actually works, per the supplied material. */
+    clinical:
+      'Dr Bambroo pays attention to every detail and personalises every treatment plan, giving each patient time to address their concerns and arrive at shared decisions after thorough discussion. He collaborates closely with surgical and radiation oncologists, radiologists and pathologists to understand the complexities of every case before planning treatment.',
+    steps: [
+      {
+        id: 'consultation',
+        icon: 'stethoscope',
+        title: 'Consultation and evaluation',
+        text: 'A detailed discussion of your medical history, concerns and goals.',
+      },
+      {
+        id: 'plan',
+        icon: 'file',
+        title: 'Personalised treatment plan',
+        text: 'A plan tailored to your diagnosis, lifestyle and individual needs.',
+      },
+      {
+        id: 'treatment',
+        icon: 'gear',
+        title: 'Treatment and monitoring',
+        text: 'Evidence-based therapies with regular assessment and support.',
+      },
+      {
+        id: 'follow-up',
+        icon: 'hands',
+        title: 'Ongoing support and follow-up',
+        text: 'Continuous guidance to help you move forward with confidence.',
+      },
+    ],
+  },
+
+  impact: {
+    label: 'Our Impact',
+    title: 'Care that makes a difference.',
+    body: 'Every number represents a person, a story and a journey towards better health.',
+    /** CV seam: academic work surfacing as impact, per the supplied material. */
+    clinical:
+      'Behind the numbers is an academic practice — mentorship of DM and DrNB trainees, residents, undergraduates and nursing professionals, and an editorial board membership with the International Journal of Molecular and Immuno-Oncology.',
+    note: 'Patient totals and years of experience are placeholders awaiting the clinic’s verified figures.',
+    figures: [
+      {
+        id: 'patients',
+        icon: 'people',
+        value: '1000+',
+        caption: 'Patients treated',
+        placeholder: true,
+      },
+      {
+        id: 'years',
+        icon: 'ribbon',
+        value: '15+',
+        caption: 'Years of clinical experience',
+        placeholder: true,
+      },
+      {
+        id: 'roof',
+        icon: 'clipboard',
+        value: 'One roof',
+        caption: 'Comprehensive care — oncology and pain',
+        placeholder: false,
+      },
+    ],
+  },
+
+  team: {
+    label: 'Our Team',
+    title: 'Meet the specialists guiding',
+    titleAccent: 'your care.',
+    body: 'Our team brings together experience, expertise and a shared commitment to patient-centred care. We work closely with you to ensure the best possible treatment and support throughout your journey.',
+    cta: 'Book a Consultation',
+    /** Elevation card: the short editorial picture of each doctor. */
+    sahilCard: {
+      line: 'Compassion, humility and patient advocacy at the core of every consult — with time taken for each patient’s concerns, and treatment decisions shared after a full discussion.',
+      focusLabel: 'Expertise',
+      focus: [
+        'Breast, lung & gastrointestinal cancers',
+        'Haematological malignancies',
+        'Immunotherapy & targeted therapy',
+      ],
+    },
+    profileHeadings: {
+      about: 'About',
+      expertise: 'Field of Expertise',
+      membership: 'Fellowship & Membership',
+      languages: 'Languages Spoken',
+      awards: 'Awards & Achievements',
+      publication: 'Publication',
+    },
+    /**
+     * Dr Sahil Bambroo — from the CV material supplied by the clinic.
+     * Nothing here is invented; the lists are the clinic's own wording.
+     * `training` is the card's opening (training + scope of practice); the
+     * rest of the CV narrative is redistributed to other About sections
+     * (`story.clinical`, `approach.clinical`) so no section repeats another.
+     */
+    sahil: {
+      training:
+        'A medical oncologist trained at the Amrita School of Medicine, Amrita Institute of Medical Sciences, Kochi, with MD in General Medicine and DM in Medical Oncology — experienced across academic institutions, government organisations and peripheral centres, and well versed in the management of solid cancers and haematological malignancies.',
+      paragraphs: [
+        'Dr Sahil Bambroo is a highly trained and experienced medical oncologist. He completed his MD in General Medicine before specialising with a DM in Medical Oncology from the Amrita School of Medicine, Amrita Institute of Medical Sciences, Kochi. He has extensive experience in medical oncology across academic institutions, government organisations and peripheral centres, and is well versed in the management of solid cancers — breast, head and neck, lung, gastrointestinal and genito-urinary — as well as haematological disorders and malignancies. He started medical oncology services and daycare chemotherapy units at certain centres, including the Daycare Chemotherapy Unit at ESIC Hospital, Okhla, Delhi, and has been closely associated with community oncology through outreach OPDs across NCR and the country.',
+        'Compassion, humility and patient advocacy are at the core of his practice. He closely monitors each patient and helps them navigate the complex and at times overwhelming path of cancer treatment. He pays attention to every detail, personalises every treatment plan by giving time to each patient’s concerns, and makes shared decisions after thorough discussions. He collaborates closely with his peers — surgical and radiation oncologists, radiologists and pathologists — to understand the complexities of every case before arriving at conclusions and planning treatment.',
+        'His academic contributions include mentorship of DM and DrNB trainees, medical residents, undergraduates, nursing and allied professionals. He is a member of national and international organisations dealing with cancer care and is an editorial board member for the International Journal of Molecular and Immuno-Oncology. He has authored scientific papers for national and international publications, has spoken at medical conferences, and is actively involved in cancer awareness and prevention programmes.',
+      ],
+      expertise: [
+        'Breast Cancer, Gynaecological Malignancies',
+        'Lung Cancer',
+        'Haematological Malignancies',
+        'Gastrointestinal & Hepatobiliary Cancers',
+        'Genitourinary & Prostate Cancers',
+        'Preventive Oncology',
+        'Community Level Cancer Detection & Treatment',
+        'Molecular Profiling of Cancers',
+        'Immunotherapy & Targeted Therapy in the Treatment of Cancers',
+      ],
+      membership: [
+        'Delhi Medical Council — Reg No. 75935',
+        'Travancore Cochin Medical Council — Reg No. 74646',
+        'European Society of Medical Oncology — Member ID 408023',
+        'European Society of Digestive Oncology',
+        'American Society of Clinical Oncology',
+        'Indian Society of Neuro-Oncology',
+        'Member, API, Kerala Chapter',
+      ],
+      languages: ['Kashmiri', 'Hindi', 'English', 'Malayalam', 'Kannada'],
+      awards: [
+        'Observership, Henry Ford Health System, Detroit, Michigan, USA — May 2018',
+        'Second prize, Quiz — ONCOLOGY 2018, Multidisciplinary management of common cancers (28–30 September 2018)',
+        'Second prize, Poster — Analysis of EGFR 18, 19 and EGFR vIII over-expression in GBM and its prognostic significance, ISNOCON 2018, AIIMS Delhi (5–8 April 2018)',
+        '‘Aswath Ram Jaya Nazir’ award for securing the highest marks in Preventive and Social Medicine — 2009',
+        'Certificate of Merit in Science and Social Science, HSC — CBSE 2003',
+      ],
+      publication:
+        'Adherence to Antiemesis Guidelines in a Day Care Chemotherapy Unit: Experience from a Tertiary Care Centre — Indian Journal of Applied Research, Volume 9, Issue 12, December 2019.',
+    },
+  },
 };
 
 /**

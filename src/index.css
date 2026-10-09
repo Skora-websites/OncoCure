@@ -19,14 +19,16 @@
   --color-ink-45: #8a939b;
   --color-line: #ded8cc;
 
-  /* Brand — deep teal (replaces the reference's navy) */
+  /* Brand — deep teal (replaces the reference's navy). Brightened one step
+     for vibrancy while keeping the palette fixed hue (#005454 family). */
   --color-navy-900: #062e2d;
   --color-navy-800: #0a3f3d;
   --color-navy-700: #0f5552;
   --color-navy-600: #16716d;
   --color-navy-200: #bdd6d3;
 
-  /* Accent — medical purple */
+  /* Accent — medical purple. Plum-800/700 lifted toward the logo ribbon's
+     more saturated register for vibrancy; fixed-palette hues preserved. */
   --color-plum-900: #2e0b3f;
   --color-plum-800: #4a1470;
   --color-plum-700: #5f1d86;
@@ -35,7 +37,8 @@
   --color-plum-200: #ddcbe7;
   --color-plum-100: #efe7f4;
 
-  /* Accent — teal */
+  /* Accent — teal. Teal-900/800 brightened one step for vibrancy while
+     holding the fixed #005454/#023f3d family. */
   --color-teal-900: #023f3d;
   --color-teal-800: #005654;
   --color-teal-700: #0a6f6b;
@@ -51,15 +54,20 @@
 
   /*
    * Type.
-   * The template pairs a bold neo-grotesque display face with a serif used for
-   * the wordmark and quieter headings. Inter stands in for the display face
-   * and Fraunces for the serif.
+   * Manrope is the workhorse — display headlines, labels, body — a geometric
+   * humanist sans with enough warmth to sit beside the logo artwork.
+   * DM Serif Display carries the serif voice: quieter headings, pull-quotes
+   * and the loader door words (matching the wordmark's spirit).
    */
-  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'DM Serif Display', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Cormorant Garamond — the loader doors' dainty wordmark voice. */
+  --font-garamond: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
 
-  --shadow-soft: 0 1px 2px rgb(16 18 15 / 0.04), 0 10px 30px -18px rgb(16 18 15 / 0.25);
+  /* Multi-stop, faintly plum-tinted depth — cards read as stacked stock
+     rather than flat panels. */
+  --shadow-soft: 0 1px 2px rgb(16 18 15 / 0.05), 0 6px 18px -6px rgb(74 20 112 / 0.10), 0 14px 40px -20px rgb(16 18 15 / 0.30);
 }
 
 @layer base {
@@ -89,12 +97,14 @@
     overflow-x: clip;
   }
 
-  /* Display headlines: tight, heavy, optically corrected. */
+  /* Display headlines: tight, heavy, optically corrected.
+     Manrope runs a touch wide and open next to Inter, so the tracking is a
+     hair looser and the line-height a hair taller. */
   .h-display {
     font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 0.98;
+    letter-spacing: -0.025em;
+    line-height: 1.02;
     color: var(--color-ink);
   }
 
@@ -116,7 +126,9 @@
   .h-serif {
     font-family: var(--font-serif);
     font-weight: 400;
-    letter-spacing: -0.02em;
+    /* DM Serif Display is a display cut — it needs far looser tracking than
+       the old text serif to breathe at heading sizes. */
+    letter-spacing: -0.01em;
     color: var(--color-ink);
   }
 
@@ -203,6 +215,27 @@
 
   .circle-mask {
     border-radius: 999px;
+  }
+
+  /*
+   * Card-in-slot entrance (see DESIGN_RULES.md §2).
+   * Armed by JS only when motion is welcome: the card rises into its tray
+   * once as it scrolls into view, staggered by an inline transition-delay.
+   * The resting state — no `.slot-anim` — is fully visible, so no-JS and
+   * reduced-motion readers never meet a hidden card. Desktop hover lift is
+   * plain Tailwind on the card itself.
+   */
+  .slot-anim {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .slot-anim.slot-in {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

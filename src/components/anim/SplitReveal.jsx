@@ -194,7 +194,12 @@ export function Parallax({ children, className = '', strength = 60 }) {
   );
 }
 
-/** Fade a group of children up in sequence as the group enters view. */
+/** Fade a group of children up in sequence as the group enters view.
+ *
+ * `watch` re-arms the group when its value changes — pass the item count on
+ * async-loaded lists (data arrives after mount, so the first effect cycle
+ * would otherwise find zero children, warn, and never animate).
+ */
 export function StaggerGroup({
   children,
   className = '',
@@ -202,12 +207,15 @@ export function StaggerGroup({
   delay = 0,
   y = 30,
   start = 'top 85%',
+  watch = null,
 }) {
   const ref = useRef(null);
 
   useEffect(() => {
     const el = ref.current;
-    const items = el ? el.children : [];
+    if (!el) return undefined;
+    const items = el.children;
+    if (items.length === 0) return undefined;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       gsap.set(items, { opacity: 1, y: 0 });
       return undefined;
@@ -228,13 +236,43 @@ export function StaggerGroup({
       );
     }, el);
     return () => ctx.revert();
-  }, [stagger, delay, y, start]);
+  }, [stagger, delay, y, start, watch]);
 
   return (
     <div ref={ref} className={className}>
       {children}
     </div>
   );
+}
+
+/**
+ * applyTouchImageSettles — DESIGN_RULES.md §2: a hover-only zoom needs a
+ * non-hover trigger on touch. On `(hover: none)` devices every image matching
+ * `selector` inside `root` gently settles from a slight zoom as it scrolls
+ * into view (once), so the card reads as alive without any hover. Desktop
+ * hover behaviour is untouched; reduced-motion visitors get nothing.
+ *
+ * Returns a cleanup function (a no-op on hover-capable devices).
+ */
+export function applyTouchImageSettles(root, selector = 'img') {
+  if (!root) return () => {};
+  if (!window.matchMedia('(hover: none)').matches) return () => {};
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {};
+  const ctx = gsap.context(() => {
+    root.querySelectorAll(selector).forEach((img) => {
+      gsap.fromTo(
+        img,
+        { scale: 1.07 },
+        {
+          scale: 1,
+          duration: 1.2,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: img, start: 'top 92%', once: true },
+        },
+      );
+    });
+  }, root);
+  return () => ctx.revert();
 }
 
 export { gsap, ScrollTrigger };

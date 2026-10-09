@@ -1,15 +1,57 @@
-import { reasons, clinic } from '../data/clinic.js';
-import Section, { SectionIntro, Label } from './ui/Blocks.jsx';
-import { RevealBlock, StaggerGroup } from './anim/SplitReveal.jsx';
+import { useEffect, useRef } from 'react';
+import { reasons } from '../data/clinic.js';
+import Section, { SectionIntro } from './ui/Blocks.jsx';
+import { RevealBlock } from './anim/SplitReveal.jsx';
 
 /**
- * WhyUs — the template's numbered trust list.
+ * WhyUs — cards seated in recessed slots.
  *
- * Each point is numbered and ruled off, matching the doctors/approach rhythm.
+ * Each reason is a paper card resting inside a tray (a rounded recess with
+ * an inner shadow whose lip peeks out below the card). The interaction model
+ * follows DESIGN_RULES.md §2:
+ *
+ *   - fine pointer / desktop: hovering a card lifts it out of its slot —
+ *     the tray band beneath comes into view, the shadow deepens;
+ *   - touch / mobile: the same lift plays on scroll — each card rises into
+ *     its tray once as it enters the viewport (staggered), then rests in
+ *     the card-in-slot look. Nothing here depends on hover.
+ *
  * Grounded only in what the clinic has actually supplied: a qualification, a
  * service line, or a published schedule. No success rates or outcome claims.
  */
 export default function WhyUs() {
+  const gridRef = useRef(null);
+
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return undefined;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return undefined;
+    }
+    if (!('IntersectionObserver' in window)) return undefined;
+
+    // Ref callbacks aren't involved, but StrictMode runs this twice —
+    // arming classes and observing twice is idempotent, and the cleanup
+    // disconnects the first observer.
+    const slots = Array.from(grid.querySelectorAll('[data-slot]'));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('slot-in');
+          io.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.25 },
+    );
+    slots.forEach((slot) => {
+      slot.classList.add('slot-anim');
+      io.observe(slot);
+    });
+
+    return () => io.disconnect();
+  }, []);
+
   return (
     <Section id="why" tone="cream">
       <SectionIntro
@@ -18,45 +60,46 @@ export default function WhyUs() {
         intro="We keep our focus narrow so we can give each patient the attention they actually need."
       />
 
-      <StaggerGroup className="mt-16 border-t border-line lg:mt-24" stagger={0.1}>
+      <div
+        ref={gridRef}
+        className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:mt-24 lg:gap-x-10 lg:gap-y-14"
+      >
         {reasons.map((reason, i) => (
-          <article
+          <div
             key={reason.id}
-            className="group grid gap-4 border-b border-line py-9 transition-colors duration-500 hover:bg-paper sm:grid-cols-[4rem_1fr] sm:gap-8 lg:grid-cols-[6rem_minmax(0,24rem)_1fr] lg:items-start lg:py-12"
+            data-slot
+            /* Stagger for the on-scroll entrance (inert unless .slot-anim
+               is armed by the effect above). */
+            style={{ transitionDelay: `${i * 90}ms` }}
+            className="group relative pb-3"
           >
-            <span className="font-serif text-2xl leading-none text-plum-400 transition-colors duration-500 group-hover:text-plum-800 sm:text-3xl">
-              {String(i + 1).padStart(2, '0')}
-            </span>
+            {/* The tray: a rounded recess, narrower than the card so only
+                its lip shows beneath, reading as a slot. */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-3 bottom-0 top-3 rounded-2xl bg-cream-deep shadow-[inset_0_4px_12px_rgb(16_18_15/0.10)]"
+            />
 
-            <h3 className="font-serif text-xl leading-snug text-ink sm:text-[1.5rem]">
-              {reason.title}
-            </h3>
-
-            <p className="max-w-2xl text-[0.9375rem] leading-[1.8] text-ink-70 sm:col-start-2 lg:col-start-3">
-              {reason.text}
-            </p>
-          </article>
-        ))}
-      </StaggerGroup>
-
-      {/* Hours */}
-      <RevealBlock className="mt-16 lg:mt-20" y={28}>
-        <div className="rounded-2xl border border-line bg-paper p-7 sm:p-10">
-          <Label tone="ink">Consulting hours</Label>
-          <dl className="mt-7 grid gap-8 sm:grid-cols-3 sm:gap-6">
-            {clinic.hours.map((h) => (
-              <div key={h.id} className="border-l-2 border-plum-400 pl-5">
-                <dt className="text-base font-semibold text-ink">{h.label}</dt>
-                <dd className="mt-1.5 text-[0.9375rem] leading-relaxed text-ink-70">
-                  {h.days}
-                  <br />
-                  {h.time}
-                </dd>
+            <article className="relative rounded-2xl border border-line bg-paper p-6 shadow-soft transition-[transform,box-shadow] duration-500 ease-out will-change-transform group-hover:-translate-y-4 group-hover:shadow-[0_18px_44px_-18px_rgb(16_18_15/0.35)] sm:p-7">
+              <div className="flex items-center gap-4">
+                <span className="label-sm text-plum-600">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span aria-hidden="true" className="h-px flex-1 bg-line" />
               </div>
-            ))}
-          </dl>
-        </div>
-      </RevealBlock>
+
+              <h3 className="mt-5 font-serif text-xl leading-snug text-ink sm:text-[1.5rem]">
+                {reason.title}
+              </h3>
+
+              <p className="mt-3 text-[0.9375rem] leading-[1.8] text-ink-70">
+                {reason.text}
+              </p>
+            </article>
+          </div>
+        ))}
+      </div>
+
     </Section>
   );
 }

@@ -14,7 +14,6 @@ export default function MarqueeBand() {
           'Medical Oncology',
           'Pain Management',
           'Evidence-Based Care',
-          'Anesthesia',
           'Greater Noida',
           'Patient Centred',
         ]}

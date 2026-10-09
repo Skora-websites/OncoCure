@@ -85,7 +85,7 @@ export default function ServiceCatalogue() {
         intro="A snapshot of the services offered at Onco Cure Clinic, grouped so you can find what is relevant to you."
       />
 
-      <div className="mt-16 grid gap-8 lg:mt-24 lg:grid-cols-3 lg:gap-8">
+      <div className="mt-12 grid gap-7 sm:mt-16 lg:mt-24 lg:grid-cols-3 lg:gap-8">
         {serviceGroups.map((group, gi) => {
           const a = accents[group.accent] ?? accents.teal;
           const icon =
@@ -95,7 +95,7 @@ export default function ServiceCatalogue() {
           return (
             <RevealBlock key={group.id} delay={gi * 0.09} y={34}>
               <article
-                className={`texture-crumple group relative aspect-5/8 w-full rounded-full border bg-paper transition-colors duration-500 ${a.border} ${a.hover}`}
+                className={`texture-crumple group relative aspect-3/4 w-full rounded-full border bg-paper transition-colors duration-500 sm:aspect-5/8 lg:aspect-5/8 ${a.border} ${a.hover}`}
               >
                 {/* Circular badge sitting on the racetrack's crest */}
                 <span
@@ -103,7 +103,7 @@ export default function ServiceCatalogue() {
                 >
                   <svg
                     viewBox="0 0 48 48"
-                    className={`h-10 w-10 ${a.text} sm:h-12 sm:w-12`}
+                    className={`h-11 w-11 ${a.text} sm:h-12 sm:w-12`}
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.3"
@@ -114,8 +114,8 @@ export default function ServiceCatalogue() {
                 </span>
 
                 {/* Content sits in the wide middle of the racetrack. */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-[22%] pt-[15%] pb-[15%]">
-                  <h3 className="h-serif text-center text-[1.125rem] leading-tight text-ink sm:text-[1.375rem]">
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-[16%] pt-[14%] pb-[14%] sm:gap-6 sm:px-[22%]">
+                  <h3 className="h-serif text-center text-[1.375rem] leading-tight text-ink sm:text-[1.375rem]">
                     {group.title}
                   </h3>
 
@@ -135,7 +135,7 @@ export default function ServiceCatalogue() {
                             group.accent === 'plum' ? 'bg-plum-400' : 'bg-teal-400'
                           }`}
                         />
-                        <span className="text-[0.8125rem] leading-[1.5] text-ink-70">
+                        <span className="text-[0.9375rem] leading-[1.5] text-ink-70 sm:text-[0.8125rem]">
                           {item}
                         </span>
                       </div>

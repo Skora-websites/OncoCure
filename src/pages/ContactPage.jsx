@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { clinic, contactPage, consult, cta } from '../data/clinic.js';
-import { Label, PlaceholderTag } from '../components/ui/Blocks.jsx';
-import { RevealBlock } from '../components/anim/SplitReveal.jsx';
+import { PlaceholderTag } from '../components/ui/Blocks.jsx';
+import PageHero from '../components/ui/PageHero.jsx';
 import ConsultationForm from '../components/ui/ConsultationForm.jsx';
 
 /**
@@ -26,31 +26,20 @@ export default function ContactPage() {
 
   return (
     <>
-      {/* Page head */}
-      <section className="paper texture-creases relative overflow-x-clip bg-cream pt-36 pb-14 sm:pt-44 sm:pb-16 lg:pt-52 lg:pb-20">
-        <div className="mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12">
-          <RevealBlock y={16}>
-            <Label tone="plum">{contactPage.label}</Label>
-          </RevealBlock>
-          <RevealBlock delay={0.08}>
-            <h1 className="h-serif mt-5 max-w-3xl text-[clamp(2.5rem,6vw,4.75rem)] leading-[1.05]">
-              {contactPage.title}
-            </h1>
-          </RevealBlock>
-          <RevealBlock delay={0.14}>
-            <p className="mt-6 max-w-2xl text-base leading-[1.8] text-ink-70 sm:text-lg">
-              {contactPage.intro}
-            </p>
-          </RevealBlock>
-        </div>
-      </section>
+      {/* Page head — the shared site-wide hero template (no photograph on
+          this page; spacing and type are still the template's). */}
+      <PageHero
+        label={contactPage.label}
+        title={contactPage.title}
+        description={contactPage.intro}
+      />
 
       {/* Details + form */}
       <section className="border-t border-line bg-paper py-16 sm:py-20 lg:py-24">
         <div className="mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12">
           <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-            {/* Contact details */}
-            <div className="lg:col-span-5">
+            {/* Contact details — centred on phones, left from sm up */}
+            <div className="text-center sm:text-left lg:col-span-5">
               <div className="rounded-2xl border border-line bg-cream p-7 sm:p-9">
                 <p className="label-sm text-ink-45">{contactPage.visitLabel}</p>
                 <address className="mt-4 font-serif text-[1.35rem] leading-[1.5] text-ink not-italic">
@@ -64,7 +53,7 @@ export default function ContactPage() {
                   href={clinic.contact.mapsUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="mt-5 inline-flex items-center gap-2 text-[0.8125rem] font-semibold tracking-[0.14em] text-teal-800 uppercase transition-colors duration-300 hover:text-teal-900"
+                  className="mt-5 inline-flex items-center gap-2 py-3 -my-3 text-[0.8125rem] font-semibold tracking-[0.14em] text-teal-800 uppercase transition-colors duration-300 hover:text-teal-900"
                 >
                   {cta.map}
                   <svg
@@ -88,7 +77,7 @@ export default function ContactPage() {
                       <a
                         key={p.label}
                         href={`tel:${p.tel}`}
-                        className="block text-[1.0625rem] text-ink transition-colors duration-300 hover:text-teal-800"
+                        className="block py-2.5 -my-2.5 text-[1.0625rem] text-ink transition-colors duration-300 hover:text-teal-800"
                       >
                         {p.display}
                       </a>
@@ -97,7 +86,7 @@ export default function ContactPage() {
                       href={`https://wa.me/${clinic.contact.whatsapp.replace(/\D/g, '')}`}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="inline-block text-[1.0625rem] text-plum-700 transition-colors duration-300 hover:text-plum-800"
+                      className="inline-block py-2.5 -my-2.5 text-[1.0625rem] text-plum-700 transition-colors duration-300 hover:text-plum-800"
                     >
                       {cta.whatsapp}
                     </a>
@@ -108,7 +97,7 @@ export default function ContactPage() {
                   <p className="label-sm text-ink-45">{contactPage.emailLabel}</p>
                   <a
                     href={`mailto:${clinic.contact.email}`}
-                    className="mt-3 block break-all text-[1.0625rem] text-ink transition-colors duration-300 hover:text-teal-800"
+                    className="mt-3 block break-all py-2.5 -my-2.5 text-[1.0625rem] text-ink transition-colors duration-300 hover:text-teal-800"
                   >
                     {clinic.contact.email}
                   </a>
@@ -142,10 +131,10 @@ export default function ContactPage() {
             {/* Form + map placeholder */}
             <div className="lg:col-span-7">
               <div className="rounded-2xl border border-line bg-cream p-7 sm:p-9">
-                <h2 className="h-serif text-[clamp(1.6rem,3.4vw,2.25rem)] leading-[1.12]">
+                <h2 className="h-serif text-center text-[clamp(1.6rem,3.4vw,2.25rem)] leading-[1.12] sm:text-left">
                   {contactPage.formHeading}
                 </h2>
-                <p className="mt-3 max-w-xl text-[0.9375rem] leading-[1.75] text-ink-70">
+                <p className="mx-auto mt-3 max-w-xl text-center text-[0.9375rem] leading-[1.75] text-ink-70 sm:mx-0 sm:text-left">
                   {consult.intro}
                 </p>
                 <ConsultationForm className="mt-8" />

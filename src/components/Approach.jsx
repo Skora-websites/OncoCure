@@ -18,18 +18,23 @@ export default function Approach() {
       </div>
 
       <div className="relative grid gap-16 lg:grid-cols-12 lg:gap-20">
-        {/* Sticky column */}
+        {/* Sticky column. Flex + order so mobile flows title → image →
+            lead (DESIGN_RULES.md §1) while `lg:order-none` restores the
+            desktop flow: title → lead → image. */}
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-32">
+          <div className="flex flex-col lg:sticky lg:top-32">
             <SectionIntro
               align="left"
               tone="light"
               label={approach.eyebrow}
               title={approach.heading}
-              intro={approach.lead}
             />
 
-            <RevealBlock delay={0.15} className="mt-12">
+            <RevealBlock delay={0.12} className="order-3 mt-7 text-base leading-[1.8] text-cream/70 sm:text-lg lg:order-none">
+              {approach.lead}
+            </RevealBlock>
+
+            <RevealBlock delay={0.15} className="order-2 mt-12 lg:order-none">
               <div className="circle-mask relative mx-auto max-w-xs overflow-hidden shadow-lift lg:max-w-sm">
                 <Parallax strength={30}>
                   <img

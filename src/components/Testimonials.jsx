@@ -149,19 +149,24 @@ export default function Testimonials() {
       io.disconnect();
       window.removeEventListener('resize', onResize);
     };
-  }, [count]);
-
-  return (
+  }, [count]);  return (
     <Section id="testimonials" tone="deep">
-      <SectionIntro
-        label={testimonials.eyebrow}
-        title={testimonials.heading}
-        intro={testimonials.intro}
-      />
+      {/* Flex wrapper: mobile flows title → cards → intro
+          (DESIGN_RULES.md §1); `lg:order` restores the original desktop
+          flow: title → intro → cards. */}
+      <div className="flex flex-col">
+        <SectionIntro
+          label={testimonials.eyebrow}
+          title={testimonials.heading}
+        />
 
-      {/* Carousel region. Slots are absolutely positioned from the centre and
+        <RevealBlock delay={0.12} className="order-3 mx-auto mt-8 max-w-2xl text-center text-base leading-[1.8] text-ink-70 sm:text-lg lg:order-1 lg:mt-7">
+          {testimonials.intro}
+        </RevealBlock>
+
+        {/* Carousel region. Slots are absolutely positioned from the centre and
           transformed every frame; the track carries the arc's extra depth. */}
-      <RevealBlock y={32} className="mt-14 lg:mt-20">
+        <RevealBlock y={32} className="order-2 mt-14 lg:order-3 lg:mt-20">
         <div
           ref={regionRef}
           role="region"
@@ -212,9 +217,10 @@ export default function Testimonials() {
         </div>
       </RevealBlock>
 
-      <RevealBlock y={16} className="mt-12 flex justify-center">
+      <RevealBlock y={16} className="order-4 mt-12 flex justify-center lg:order-3">
         <PlaceholderTag tone="ink">{testimonials.note}</PlaceholderTag>
       </RevealBlock>
+      </div>
     </Section>
   );
 }
