@@ -151,13 +151,15 @@ export const hero = {
   badge: 'BOOK A CONSULTATION · CALL · WHATSAPP · ',
 };
 
-/** Short clinic introduction. Kept deliberately concise for the page. */
+/** Clinic introduction for the home page's "The Clinic" section. */
 export const intro = {
   eyebrow: 'The Clinic',
   heading: 'Care for the person, not only the disease',
   paragraphs: [
     'Onco Cure Clinic is a patient-centred cancer care clinic in Greater Noida, led by Medical Oncologist Dr Sahil Bambroo.',
     'We believe cancer care is not only about treating the disease, but about supporting the person through every step of the journey — with empathy, transparency and dignity.',
+    'Oncology and pain care run side by side here: Dr Sahil Bambroo (M.B.B.S, MD Medicine, DM Medical Oncology) leads the cancer service from a new diagnosis and treatment planning through to follow-up and survivorship, while Dr Apurva Sadhoo, Anesthesia & Pain Specialist, looks after cancer-related pain and symptom control.',
+    'The clinic covers the full arc of care — cancer consultation and second opinions, chemotherapy, immunotherapy, targeted and hormonal therapy, with nutrition guidance, caregiver counselling and palliative planning alongside — so most of what a family needs stays close to home.',
   ],
 };
 

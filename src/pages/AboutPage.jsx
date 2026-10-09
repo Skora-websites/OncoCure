@@ -339,7 +339,12 @@ export default function AboutPage() {
           </div>
 
           <div className="lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1">
-            <div className="relative overflow-hidden rounded-2xl border border-line bg-cream-deep shadow-soft lg:-mr-12 xl:-mr-16">
+            {/* Semi-racetrack frame: a full semicircular cap on the left,
+                straight top/bottom, and a right end that runs past the
+                viewport edge (body clips it) so the frame reads as cut off
+                by the screen. The negative margins cancel the section's
+                horizontal padding plus a few pixels at every breakpoint. */}
+            <div className="relative -mr-6 overflow-hidden rounded-l-full border border-line bg-cream-deep shadow-soft sm:-mr-10 lg:-mr-14 xl:-mr-16">
               {/* GSAP: a slow dimensional drift as the photo passes. */}
               <Parallax strength={26}>
                 <img

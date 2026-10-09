@@ -32,6 +32,9 @@ export default function Hero() {
       return undefined;
     }
 
+    const ring = el.querySelector('[data-hero-ring]');
+    const orbitDots = ring ? [...ring.children] : [];
+
     const ctx = gsap.context(() => {
       // Entrance: the capsule wipes open upward, the badge settles onto it.
       gsap
@@ -86,15 +89,65 @@ export default function Hero() {
 
       // Ornament motion: the dashed registration ring turns at a pace you
       // can actually see the dashes travel.
-      gsap.to('[data-hero-ring]', {
-        rotation: 360,
-        duration: 45,
-        repeat: -1,
-        ease: 'none',
-      });
+      //
+      // The two accent dots COUNTER the ring's spin. A dot merely pinned to
+      // the ring could only ever travel with it, so each dot instead slides
+      // along the outline at twice the ring's rate in the opposite sense:
+      // local angle φ advances at −2ω while the ring carries it +ω, which
+      // nets a page-space orbit of −ω — against the racetrack — while the
+      // dot stays exactly on the dash line at every instant.
+      const phi0 = [-Math.PI / 2, Math.PI / 2]; // top / bottom anchors (y-down)
+
+      /** Radius of a vertical stadium (racetrack) outline at polar angle φ. */
+      const stadiumRadius = (phi, a, b) => {
+        const s = Math.sin(phi);
+        const c = Math.cos(phi);
+        const straight = b - a; // half-length of the straight sides
+        // The ray lands on a straight side while |tan φ| fits its span.
+        if (c !== 0 && Math.abs(s / c) <= straight / a) return a / Math.abs(c);
+        // Otherwise it lands on the top/bottom cap (circle of radius a).
+        return (
+          straight * Math.abs(s) +
+          Math.sqrt(a * a - straight * straight * c * c)
+        );
+      };
+
+      if (ring) {
+        gsap.to(ring, {
+          rotation: 360,
+          duration: 45,
+          repeat: -1,
+          ease: 'none',
+          onUpdate: () => {
+            const theta = (gsap.getProperty(ring, 'rotation') * Math.PI) / 180;
+            // Half-dimensions of the dash line's centreline (the ring's 1px
+            // border sits inside the offset box, and absolute children anchor
+            // to the padding box — so inset by 0.5px for both).
+            const a = ring.offsetWidth / 2 - 0.5;
+            const b = ring.offsetHeight / 2 - 0.5;
+            orbitDots.forEach((dot, i) => {
+              const phi = phi0[i] - 2 * theta;
+              const r = stadiumRadius(phi, a, b);
+              // Offset from the dot's CSS anchor (top/bottom tangent point
+              // on the line); the stadium apex equals that anchor at t=0.
+              dot.style.transform = `translate(${(r * Math.cos(phi)).toFixed(
+                2,
+              )}px, ${(
+                r * Math.sin(phi) +
+                (i === 0 ? b : -b)
+              ).toFixed(2)}px)`;
+            });
+          },
+        });
+      }
     }, el);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      orbitDots.forEach((dot) => {
+        dot.style.transform = '';
+      });
+    };
   }, []);
 
   return (
@@ -236,12 +289,18 @@ export default function Hero() {
               />
 
               {/* Outer dashed ring — a rotating ornament, tinted so the
-                  dashes actually read against the cream. */}
+                  dashes actually read against the cream. Two accent dots are
+                  pinned to opposite points on the line (the OrbitRing trick):
+                  the ring itself is what rotates, so the dots travel the full
+                  racetrack outline. */}
               <div
                 data-hero-ring
                 aria-hidden="true"
                 className="absolute -inset-9 rounded-[999px] border border-dashed border-teal-600/60 sm:-inset-14"
-              />
+              >
+                <span className="absolute left-1/2 top-[-0.5px] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-plum-600 sm:h-4 sm:w-4" />
+                <span className="absolute left-1/2 bottom-[-0.5px] h-3 w-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-teal-700 sm:h-4 sm:w-4" />
+              </div>
 
               <div
                 data-hero-capsule

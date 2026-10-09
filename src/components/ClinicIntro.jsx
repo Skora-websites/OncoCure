@@ -58,14 +58,27 @@ export default function ClinicIntro() {
         </div>
       </div>
 
-      {/* Clinic facts */}
+      {/* Clinic facts — contact first, then the three weekly sessions.
+          Six items in two balanced rows of three on desktop. */}
       <RevealBlock className="mt-14 border-t border-line pt-10 lg:mt-20" y={26}>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           <Fact
             label="Where to find us"
             value={clinic.contact.addressSingle}
             href={clinic.contact.mapsUrl}
             linkLabel="Get directions"
+          />
+          <Fact
+            label="Call the clinic"
+            value={`${clinic.contact.phones[0].display} · ${clinic.contact.phones[1].display}`}
+            href={`tel:${clinic.contact.phones[0].tel}`}
+            linkLabel="Call now"
+          />
+          <Fact
+            label="Write to us"
+            value={clinic.contact.email}
+            href={`mailto:${clinic.contact.email}`}
+            linkLabel="Send an email"
           />
           <Fact
             label="Oncology hours"
