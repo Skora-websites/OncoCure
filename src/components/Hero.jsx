@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { hero } from '../data/clinic.js';
 import SplitReveal, { RevealBlock } from './anim/SplitReveal.jsx';
 import CircleBadge from './anim/CircleBadge.jsx';
+import { openConsult } from '../lib/consultBus.js';
 
 /**
  * Hero — the reference template's opening, reproduced exactly:
@@ -49,7 +50,52 @@ export default function Hero() {
           { scale: 0.6, opacity: 0 },
           { scale: 1, opacity: 1, duration: 0.9 },
           '-=0.9',
+        )
+        // The accent under the headline: the hairline draws outward from
+        // its centre, then the dot pops onto it.
+        .fromTo(
+          '[data-hero-accent-line]',
+          { scaleX: 0 },
+          { scaleX: 1, duration: 1.1 },
+          '-=0.75',
+        )
+        .fromTo(
+          '[data-hero-accent-dot]',
+          { scale: 0, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.5 },
+          '-=0.45',
         );
+
+      // Ambient life (all slow, all `sine`, all looping): the stage —
+      // capsule, rings and badge — breathes on a gentle float, the halo ring
+      // pulses a touch wider than the capsule edge, and the accent dot
+      // slides along the hairline beneath the headline. Transform/opacity
+      // only, and each element owns its property, so nothing fights the
+      // entrance timeline or the desktop scroll parallax.
+      gsap.to('[data-hero-stage]', {
+        y: -12,
+        duration: 3.8,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: 2.2,
+      });
+      gsap.to('[data-hero-halo]', {
+        scale: 1.03,
+        duration: 3.8,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: 2.2,
+      });
+      gsap.to('[data-hero-accent-dot]', {
+        x: 106,
+        duration: 2.6,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: 2.5,
+      });
 
       // Desktop only: the headline drifts up and softens as it leaves, and
       // the capsule drifts gently on the way past for dimension.
@@ -153,66 +199,17 @@ export default function Hero() {
   return (
     <section
       ref={root}
-      className="paper texture-creases relative overflow-x-clip bg-cream pt-40 pb-16 sm:pt-48 sm:pb-20 lg:pt-52 lg:pb-24"
+      className="relative overflow-x-clip bg-cream pt-40 pb-16 sm:pt-48 sm:pb-20 lg:pt-52 lg:pb-24"
     >
-      {/* Soft brand wash. The wash wrapper carries the clipping (not the
-          section itself) because an `overflow: hidden` ancestor would kill
-          the description column's sticky behaviour. */}
+      {/* Clean ground: a delicate static film grain and nothing else — the
+          old brand washes and corner foliage are gone. The wrapper carries
+          the layer (not the section) so no `overflow: hidden` ancestor
+          creeps in around the sticky copy column. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
-        <div className="absolute -top-48 left-1/2 h-[38rem] w-[38rem] -translate-x-1/2 rounded-full bg-plum-100 opacity-80 blur-3xl" />
-        <div className="absolute top-1/3 -left-40 h-[28rem] w-[28rem] rounded-full bg-teal-100 opacity-80 blur-3xl" />
-
-        {/* Botanical line-art — the reference plate's corner foliage,
-             drawn in the brand's teal and plum hairlines. Desktop only. */}
-        <div className="absolute -left-24 -top-28 hidden w-[22rem] opacity-90 sm:block lg:w-[27rem]">
-          <svg viewBox="0 0 340 480" fill="none" className="h-auto w-full">
-            <defs>
-              <path id="oc-leaf-a" d="M0 0 C 16 -13 38 -20 56 -17 C 48 4 20 14 0 0 Z" />
-            </defs>
-            <path d="M40 16 C 110 130 150 260 132 470" stroke="#3f9c98" strokeOpacity="0.5" strokeWidth="1.3" />
-            <g stroke="#3f9c98" strokeOpacity="0.5" strokeWidth="1.2">
-              <use href="#oc-leaf-a" transform="translate(78 80) rotate(-40) scale(1.15)" fill="#eaf1ec" fillOpacity="0.9" />
-              <use href="#oc-leaf-a" transform="translate(104 150) rotate(-20) scale(1.3)" fill="#efe7f4" fillOpacity="0.85" />
-              <use href="#oc-leaf-a" transform="translate(124 230) rotate(-5) scale(1.35)" fill="#eaf1ec" fillOpacity="0.9" />
-              <use href="#oc-leaf-a" transform="translate(134 310) rotate(12) scale(1.3)" fill="none" />
-              <use href="#oc-leaf-a" transform="translate(132 395) rotate(28) scale(1.15)" fill="#efe7f4" fillOpacity="0.85" />
-              <use href="#oc-leaf-a" transform="translate(62 132) scale(-1.1 1.1) rotate(-30)" fill="#eaf1ec" fillOpacity="0.9" />
-              <use href="#oc-leaf-a" transform="translate(100 300) scale(-1.15 1.15) rotate(-15)" fill="#efe7f4" fillOpacity="0.85" />
-            </g>
-          </svg>
-        </div>
-        <div className="absolute -right-32 top-10 hidden w-[26rem] -scale-x-100 opacity-80 lg:block xl:w-[30rem]">
-          <svg viewBox="0 0 340 480" fill="none" className="h-auto w-full">
-            <defs>
-              <path id="oc-leaf-b" d="M0 0 C 16 -13 38 -20 56 -17 C 48 4 20 14 0 0 Z" />
-            </defs>
-            <path d="M40 16 C 110 130 150 260 132 470" stroke="#3f9c98" strokeOpacity="0.45" strokeWidth="1.3" />
-            <g stroke="#3f9c98" strokeOpacity="0.45" strokeWidth="1.2">
-              <use href="#oc-leaf-b" transform="translate(82 92) rotate(-34) scale(1.2)" fill="#efe7f4" fillOpacity="0.85" />
-              <use href="#oc-leaf-b" transform="translate(108 170) rotate(-14) scale(1.35)" fill="#eaf1ec" fillOpacity="0.9" />
-              <use href="#oc-leaf-b" transform="translate(126 250) rotate(4) scale(1.3)" fill="none" />
-              <use href="#oc-leaf-b" transform="translate(132 330) rotate(18) scale(1.25)" fill="#efe7f4" fillOpacity="0.85" />
-              <use href="#oc-leaf-b" transform="translate(64 140) scale(-1.15 1.15) rotate(-26)" fill="#eaf1ec" fillOpacity="0.9" />
-            </g>
-          </svg>
-        </div>
-        <div className="absolute -left-16 bottom-4 hidden w-60 rotate-[14deg] opacity-85 lg:block">
-          <svg viewBox="0 0 340 480" fill="none" className="h-auto w-full">
-            <defs>
-              <path id="oc-leaf-c" d="M0 0 C 16 -13 38 -20 56 -17 C 48 4 20 14 0 0 Z" />
-            </defs>
-            <path d="M40 16 C 110 130 150 260 132 470" stroke="#9c54b4" strokeOpacity="0.4" strokeWidth="1.6" />
-            <g stroke="#9c54b4" strokeOpacity="0.45" strokeWidth="1.5">
-              <use href="#oc-leaf-c" transform="translate(84 96) rotate(-36) scale(1.3)" fill="#efe7f4" fillOpacity="0.9" />
-              <use href="#oc-leaf-c" transform="translate(110 180) rotate(-12) scale(1.4)" fill="none" />
-              <use href="#oc-leaf-c" transform="translate(124 260) rotate(6) scale(1.3)" fill="#efe7f4" fillOpacity="0.9" />
-              <use href="#oc-leaf-c" transform="translate(64 148) scale(-1.2 1.2) rotate(-28)" fill="none" />
-            </g>
-          </svg>
-        </div>
+        <div className="hero-grain absolute inset-0" />
       </div>
 
       {/* Headline */}
@@ -246,6 +243,24 @@ export default function Hero() {
             ),
           )}
         </SplitReveal>
+
+        {/* Small animated accent beneath the headline: a hairline drawn
+            outward from the centre with a plum dot gliding along it (the
+            site's orbit-dot language, in miniature). */}
+        <div
+          data-hero-accent
+          aria-hidden="true"
+          className="relative mx-auto mt-6 h-3 w-28"
+        >
+          <span
+            data-hero-accent-line
+            className="absolute inset-x-0 top-1/2 h-px bg-ink/20"
+          />
+          <span
+            data-hero-accent-dot
+            className="absolute left-0 top-1/2 mt-[-3px] h-1.5 w-1.5 rounded-full bg-plum-600"
+          />
+        </div>
       </div>
 
       {/* Narrow left column + tall capsule photograph */}
@@ -264,7 +279,10 @@ export default function Hero() {
                 (viewport-height minus the space the headline block takes), so
                 only headline + photograph are visible before scrolling. From
                 sm up it returns to the reference's fixed aspect ratio. */}
-            <div className="relative mx-auto h-[min(36rem,max(16rem,calc(100dvh-26rem)))] w-[80vw] max-w-[23rem] sm:h-auto sm:w-auto sm:max-w-[26rem] lg:max-w-[40rem]">
+            <div
+              data-hero-stage
+              className="relative mx-auto h-[min(36rem,max(16rem,calc(100dvh-26rem)))] w-[80vw] max-w-[23rem] sm:h-auto sm:w-auto sm:max-w-[26rem] lg:max-w-[40rem]"
+            >
               {/* Action button: on mobile it straddles the capsule's top edge,
                   dead-centre — the reference's mobile arrangement; from lg up
                   it moves to the right edge. */}
@@ -272,10 +290,12 @@ export default function Hero() {
                 data-hero-badge
                 className="absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-1/2 lg:left-auto lg:right-0 lg:top-[19%] lg:translate-x-1/2"
               >
-                {/* ~80px on mobile (the reference), 112px from lg up. */}
+                {/* ~80px on mobile (the reference), 112px from lg up.
+                    The badge is an action: it opens the consultation form. */}
                 <CircleBadge
                   text="LET'S TALK"
-                  href="#contact"
+                  onClick={openConsult}
+                  ariaLabel="Open the consultation form"
                   className="h-24 w-24 sm:h-28 sm:w-28 lg:h-32 lg:w-32"
                   tone="light"
                   bordered
@@ -284,6 +304,7 @@ export default function Hero() {
 
               {/* Halo ring behind the capsule, as in the reference */}
               <div
+                data-hero-halo
                 aria-hidden="true"
                 className="absolute -inset-5 rounded-[999px] border border-ink/10 sm:-inset-7"
               />
@@ -339,16 +360,22 @@ export default function Hero() {
                 {/* Mobile: below the capsule, centred, sans name — as the
                     reference. Desktop: the narrow sticky serif column left. */}
                 <div className="mx-auto mt-14 max-w-sm px-5 pb-4 text-center sm:px-8 lg:mx-0 lg:mt-0 lg:max-w-[17rem] lg:px-0 lg:pb-0 lg:text-left">
-                  <p className="font-serif text-[1.85rem] font-normal leading-tight tracking-tight text-ink lg:text-[1.4rem]">
-                    {hero.name}
-                  </p>
-                  <span
-                    aria-hidden="true"
-                    className="mx-auto mt-4 block h-0.5 w-10 rounded-full bg-plum-600 lg:mx-0"
-                  />
-                  <p className="mx-auto mt-5 max-w-[16.5rem] text-[1.125rem] leading-[1.8] text-ink-70 lg:mx-0 lg:text-[1.0625rem]">
-                    {hero.description}
-                  </p>
+                  <RevealBlock delay={0.06} y={18}>
+                    <p className="font-serif text-[1.85rem] font-normal leading-tight tracking-tight text-ink lg:text-[1.4rem]">
+                      {hero.name}
+                    </p>
+                  </RevealBlock>
+                  <RevealBlock delay={0.18} y={8}>
+                    <span
+                      aria-hidden="true"
+                      className="mx-auto mt-4 block h-0.5 w-10 origin-left rounded-full bg-plum-600 lg:mx-0"
+                    />
+                  </RevealBlock>
+                  <RevealBlock delay={0.3} y={18}>
+                    <p className="mx-auto mt-5 max-w-[16.5rem] text-[1.125rem] leading-[1.8] text-ink-70 lg:mx-0 lg:text-[1.0625rem]">
+                      {hero.description}
+                    </p>
+                  </RevealBlock>
                 </div>
               </RevealBlock>
             </div>

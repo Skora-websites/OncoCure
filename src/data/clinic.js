@@ -15,8 +15,8 @@
  * We do not publish invented qualifications, medical claims, testimonials,
  * survival statistics or outcome figures.
  *
- * Stock photography used for the doctor portraits is placeholder imagery only,
- * as agreed: it illustrates the layout until the clinic supplies real portraits.
+ * The doctor portraits are the clinic's own photographs of Dr Bambroo and
+ * Dr Sadhoo (public/images/photo/).
  */
 
 /** True when a string is one of our marked placeholders. */
@@ -94,8 +94,9 @@ export const clinic = {
  * `focusAreas` are the clinic's own stated clinical interests. Anything not
  * supplied stays a marked placeholder.
  *
- * `photo` is stock placeholder imagery, used only for layout until the clinic
- * provides official portraits.
+ * `photo` is the clinic's own portrait of each doctor. `photoPos` is the
+ * object-position for the circular crops (the portraits are tall), tuned per
+ * photo so the face sits well inside the circle.
  */
 export const doctors = [
   {
@@ -111,10 +112,10 @@ export const doctors = [
     ],
     bio: 'Leads the clinic’s oncology service, covering the complete pathway from a new cancer diagnosis and treatment planning through to follow-up and survivorship care.',
     accent: 'plum',
-    photo: '/images/photo/doctor-oncology.jpg',
-    photoAlt:
-      'Placeholder portrait representing a medical oncologist in a clinic setting.',
-    photoNote: 'Stock image — official portrait to be supplied by the clinic.',
+    photo: '/images/photo/drsahil.jpeg',
+    photoAlt: 'Dr Sahil Bambroo, Medical Oncologist at Onco Cure Clinic.',
+    photoPos: '50% 25%',
+    photoNote: 'Official portrait supplied by the clinic.',
   },
   {
     id: 'apurva-sadhoo',
@@ -129,10 +130,10 @@ export const doctors = [
     ],
     bio: 'Looks after pain and symptom concerns at Onco Cure, supporting patients through treatment-related side effects and the day-to-day challenges of living with cancer.',
     accent: 'teal',
-    photo: '/images/photo/doctor-pain.jpg',
-    photoAlt:
-      'Placeholder portrait representing an anesthesia and pain specialist.',
-    photoNote: 'Stock image — official portrait to be supplied by the clinic.',
+    photo: '/images/photo/drapoorva.jpeg',
+    photoAlt: 'Dr Apurva Sadhoo, Anesthesia and Pain Specialist at Onco Cure Clinic.',
+    photoPos: '50% 8%',
+    photoNote: 'Official portrait supplied by the clinic.',
   },
 ];
 

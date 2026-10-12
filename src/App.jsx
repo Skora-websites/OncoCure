@@ -12,7 +12,9 @@ import Services from './components/Services.jsx';
 import ServiceCatalogue from './components/ServiceCatalogue.jsx';
 import InlineCta from './components/ui/InlineCta.jsx';
 import Approach from './components/Approach.jsx';
-import Testimonials from './components/Testimonials.jsx';
+// Testimonials removed from the home page for now (placeholder quotes);
+// restore both lines below to bring the section back:
+// import Testimonials from './components/Testimonials.jsx';
 import WhyUs from './components/WhyUs.jsx';
 import ClosingCta from './components/ClosingCta.jsx';
 import Footer from './components/Footer.jsx';
@@ -76,7 +78,8 @@ export default function App() {
         {/* The mid-page band's disc opens the consultation overlay. */}
         <InlineCta {...inlineCta} onAction={openConsult} />
         <Approach />
-        <Testimonials />
+        {/* Testimonials section commented out for now: */}
+        {/* <Testimonials /> */}
         <WhyUs />
         <ClosingCta />
       </>

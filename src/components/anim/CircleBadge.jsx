@@ -16,6 +16,7 @@ import { gsap } from 'gsap';
 export default function CircleBadge({
   text = 'LET\u2019S TALK \u00b7 ',
   href = '#contact',
+  onClick = null,
   className = '',
   size,
   tone = 'light',
@@ -71,7 +72,22 @@ export default function CircleBadge({
     ink: '',
   };
 
-  const Tag = href ? 'a' : 'div';
+  /* With `onClick` the badge becomes an action (e.g. opening the
+     consultation overlay): `href` is dropped so nothing navigates, and
+     keyboard activation is wired up by hand because an anchor without an
+     href fires no click on Enter. Without onClick it stays a plain link. */
+  const isAction = Boolean(onClick);
+  const hasLink = !isAction && Boolean(href);
+  const interactive = isAction || hasLink;
+  const Tag = interactive ? 'a' : 'div';
+
+  const handleKeyDown = (event) => {
+    if (!isAction) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onClick(event);
+    }
+  };
 
   // Fill the rim: repeat the label until it covers the path circumference.
   const label = text.trim().endsWith('·') ? text : `${text} · `;
@@ -80,9 +96,13 @@ export default function CircleBadge({
   return (
     <Tag
       ref={root}
-      href={href}
-      aria-label={ariaLabel ?? (href ? text : undefined)}
-      aria-hidden={href ? undefined : 'true'}
+      href={isAction ? undefined : href}
+      onClick={isAction ? onClick : undefined}
+      role={isAction ? 'button' : undefined}
+      tabIndex={isAction ? 0 : undefined}
+      onKeyDown={handleKeyDown}
+      aria-label={ariaLabel ?? (interactive ? text : undefined)}
+      aria-hidden={interactive ? undefined : 'true'}
       onMouseEnter={() => spin(3.2, 1.08)}
       onMouseLeave={() => spin(1, 1)}
       onFocus={() => spin(3.2, 1.08)}

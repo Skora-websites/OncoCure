@@ -23,6 +23,7 @@ export default function PillButton({
   const tones = {
     outline: 'border-ink/25 text-ink',
     solid: 'border-teal-800 bg-teal-800 text-cream',
+    teal: 'border-teal-700 text-teal-700',
     light: 'border-cream/35 text-cream',
     plum: 'border-plum-800 bg-plum-800 text-cream',
   };
@@ -33,6 +34,7 @@ export default function PillButton({
   const swaps = {
     outline: ['bg-ink', 'group-hover:text-cream'],
     solid: ['bg-cream', 'group-hover:text-teal-800'],
+    teal: ['bg-teal-800', 'group-hover:text-cream'],
     light: ['bg-cream/10', 'group-hover:text-cream'],
     plum: ['bg-teal-800', 'group-hover:text-cream'],
   };

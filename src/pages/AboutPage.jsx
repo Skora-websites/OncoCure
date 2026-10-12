@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { aboutPage, clinic, doctors, inlineCta } from '../data/clinic.js';
+import { Check } from '@phosphor-icons/react';
 import OrbitRing from '../components/ui/OrbitRing.jsx';
 import Section, { SectionIntro, PlaceholderTag } from '../components/ui/Blocks.jsx';
 import { RevealBlock } from '../components/anim/SplitReveal.jsx';
@@ -163,7 +164,9 @@ function DoctorBand({ doctor, index }) {
         halo: 'bg-teal-200/50',
         ring: 'border-teal-700/45',
         dot: 'bg-plum-600',
-        chip: 'bg-teal-100 text-teal-800',
+        pill: 'bg-teal-200/70 text-teal-900',
+        rule: 'bg-teal-400/60',
+        check: 'bg-teal-400',
         accentText: 'text-teal-800',
       }
     : {
@@ -171,7 +174,9 @@ function DoctorBand({ doctor, index }) {
         halo: 'bg-plum-200/55',
         ring: 'border-plum-600/45',
         dot: 'bg-teal-700',
-        chip: 'bg-plum-100 text-plum-800',
+        pill: 'bg-plum-200/70 text-plum-900',
+        rule: 'bg-plum-400/60',
+        check: 'bg-plum-400',
         accentText: 'text-plum-700',
       };
   const elevation = first ? aboutPage.team.sahilCard : null;
@@ -192,19 +197,30 @@ function DoctorBand({ doctor, index }) {
             DESIGN_RULES.md §1. At lg the same three children are pinned into
             a two-column, two-row layout, so nothing depends on wrappers. */}
         <div className="grid gap-9 lg:grid-cols-2 lg:items-center lg:gap-x-16">
-          {/* Identity: number · role, name, credential chips */}
+          {/* Identity: number rule, name, role pill, credential pills */}
           <div className={`mx-auto w-full max-w-xl lg:mx-0 lg:max-w-[42ch] ${descHug} ${descColX} lg:row-start-1`}>
-            <span className={`label-sm text-center block lg:text-left ${band.accentText}`}>
-              {String(index + 1).padStart(2, '0')} · {doctor.role}
+            <span
+              className={`flex items-center justify-center gap-3 label-sm lg:justify-start ${band.accentText}`}
+            >
+              {String(index + 1).padStart(2, '0')}
+              <span aria-hidden="true" className={`h-px w-8 ${band.rule}`} />
             </span>
-            <h3 className="h-serif mt-4 text-center text-[2.15rem] leading-[1.1] text-ink sm:text-[2.35rem] lg:text-left">
+            <h3 className="h-serif mt-3 text-center text-[2.15rem] leading-[1.1] text-ink sm:text-[2.35rem] lg:text-left">
               {doctor.name}
             </h3>
+            <span
+              className={`mt-4 inline-block rounded-full px-4 py-2 text-center text-[0.6875rem] font-semibold tracking-[0.16em] uppercase lg:text-left ${band.pill}`}
+            >
+              {doctor.role}
+            </span>
+            <p className="mt-3 text-center text-sm text-ink-70 lg:text-left">
+              {doctor.roleLine}
+            </p>
             <ul className="mt-5 flex flex-wrap justify-center gap-2 lg:justify-start">
               {doctor.credentials.map((c) => (
                 <li
                   key={c}
-                  className={`rounded-full px-3 py-1 text-[0.75rem] font-medium ${band.chip}`}
+                  className="rounded-full border border-ink/15 bg-white/70 px-3 py-1 text-[0.75rem] font-medium text-ink"
                 >
                   {c}
                 </li>
@@ -231,12 +247,10 @@ function DoctorBand({ doctor, index }) {
                 src={doctor.photo}
                 alt={doctor.photoAlt}
                 className="aspect-square w-full object-cover"
+                style={{ objectPosition: doctor.photoPos || '50% 25%' }}
                 loading="lazy"
               />
             </div>
-            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-paper px-3 py-1 text-[0.5625rem] font-semibold tracking-[0.1em] text-ink-45 uppercase shadow-soft">
-              Stock image — placeholder
-            </span>
           </div>
 
           {/* Description body — the identity's continuation, same column */}
@@ -274,10 +288,10 @@ function DoctorBand({ doctor, index }) {
                     >
                       <span
                         aria-hidden="true"
-                        className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${
-                          first ? 'bg-teal-600' : 'bg-plum-500'
-                        }`}
-                      />
+                        className={`mt-px flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${band.check}`}
+                      >
+                        <Check className="h-3 w-3 text-white" weight="bold" />
+                      </span>
                       {area}
                     </li>
                   ))}
