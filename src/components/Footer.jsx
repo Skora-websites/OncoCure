@@ -211,7 +211,21 @@ export default function Footer() {
           </p>
 
           <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-[0.625rem] text-cream/40 sm:text-[0.6875rem]">
-            <p>{footer.copyright}</p>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <p>{footer.copyright}</p>
+              <span aria-hidden="true" className="text-cream/20">·</span>
+              <p>
+                Design by{' '}
+                <a
+                  href="https://skorainfotech.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-cream/60 transition-colors hover:text-cream underline-offset-2 hover:underline"
+                >
+                  Skora Infotech
+                </a>
+              </p>
+            </div>
 
             <div className="flex items-center gap-4">
               <a href="/admin" className="text-cream/35 hover:text-cream/80 transition-colors">
