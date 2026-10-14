@@ -62,13 +62,23 @@ export default function ServiceDetailPage({ slug }) {
     };
   }, [slug]);
 
+  const seoTitle = service?.metaTitle?.trim()
+    ? service.metaTitle.trim()
+    : service
+    ? `${service.title} — ${clinic.name}`
+    : `Service — ${clinic.name}`;
+
+  const seoDescription =
+    service?.metaDescription?.trim() || service?.summary || clinic.meta.description;
+
+  const seoKeywords = service?.metaKeywords?.trim() || null;
+
   useSeo({
-    title: service
-      ? `${service.title} — ${clinic.name}`
-      : `Service — ${clinic.name}`,
-    description: service?.summary ?? clinic.meta.description,
+    title: seoTitle,
+    description: seoDescription,
+    keywords: seoKeywords,
     path: `/services/${slug}`,
-    image: '/images/photo/consult-care.jpg',
+    image: service?.image || '/images/photo/consult-care.jpg',
     jsonLd: service
       ? [
           {
@@ -126,6 +136,14 @@ export default function ServiceDetailPage({ slug }) {
     );
   }
 
+  const coversList = Array.isArray(service.covers) ? service.covers : [];
+  const overviewList =
+    Array.isArray(service.overview) && service.overview.length > 0
+      ? service.overview
+      : typeof service.description === 'string' && service.description.trim()
+      ? service.description.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
+      : [];
+
   return (
     <>
       {/* Breadcrumb + head */}
@@ -133,9 +151,9 @@ export default function ServiceDetailPage({ slug }) {
         <div className="mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12">
           <RevealBlock y={14}>
             <nav aria-label="Breadcrumb" className="label-sm flex flex-wrap items-center gap-2">
-              <Crumb href="#/">Home</Crumb>
+              <Crumb href="/">Home</Crumb>
               <span aria-hidden="true" className="text-ink-30">/</span>
-              <Crumb href="#/services">Services</Crumb>
+              <Crumb href="/services">Services</Crumb>
               <span aria-hidden="true" className="text-ink-30">/</span>
               <Crumb current>{service.title}</Crumb>
             </nav>
@@ -163,41 +181,43 @@ export default function ServiceDetailPage({ slug }) {
       <Section tone="paper" spacing="normal" className="border-t border-line">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-16">
           {/* What it covers — the clinic's own wording */}
-          <div className="lg:col-span-5">
-            <RevealBlock y={18}>
-              <div className="rounded-2xl border border-line bg-cream p-8 shadow-soft sm:p-10">
-                <h2 className="h-serif text-[1.375rem] text-ink sm:text-[1.625rem]">
-                  What it covers
-                </h2>
-                <span aria-hidden="true" className="mt-5 block h-px w-12 bg-plum-200/80" />
-                <ul className="mt-7 space-y-4">
-                  {service.covers.map((line) => (
-                    <li key={line} className="flex items-start gap-3">
-                      <span
-                        aria-hidden="true"
-                        className={`mt-[0.55rem] h-1.5 w-1.5 shrink-0 rounded-full ${
-                          service.accent === 'teal' ? 'bg-teal-500' : 'bg-plum-600'
-                        }`}
-                      />
-                      <span className="text-[0.9375rem] leading-[1.7] text-ink">
-                        {line}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </RevealBlock>
-          </div>
+          {coversList.length > 0 ? (
+            <div className="lg:col-span-5">
+              <RevealBlock y={18}>
+                <div className="rounded-2xl border border-line bg-cream p-8 shadow-soft sm:p-10">
+                  <h2 className="h-serif text-[1.375rem] text-ink sm:text-[1.625rem]">
+                    What it covers
+                  </h2>
+                  <span aria-hidden="true" className="mt-5 block h-px w-12 bg-plum-200/80" />
+                  <ul className="mt-7 space-y-4">
+                    {coversList.map((line) => (
+                      <li key={line} className="flex items-start gap-3">
+                        <span
+                          aria-hidden="true"
+                          className={`mt-[0.55rem] h-1.5 w-1.5 shrink-0 rounded-full ${
+                            service.accent === 'teal' ? 'bg-teal-500' : 'bg-plum-600'
+                          }`}
+                        />
+                        <span className="text-[0.9375rem] leading-[1.7] text-ink">
+                          {line}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </RevealBlock>
+            </div>
+          ) : null}
 
           {/* Plain-language overview */}
-          <div className="lg:col-span-7">
+          <div className={coversList.length > 0 ? 'lg:col-span-7' : 'lg:col-span-12 max-w-3xl'}>
             <SectionIntro
               align="left"
               label="In Plain Language"
               title="What this involves"
             />
             <div className="mt-8 space-y-6">
-              {service.overview.map((para, i) => (
+              {overviewList.map((para, i) => (
                 <RevealBlock key={i} delay={0.08 + i * 0.06} y={18}>
                   <p className="max-w-2xl text-[0.9375rem] leading-[1.85] text-ink-70 sm:text-base">
                     {para}
@@ -218,7 +238,7 @@ export default function ServiceDetailPage({ slug }) {
 
       {/* Related services */}
       {related.length > 0 ? (
-        <Section tone="cream" spacing="normal">
+        <Section tone="cream" spacing="normal" className="!pb-14 sm:!pb-18 lg:!pb-20">
           <SectionIntro
             label="Related Care"
             title="Also in this group"
@@ -228,7 +248,7 @@ export default function ServiceDetailPage({ slug }) {
             {related.map((r) => (
               <a
                 key={r.slug}
-                href={`#/services/${r.slug}`}
+                href={`/services/${r.slug}`}
                 className="group flex items-center justify-between gap-6 rounded-full border border-line bg-paper py-4 pl-8 pr-6 transition-colors duration-500 hover:border-plum-400 sm:py-5 sm:pl-10"
               >
                 <span className="h-serif text-[1rem] text-ink sm:text-[1.25rem]">
@@ -243,10 +263,16 @@ export default function ServiceDetailPage({ slug }) {
               </a>
             ))}
           </StaggerGroup>
-        </Section>
-      ) : null}
 
-      <InlineCta {...inlineCta} onAction={openConsult} />
+          {/* Embedded Inline CTA trackfield card inside the section */}
+          <InlineCta {...inlineCta} onAction={openConsult} className="mt-20 sm:mt-28 lg:mt-32" />
+        </Section>
+      ) : (
+        <div className="py-6 sm:py-8">
+          <InlineCta {...inlineCta} onAction={openConsult} />
+        </div>
+      )}
+
       <ClosingCta />
     </>
   );

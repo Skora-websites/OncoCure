@@ -33,6 +33,7 @@ export default function Loader() {
     document.body.style.overflow = 'hidden';
 
     const finish = () => {
+      window.__occLoaderDone = true;
       document.body.style.overflow = '';
       window.dispatchEvent(new Event('occ:reveal'));
       // Unmount through React rather than removing the node behind its back.

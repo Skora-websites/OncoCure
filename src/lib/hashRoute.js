@@ -1,31 +1,43 @@
 /**
  * ---------------------------------------------------------------------------
- * hashRoute — small helpers for the hash-router URL scheme
+ * route — clean HTML5 History API routing with backwards-compatible hash support
  * ---------------------------------------------------------------------------
  * Routes look like:
- *   #/                        home
- *   #/about  #/contact        static pages
- *   #/services?page=2         Services, offset pagination in the hash
- *   #/blogs?q=pain&page=1     Blogs, search + pagination in the hash
- *   #/services/chemotherapy   service detail
- *   #/blogs/<slug>            blog detail
+ *   /                         home
+ *   /about   /contact         static pages
+ *   /services?page=2          Services, offset pagination in search params
+ *   /blogs?q=pain&page=1      Blogs, search + pagination in search params
+ *   /services/<slug>          service detail
+ *   /blogs/<slug>             blog detail
+ *   /admin                    admin panel
+ *   /admin/<tab>              admin tabs (consultations, blogs, etc.)
  *
- * One parse function and one navigate function keep the format consistent
- * everywhere; the useHashLocation hook re-renders on hashchange. The
- * `occ:scroll-top` event (see useSmoothScroll.js) is dispatched on navigate
- * so anchor-click smooth scrolling to the top is shared with the navbar.
+ * If a visitor enters via a legacy hash URL (e.g. `/#/admin` or `/#/blogs`),
+ * it automatically migrates the URL bar to the clean path `/admin` without reloading.
  */
 import { useEffect, useState } from 'react';
 
-/** Parse the current hash into { path, params }. Empty hash → home. */
+/** Parse current location into { path, params }. */
 export function parseHash() {
-  const raw = window.location.hash.replace(/^#/, ''); // '/services?page=2'
-  const [pathPart = '/', queryPart = ''] = raw.split('?');
-  const path = pathPart === '' ? '/' : pathPart;
-  return { path, params: new URLSearchParams(queryPart) };
+  if (typeof window === 'undefined') {
+    return { path: '/', params: new URLSearchParams() };
+  }
+
+  // Handle legacy hash migration: /#/admin -> /admin
+  if (window.location.hash.startsWith('#/')) {
+    const rawHash = window.location.hash.replace(/^#/, '');
+    const [hPath = '/', hQuery = ''] = rawHash.split('?');
+    const targetPath = hPath.startsWith('/') ? hPath : `/${hPath}`;
+    const targetUrl = `${targetPath}${hQuery ? `?${hQuery}` : window.location.search}`;
+    window.history.replaceState(null, '', targetUrl);
+    return { path: targetPath, params: new URLSearchParams(hQuery || window.location.search) };
+  }
+
+  const path = window.location.pathname || '/';
+  return { path, params: new URLSearchParams(window.location.search) };
 }
 
-/** Build a hash string from a path and optional params, dropping empties. */
+/** Build a clean path string from a path and optional params. */
 export function buildHash(path, params = {}) {
   const usp = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
@@ -34,34 +46,78 @@ export function buildHash(path, params = {}) {
     }
   });
   const qs = usp.toString();
-  return `#${path}${qs ? `?${qs}` : ''}`;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${normalizedPath}${qs ? `?${qs}` : ''}`;
 }
 
 /**
- * Navigate to a path (with optional params). `replace` swaps the history
- * entry instead of pushing — used by the debounced search box so typing a
- * query does not stack a history row per keystroke.
+ * Navigate to a path (with optional params).
+ * Dispatches popstate & scroll-top events so SPA re-renders smoothly without full page reload.
  */
 export function navigate(path, params = {}, { replace = false } = {}) {
   const next = buildHash(path, params);
-  if (window.location.hash === next) return;
+  const current = `${window.location.pathname}${window.location.search}`;
+  if (current === next) return;
+
   if (replace) {
-    const url = `${window.location.pathname}${window.location.search}${next}`;
-    window.history.replaceState(null, '', url);
-    window.dispatchEvent(new Event('hashchange'));
+    window.history.replaceState(null, '', next);
   } else {
-    window.location.hash = next;
+    window.history.pushState(null, '', next);
   }
+  window.dispatchEvent(new Event('popstate'));
   window.dispatchEvent(new Event('occ:scroll-top'));
 }
 
-/** Reactive parse — re-renders the caller whenever the hash changes. */
+/** Reactive location hook — re-renders caller whenever path or search changes. */
 export function useHashLocation() {
   const [loc, setLoc] = useState(parseHash);
+
   useEffect(() => {
-    const onHash = () => setLoc(parseHash());
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
+    const onLocationChange = () => setLoc(parseHash());
+
+    window.addEventListener('popstate', onLocationChange);
+    window.addEventListener('hashchange', onLocationChange);
+
+    // Intercept internal <a> clicks (e.g. href="/about", href="/admin") for smooth SPA navigation
+    const onLinkClick = (e) => {
+      const a = e.target.closest?.('a');
+      if (!a) return;
+
+      const href = a.getAttribute('href');
+      if (!href) return;
+
+      // Ignore in-page anchors, external links, mailto, tel, target="_blank"
+      if (
+        href.startsWith('#') ||
+        href.startsWith('http://') ||
+        href.startsWith('https://') ||
+        href.startsWith('mailto:') ||
+        href.startsWith('tel:') ||
+        a.getAttribute('target') === '_blank' ||
+        e.metaKey ||
+        e.ctrlKey ||
+        e.shiftKey
+      ) {
+        return;
+      }
+
+      // Handle internal relative paths
+      if (href.startsWith('/')) {
+        e.preventDefault();
+        navigate(href);
+      }
+    };
+
+    document.addEventListener('click', onLinkClick);
+
+    return () => {
+      window.removeEventListener('popstate', onLocationChange);
+      window.removeEventListener('hashchange', onLocationChange);
+      document.removeEventListener('click', onLinkClick);
+    };
   }, []);
+
   return loc;
 }
+
+export default useHashLocation;

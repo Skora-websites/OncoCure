@@ -90,6 +90,8 @@ export default function BlogsPage() {
     title: `Blogs — ${clinic.name}`,
     description:
       'Plain-language patient education from Onco Cure Clinic: understanding cancer, treatments and therapies, living well, pain and symptom care, and prevention and screening.',
+    keywords:
+      'cancer blog, oncology patient education, cancer symptoms, chemotherapy advice, cancer care greater noida, onco cure clinic articles',
     path: '/blogs',
     image: '/images/photo/reception-plants.jpg',
   });
@@ -223,7 +225,7 @@ export default function BlogsPage() {
               return (
                 <article key={post.slug} className="group h-full">
                   <a
-                    href={`#/blogs/${post.slug}`}
+                    href={`/blogs/${post.slug}`}
                     className="flex h-full flex-col text-center sm:text-left"
                     aria-label={post.title}
                   >

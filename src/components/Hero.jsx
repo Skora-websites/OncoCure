@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { hero } from '../data/clinic.js';
-import SplitReveal, { RevealBlock } from './anim/SplitReveal.jsx';
+import { RevealBlock } from './anim/SplitReveal.jsx';
 import CircleBadge from './anim/CircleBadge.jsx';
 import { openConsult } from '../lib/consultBus.js';
 
@@ -36,8 +36,14 @@ export default function Hero() {
     const ring = el.querySelector('[data-hero-ring]');
     const orbitDots = ring ? [...ring.children] : [];
 
+    const ringPurple = el.querySelector('[data-hero-ring-purple]');
+    const orbitDotsPurple = ringPurple ? [...ringPurple.children] : [];
+
+    let handleResize = null;
+    let onRevealCleanup = null;
+
     const ctx = gsap.context(() => {
-      // Entrance: the capsule wipes open upward, the badge settles onto it.
+      // 1. Capsule entrance: wipes open upward, badge settles, accent line draws
       gsap
         .timeline({ defaults: { ease: 'expo.out' }, delay: 0.35 })
         .fromTo(
@@ -51,8 +57,6 @@ export default function Hero() {
           { scale: 1, opacity: 1, duration: 0.9 },
           '-=0.9',
         )
-        // The accent under the headline: the hairline draws outward from
-        // its centre, then the dot pops onto it.
         .fromTo(
           '[data-hero-accent-line]',
           { scaleX: 0 },
@@ -65,6 +69,70 @@ export default function Hero() {
           { scale: 1, opacity: 1, duration: 0.5 },
           '-=0.45',
         );
+
+      // 2. Headline entrance: Line 1 slides in from off-screen left, Line 2 from off-screen right
+      const startHeadlineAnimation = () => {
+        gsap.fromTo(
+          '[data-hero-line-1]',
+          { x: -window.innerWidth, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 1.3,
+            ease: 'expo.out',
+            clearProps: 'transform',
+          },
+        );
+        gsap.fromTo(
+          '[data-hero-line-2]',
+          { x: window.innerWidth, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 1.3,
+            ease: 'expo.out',
+            delay: 0.12, // 120ms after line 1 so they meet in place
+            clearProps: 'transform',
+          },
+        );
+      };
+
+      // Check whether the leading curtain doors are currently in the DOM
+      const hasDoor =
+        typeof document !== 'undefined' &&
+        Boolean(document.querySelector('[data-door-left]'));
+
+      let headlineStarted = false;
+      const playHeadlineOnce = () => {
+        if (headlineStarted) return;
+        headlineStarted = true;
+        startHeadlineAnimation();
+      };
+
+      if (hasDoor && !window.__heroLoaded) {
+        // Hold headline off-screen while the leading screen curtain doors are active
+        gsap.set('[data-hero-line-1]', { x: -window.innerWidth, opacity: 0 });
+        gsap.set('[data-hero-line-2]', { x: window.innerWidth, opacity: 0 });
+
+        // Trigger as doors clear (~2.3s), or upon occ:reveal event (whichever comes first)
+        const autoTrigger = gsap.delayedCall(2.3, playHeadlineOnce);
+
+        const onReveal = () => {
+          autoTrigger.kill();
+          playHeadlineOnce();
+        };
+
+        window.addEventListener('occ:reveal', onReveal, { once: true });
+        onRevealCleanup = () => {
+          autoTrigger.kill();
+          window.removeEventListener('occ:reveal', onReveal);
+        };
+      } else {
+        // No loader active: animate almost immediately
+        gsap.delayedCall(0.1, playHeadlineOnce);
+      }
+
+      window.__heroLoaded = true;
 
       // Ambient life (all slow, all `sine`, all looping): the stage —
       // capsule, rings and badge — breathes on a gentle float, the halo ring
@@ -146,51 +214,145 @@ export default function Hero() {
 
       /** Radius of a vertical stadium (racetrack) outline at polar angle φ. */
       const stadiumRadius = (phi, a, b) => {
+        if (a <= 0 || b <= 0) return 0;
         const s = Math.sin(phi);
         const c = Math.cos(phi);
-        const straight = b - a; // half-length of the straight sides
+        const straight = Math.max(0, b - a); // half-length of the vertical straight sides
+        if (straight === 0) return a;
         // The ray lands on a straight side while |tan φ| fits its span.
         if (c !== 0 && Math.abs(s / c) <= straight / a) return a / Math.abs(c);
         // Otherwise it lands on the top/bottom cap (circle of radius a).
+        const underRadical = Math.max(0, a * a - straight * straight * c * c);
         return (
           straight * Math.abs(s) +
-          Math.sqrt(a * a - straight * straight * c * c)
+          Math.sqrt(underRadical)
         );
       };
 
-      if (ring) {
-        gsap.to(ring, {
-          rotation: 360,
-          duration: 45,
+      if (ring || ringPurple) {
+        // Half-dimensions of each dash line's centreline
+        let a1 = ring ? ring.offsetWidth / 2 - 0.5 : 0;
+        let b1 = ring ? ring.offsetHeight / 2 - 0.5 : 0;
+        let a2 = ringPurple ? ringPurple.offsetWidth / 2 - 0.5 : 0;
+        let b2 = ringPurple ? ringPurple.offsetHeight / 2 - 0.5 : 0;
+
+        // Define measurement and resize handling functions outside the conditional so they are accessible in cleanup
+        const measure = () => {
+          if (ring && ring.offsetWidth > 0) {
+            a1 = ring.offsetWidth / 2 - 0.5;
+            b1 = ring.offsetHeight / 2 - 0.5;
+          }
+          if (ringPurple && ringPurple.offsetWidth > 0) {
+            a2 = ringPurple.offsetWidth / 2 - 0.5;
+            b2 = ringPurple.offsetHeight / 2 - 0.5;
+          }
+        };
+
+        handleResize = () => {
+          measure();
+        };
+        // Add resize listener only if at least one ring exists
+        if (ring || ringPurple) {
+          window.addEventListener('resize', handleResize);
+        }
+
+        const toCalc = (val) =>
+          val >= 0
+            ? `calc(-50% + ${val.toFixed(2)}px)`
+            : `calc(-50% - ${Math.abs(val).toFixed(2)}px)`;
+
+        const updateDots = (progress) => {
+          if (a1 <= 0 || b1 <= 0) measure();
+          const theta = progress * 2 * Math.PI;
+
+          // Inner teal ring dots (counter-clockwise orbit along racetrack outline)
+          if (ring && orbitDots.length > 0) {
+            orbitDots.forEach((dot, i) => {
+              const phi = phi0[i] - theta;
+              const r = stadiumRadius(phi, a1, b1);
+              const x = r * Math.cos(phi);
+              const y = r * Math.sin(phi);
+              dot.style.transform = `translate(${toCalc(x)}, ${toCalc(y)})`;
+            });
+          }
+
+          // Outer plum ring dots (clockwise orbit in exact symmetrical reverse along racetrack outline)
+          if (ringPurple && orbitDotsPurple.length > 0) {
+            orbitDotsPurple.forEach((dot, i) => {
+              const phi = phi0[i] + theta;
+              const r = stadiumRadius(phi, a2, b2);
+              const x = r * Math.cos(phi);
+              const y = r * Math.sin(phi);
+              dot.style.transform = `translate(${toCalc(x)}, ${toCalc(y)})`;
+            });
+          }
+        };
+
+        // Slow ambient rotation of dashed registration rings (untouched)
+        const ringTimeline = gsap.timeline({
           repeat: -1,
           ease: 'none',
-          onUpdate: () => {
-            const theta = (gsap.getProperty(ring, 'rotation') * Math.PI) / 180;
-            // Half-dimensions of the dash line's centreline (the ring's 1px
-            // border sits inside the offset box, and absolute children anchor
-            // to the padding box — so inset by 0.5px for both).
-            const a = ring.offsetWidth / 2 - 0.5;
-            const b = ring.offsetHeight / 2 - 0.5;
-            orbitDots.forEach((dot, i) => {
-              const phi = phi0[i] - 2 * theta;
-              const r = stadiumRadius(phi, a, b);
-              // Offset from the dot's CSS anchor (top/bottom tangent point
-              // on the line); the stadium apex equals that anchor at t=0.
-              dot.style.transform = `translate(${(r * Math.cos(phi)).toFixed(
-                2,
-              )}px, ${(
-                r * Math.sin(phi) +
-                (i === 0 ? b : -b)
-              ).toFixed(2)}px)`;
-            });
-          },
         });
+
+        if (ring) {
+          ringTimeline.fromTo(
+            ring,
+            { rotation: 0 },
+            { rotation: 360, duration: 45, ease: 'none' },
+            0,
+          );
+        }
+
+        if (ringPurple) {
+          ringTimeline.fromTo(
+            ringPurple,
+            { rotation: 0 },
+            { rotation: -360, duration: 45, ease: 'none' },
+            0,
+          );
+        }
+
+        // Dedicated orbit animation for the dots (10s per complete orbit)
+        gsap.to(
+          {},
+          {
+            duration: 10,
+            repeat: -1,
+            ease: 'none',
+            onUpdate: function () {
+              updateDots(this.progress());
+            },
+          },
+        );
+
+        // Initialize dots synchronously at t = 0
+        updateDots(0);
       }
     }, el);
 
+    let ro = null;
+    if (typeof ResizeObserver !== 'undefined' && el) {
+      ro = new ResizeObserver(() => {
+        if (handleResize) handleResize();
+      });
+      ro.observe(el);
+    }
+
     return () => {
+      if (onRevealCleanup) {
+        onRevealCleanup();
+      }
+      if (ro) {
+        ro.disconnect();
+      }
+      if (handleResize) {
+        window.removeEventListener('resize', handleResize);
+      }
       ctx.revert();
       orbitDots.forEach((dot) => {
+        dot.style.transform = '';
+      });
+      orbitDotsPurple.forEach((dot) => {
         dot.style.transform = '';
       });
     };
@@ -199,12 +361,9 @@ export default function Hero() {
   return (
     <section
       ref={root}
-      className="relative overflow-x-clip bg-cream pt-40 pb-16 sm:pt-48 sm:pb-20 lg:pt-52 lg:pb-24"
+      className="relative overflow-x-clip bg-cream pt-36 pb-14 sm:pt-48 sm:pb-20 lg:pt-52 lg:pb-24"
     >
-      {/* Clean ground: a delicate static film grain and nothing else — the
-          old brand washes and corner foliage are gone. The wrapper carries
-          the layer (not the section) so no `overflow: hidden` ancestor
-          creeps in around the sticky copy column. */}
+      {/* Clean ground: delicate static film grain */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
@@ -214,43 +373,37 @@ export default function Hero() {
 
       {/* Headline */}
       <div data-hero-headline className="mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12">
-        {/* Eyebrow, as the reference plate: one tracked line between two
-            hairlines — no pill, no dots. */}
+        {/* Eyebrow */}
         <RevealBlock delay={0.1} y={14}>
-          <span className="flex items-center justify-center gap-4">
-            <span aria-hidden="true" className="h-px w-10 bg-ink/25 sm:w-16" />
-            <span className="label text-ink-70">
+          <span className="flex items-center justify-center gap-3 sm:gap-4">
+            <span aria-hidden="true" className="h-px w-8 bg-ink/25 sm:w-16" />
+            <span className="label text-[0.6875rem] sm:text-xs text-ink-70">
               Specialist Oncology Care · Greater Noida
             </span>
-            <span aria-hidden="true" className="h-px w-10 bg-ink/25 sm:w-16" />
+            <span aria-hidden="true" className="h-px w-8 bg-ink/25 sm:w-16" />
           </span>
         </RevealBlock>
 
-        <SplitReveal
-          as="h1"
-          className="h-serif mx-auto max-w-3xl text-center font-normal text-teal-900 text-[clamp(3.15rem,5vw,3.9rem)] leading-[1.08] sm:leading-[1.02] lg:leading-none"
-          start="top 99%"
-          stagger={0.06}
-          direction="down"
-        >
-          {hero.headline.map((part, i) =>
-            part.accent ? (
-              <span key={i} className="text-plum-800">
-                {part.text}
-              </span>
-            ) : (
-              <span key={i}>{part.text}</span>
-            ),
-          )}
-        </SplitReveal>
+        <h1 className="h-serif mx-auto max-w-3xl text-center font-normal text-teal-900 text-[clamp(2.15rem,7.2vw,2.75rem)] sm:text-[clamp(2.75rem,5.5vw,3.5rem)] lg:text-[3.9rem] leading-[1.12] sm:leading-[1.02] lg:leading-none">
+          <span
+            data-hero-line-1
+            className="block whitespace-nowrap sm:whitespace-normal will-change-transform"
+          >
+            {hero.headline[0].text.trim()}
+          </span>
+          <span
+            data-hero-line-2
+            className="block text-plum-800 whitespace-nowrap sm:whitespace-normal will-change-transform"
+          >
+            {hero.headline[1].text.trim()}
+          </span>
+        </h1>
 
-        {/* Small animated accent beneath the headline: a hairline drawn
-            outward from the centre with a plum dot gliding along it (the
-            site's orbit-dot language, in miniature). */}
+        {/* Small animated accent beneath the headline */}
         <div
           data-hero-accent
           aria-hidden="true"
-          className="relative mx-auto mt-6 h-3 w-28"
+          className="relative mx-auto mt-5 sm:mt-6 h-3 w-24 sm:w-28"
         >
           <span
             data-hero-accent-line
@@ -263,69 +416,70 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Narrow left column + tall capsule photograph */}
+      {/* Grid: Narrow copy column + tall capsule photograph */}
       <div
         data-hero-grid
-        className="mx-auto mt-14 w-full max-w-[88rem] px-5 sm:mt-16 sm:px-8 lg:mt-20 lg:px-12"
+        className="mx-auto mt-14 sm:mt-16 lg:mt-20 w-full max-w-[88rem] px-0 sm:px-8 lg:px-12"
       >
         <div className="relative lg:grid lg:grid-cols-12">
           {/*
-           * Capsule first in the DOM: on mobile the reference's flow is
-           * headline → image → copy. On desktop both columns are explicitly
-           * placed on the same grid row, so JSX order is irrelevant there.
+           * Capsule column:
+           * - On mobile: centered stadium with stable aspect-[3/5.2] at 84vw for comfortable breathing room,
+           *   allowing animated racetrack rings to gracefully reach the viewport edges.
+           * - On desktop: placed in cols 4-9 alongside the sticky copy with original max-w-[40rem] and aspect-[3/5.4].
            */}
           <div className="sm:mt-6 lg:col-start-4 lg:col-span-6 lg:row-start-1 lg:mt-0">
-            {/* Mobile: the capsule fills the first screen beneath the headline
-                (viewport-height minus the space the headline block takes), so
-                only headline + photograph are visible before scrolling. From
-                sm up it returns to the reference's fixed aspect ratio. */}
             <div
               data-hero-stage
-              className="relative mx-auto h-[min(36rem,max(16rem,calc(100dvh-26rem)))] w-[80vw] max-w-[23rem] sm:h-auto sm:w-auto sm:max-w-[26rem] lg:max-w-[40rem]"
+              className="relative mx-auto w-[84vw] max-w-[23rem] sm:h-auto sm:w-auto sm:max-w-[26rem] lg:max-w-[40rem]"
             >
-              {/* Action button: on mobile it straddles the capsule's top edge,
-                  dead-centre — the reference's mobile arrangement; from lg up
-                  it moves to the right edge. */}
+              {/* Action button: placed in the top middle on mobile, on the shoulder on desktop */}
               <div
-                data-hero-badge
-                className="absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-1/2 lg:left-auto lg:right-0 lg:top-[19%] lg:translate-x-1/2"
+                className="absolute -top-7 left-1/2 -translate-x-1/2 sm:-top-3 sm:left-auto sm:right-0 sm:translate-x-0 lg:left-auto lg:right-0 lg:top-[19%] lg:translate-x-1/2 z-20"
               >
-                {/* ~80px on mobile (the reference), 112px from lg up.
-                    The badge is an action: it opens the consultation form. */}
-                <CircleBadge
-                  text="LET'S TALK"
-                  onClick={openConsult}
-                  ariaLabel="Open the consultation form"
-                  className="h-24 w-24 sm:h-28 sm:w-28 lg:h-32 lg:w-32"
-                  tone="light"
-                  bordered
-                />
+                <div data-hero-badge>
+                  <CircleBadge
+                    text="LET'S TALK"
+                    onClick={openConsult}
+                    ariaLabel="Open the consultation form"
+                    className="h-20 w-20 xs:h-24 xs:w-24 sm:h-28 sm:w-28 lg:h-32 lg:w-32"
+                    tone="light"
+                    bordered
+                  />
+                </div>
               </div>
 
-              {/* Halo ring behind the capsule, as in the reference */}
+              {/* Halo ring behind the capsule */}
               <div
                 data-hero-halo
                 aria-hidden="true"
-                className="absolute -inset-5 rounded-[999px] border border-ink/10 sm:-inset-7"
+                className="absolute -inset-3 rounded-[999px] border border-ink/10 sm:-inset-7"
               />
 
-              {/* Outer dashed ring — a rotating ornament, tinted so the
-                  dashes actually read against the cream. Two accent dots are
-                  pinned to opposite points on the line (the OrbitRing trick):
-                  the ring itself is what rotates, so the dots travel the full
-                  racetrack outline. */}
+              {/* Primary dashed trackfield (teal) */}
               <div
                 data-hero-ring
                 aria-hidden="true"
-                className="absolute -inset-9 rounded-[999px] border border-dashed border-teal-600/60 sm:-inset-14"
+                className="absolute -inset-6 rounded-[999px] border border-dashed border-teal-600/60 sm:-inset-14"
               >
-                <span className="absolute left-1/2 top-[-0.5px] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-plum-600 sm:h-4 sm:w-4" />
-                <span className="absolute left-1/2 bottom-[-0.5px] h-3 w-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-teal-700 sm:h-4 sm:w-4" />
+                <span className="pointer-events-none absolute left-1/2 top-1/2 h-2.5 w-2.5 rounded-full bg-plum-600 sm:h-4 sm:w-4" />
+                <span className="pointer-events-none absolute left-1/2 top-1/2 h-2.5 w-2.5 rounded-full bg-teal-700 sm:h-4 sm:w-4" />
               </div>
 
+              {/* Counter-rotating dashed trackfield (plum) */}
+              <div
+                data-hero-ring-purple
+                aria-hidden="true"
+                className="absolute -inset-6 rounded-[999px] border border-dashed border-plum-600/60 sm:-inset-14"
+              >
+                <span className="pointer-events-none absolute left-1/2 top-1/2 h-2.5 w-2.5 rounded-full bg-teal-700 sm:h-4 sm:w-4" />
+                <span className="pointer-events-none absolute left-1/2 top-1/2 h-2.5 w-2.5 rounded-full bg-plum-600 sm:h-4 sm:w-4" />
+              </div>
+
+              {/* The Stadium Capsule Photograph */}
               <div
                 data-hero-capsule
-                className="relative h-full w-full overflow-hidden rounded-[999px] bg-cream-deep shadow-soft sm:h-auto sm:aspect-[3/5.4]"
+                className="relative w-full aspect-[3/5.2] sm:aspect-[3/5.4] overflow-hidden rounded-[999px] bg-cream-deep shadow-soft"
               >
                 <div
                   data-hero-capsule-img
@@ -347,32 +501,24 @@ export default function Hero() {
             </div>
           </div>
 
-          {/*
-           * Text column. On desktop it shares the capsule's grid row and
-           * stretches to its full height, so the sticky block has travel:
-           * the copy holds while the capsule scrolls up past it, then both
-           * leave together. On mobile it simply follows the capsule in
-           * normal flow, centred — the reference's arrangement.
-           */}
+          {/* Text column: On desktop shares the grid row and sticks; on mobile follows naturally */}
           <div className="lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:self-stretch">
             <div className="lg:sticky lg:top-[58vh]">
               <RevealBlock delay={0.3} y={26}>
-                {/* Mobile: below the capsule, centred, sans name — as the
-                    reference. Desktop: the narrow sticky serif column left. */}
-                <div className="mx-auto mt-14 max-w-sm px-5 pb-4 text-center sm:px-8 lg:mx-0 lg:mt-0 lg:max-w-[17rem] lg:px-0 lg:pb-0 lg:text-left">
+                <div className="mx-auto mt-10 max-w-sm px-4 pb-2 text-center sm:mt-14 sm:max-w-sm sm:px-8 lg:mx-0 lg:mt-0 lg:max-w-[17rem] lg:px-0 lg:pb-0 lg:text-left">
                   <RevealBlock delay={0.06} y={18}>
-                    <p className="font-serif text-[1.85rem] font-normal leading-tight tracking-tight text-ink lg:text-[1.4rem]">
+                    <p className="font-serif text-[1.45rem] sm:text-[1.85rem] font-normal leading-tight tracking-tight text-ink lg:text-[1.4rem]">
                       {hero.name}
                     </p>
                   </RevealBlock>
                   <RevealBlock delay={0.18} y={8}>
                     <span
                       aria-hidden="true"
-                      className="mx-auto mt-4 block h-0.5 w-10 origin-left rounded-full bg-plum-600 lg:mx-0"
+                      className="mx-auto mt-3.5 block h-0.5 w-10 origin-left rounded-full bg-plum-600 sm:mt-4 lg:mx-0"
                     />
                   </RevealBlock>
                   <RevealBlock delay={0.3} y={18}>
-                    <p className="mx-auto mt-5 max-w-[16.5rem] text-[1.125rem] leading-[1.8] text-ink-70 lg:mx-0 lg:text-[1.0625rem]">
+                    <p className="mx-auto mt-4 max-w-[16.5rem] text-[0.9375rem] sm:text-[1.125rem] leading-[1.7] text-ink-70 sm:mt-5 sm:leading-[1.8] lg:mx-0 lg:text-[1.0625rem]">
                       {hero.description}
                     </p>
                   </RevealBlock>

@@ -10,6 +10,7 @@ import InlineCta from '../components/ui/InlineCta.jsx';
 import ClosingCta from '../components/ClosingCta.jsx';
 import { Parallax } from '../components/anim/SplitReveal.jsx';
 import { openConsult } from '../lib/consultBus.js';
+import { useSeo } from '../lib/seo.js';
 
 /**
  * ---------------------------------------------------------------------------
@@ -230,24 +231,24 @@ function DoctorBand({ doctor, index }) {
 
           {/* Portrait — circle portrait over the band halo + OrbitRing */}
           <div
-            className={`relative mx-auto w-[min(78vw,18rem)] sm:w-[20rem] ${imgColX} lg:row-span-2 lg:row-start-1 lg:w-96 ${
+            className={`relative mx-auto aspect-square w-[min(78vw,18rem)] sm:w-[20rem] md:w-[22rem] lg:w-[22rem] xl:w-96 shrink-0 self-center ${imgColX} lg:row-span-2 lg:row-start-1 ${
               first ? 'lg:justify-self-end' : 'lg:justify-self-start'
             }`}
           >
             <span
               aria-hidden="true"
-              className={`absolute -inset-7 rounded-full ${band.halo}`}
+              className={`absolute -inset-6 sm:-inset-7 aspect-square rounded-full pointer-events-none ${band.halo}`}
             />
             <OrbitRing
-              ringClass={`-inset-11 hidden border sm:block ${band.ring}`}
+              ringClass={`-inset-8 sm:-inset-11 hidden aspect-square rounded-full border sm:block ${band.ring}`}
               dotClass={band.dot}
             />
-            <div className="circle-mask relative overflow-hidden bg-cream-deep shadow-soft">
+            <div className="circle-mask relative aspect-square h-full w-full overflow-hidden rounded-full bg-cream-deep shadow-soft isolate">
               <img
                 src={doctor.photo}
                 alt={doctor.photoAlt}
-                className="aspect-square w-full object-cover"
-                style={{ objectPosition: doctor.photoPos || '50% 25%' }}
+                className="aspect-square h-full w-full rounded-full object-cover"
+                style={{ objectPosition: doctor.photoPos || '50% 20%' }}
                 loading="lazy"
               />
             </div>
@@ -306,15 +307,18 @@ function DoctorBand({ doctor, index }) {
 }
 
 export default function AboutPage() {
-  // Fresh page: land at the top after the hash change, keep the title honest.
+  // Fresh page: land at the top after hash change
   useEffect(() => {
     window.scrollTo(0, 0);
-    const previous = document.title;
-    document.title = `About Us — ${clinic.name}`;
-    return () => {
-      document.title = previous;
-    };
   }, []);
+
+  useSeo({
+    title: `About Us — ${clinic.name}`,
+    description:
+      'Learn about Onco Cure Clinic in Greater Noida, founded by Dr. Sahil Bambroo to provide compassionate, scientifically grounded oncology and supportive care.',
+    path: '/about',
+    image: '/images/photo/about-consult.jpg',
+  });
 
   const { story, values, journey, impact, team } = aboutPage;
   const stepCount = journey.steps.length;
@@ -341,7 +345,7 @@ export default function AboutPage() {
         id="our-story"
         tone="paper"
         spacing="normal"
-        className="border-t border-line"
+        className="border-t border-line !pb-14 sm:!pb-18 lg:!pb-20 overflow-hidden"
       >
         <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-x-14 lg:gap-y-8">
           <div className="text-center sm:text-left lg:col-span-5 lg:col-start-1 lg:row-start-1">
@@ -388,11 +392,10 @@ export default function AboutPage() {
             </RevealBlock>
           </div>
         </div>
-      </Section>
 
-      {/* Mid-page CTA — the ruled InlineCta band, placed after Our Story
-          before the values (between sections rather than closing the page). */}
-      <InlineCta {...inlineCta} onAction={openConsult} />
+        {/* Embedded Inline CTA trackfield card inside Our Story section */}
+        <InlineCta {...inlineCta} onAction={openConsult} className="mt-20 sm:mt-28 lg:mt-32" />
+      </Section>
 
       {/* -----------------------------------------------------------------
           02 · What Guides Us — four icon values, no photographs.

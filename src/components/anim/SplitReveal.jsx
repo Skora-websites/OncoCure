@@ -24,7 +24,7 @@ export default function SplitReveal({
   stagger = 0.055,
   duration = 1.05,
   start = 'top 82%',
-  accentWord = null,
+  _accentWord = null,
   direction = 'up',
 }) {
   const ref = useRef(null);

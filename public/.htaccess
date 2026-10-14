@@ -1,0 +1,21 @@
+# ------------------------------------------------------------------------------
+# Onco Cure Clinic - Apache URL Rewriting for Single Page Application (SPA)
+# Enables clean URLs without /#/ by directing all route requests to index.html
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # Pass through existing files or directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+  
+  # Forward API requests if proxying on same server (optional fallback)
+  RewriteCond %{REQUEST_URI} ^/api [NC]
+  RewriteRule ^ - [L]
+
+  # Rewrite all other virtual paths to index.html
+  RewriteRule ^ index.html [L]
+</IfModule>

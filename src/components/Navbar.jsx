@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import { clinic, navLinks, cta } from '../data/clinic.js';
+import { navLinks, cta } from '../data/clinic.js';
+import { useClinic } from '../lib/clinicApi.js';
 import PillButton from './ui/PillButton.jsx';
 import { openConsult } from '../lib/consultBus.js';
 
 /** Hash-route targets; every nav link is now live. */
 const NAV_HREFS = {
-  home: '#/',
-  about: '#/about',
-  services: '#/services',
-  blogs: '#/blogs',
-  contact: '#/contact',
+  home: '/',
+  about: '/about',
+  services: '/services',
+  blogs: '/blogs',
+  contact: '/contact',
 };
 const navHref = (id) => NAV_HREFS[id];
 const onNavClick = () => window.dispatchEvent(new Event('occ:scroll-top'));
@@ -23,6 +24,7 @@ const onNavClick = () => window.dispatchEvent(new Event('occ:scroll-top'));
  * itself does open and close, since that is pure interface.
  */
 export default function Navbar() {
+  const clinic = useClinic();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -71,13 +73,13 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12">
-          <div className="flex h-18 items-center justify-between gap-6 sm:h-22">
+          <div className="flex h-22 items-center justify-between gap-6 sm:h-22">
             {/* Wordmark — the supplied brand artwork, not re-typed text */}
             <a href="#main" className="shrink-0">
               <img
                 src={clinic.logo.full}
                 alt={`${clinic.name}`}
-                className="h-9 w-auto sm:h-11"
+                className="h-11 w-auto sm:h-11 transition-all duration-300"
                 draggable="false"
               />
             </a>
@@ -115,16 +117,16 @@ export default function Navbar() {
                 aria-expanded={open}
                 aria-controls="site-menu"
                 aria-label={open ? 'Close menu' : 'Open menu'}
-                className="group flex h-11 items-center gap-3 pl-3 lg:hidden"
+                className="group flex h-12 items-center gap-3 pl-3 lg:hidden"
               >
-                <span className="label-sm text-ink-70 group-hover:text-ink">
+                <span className="text-[0.8125rem] font-semibold tracking-[0.14em] uppercase text-ink-70 group-hover:text-ink">
                   {open ? 'Close' : 'Menu'}
                 </span>
-                <span className="relative block h-3 w-6">
-                  <span className="absolute left-0 top-0 block h-px w-full bg-ink" />
-                  <span className="absolute left-0 top-1/2 block h-px w-full -translate-y-1/2 bg-ink" />
+                <span className="relative block h-3.5 w-6.5">
+                  <span className="absolute left-0 top-0 block h-0.5 w-full bg-ink" />
+                  <span className="absolute left-0 top-1/2 block h-0.5 w-full -translate-y-1/2 bg-ink" />
                   <span
-                    className={`absolute left-0 top-1/2 block h-px -translate-y-1/2 bg-ink transition-transform duration-500 ${
+                    className={`absolute left-0 top-1/2 block h-0.5 -translate-y-1/2 bg-ink transition-transform duration-500 ${
                       open ? 'rotate-90 opacity-0' : 'w-full'
                     }`}
                   />
@@ -152,7 +154,7 @@ export default function Navbar() {
 
         <nav
           aria-label="Mobile"
-          className={`absolute inset-0 flex flex-col justify-between px-6 pt-28 pb-10 transition-all duration-500 ${
+          className={`absolute inset-0 flex flex-col justify-between overflow-y-auto px-6 pt-28 pb-8 transition-all duration-500 ${
             open ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
           }`}
         >

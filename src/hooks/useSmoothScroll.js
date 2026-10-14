@@ -14,6 +14,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
  */
 export default function useSmoothScroll(enabled = true) {
   useEffect(() => {
+    if (!enabled) return undefined;
+
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) {
       // Let native scrolling work untouched.
@@ -43,6 +45,16 @@ export default function useSmoothScroll(enabled = true) {
     const unlock = () => lenis.start();
     window.addEventListener('scroll-lock', lock);
     window.addEventListener('scroll-unlock', unlock);
+
+    // Synchronize ScrollTrigger markers as images load and curtain reveals
+    const refreshScrollTriggers = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener('load', refreshScrollTriggers);
+    window.addEventListener('occ:reveal', refreshScrollTriggers);
+    const refreshTimer1 = setTimeout(refreshScrollTriggers, 400);
+    const refreshTimer2 = setTimeout(refreshScrollTriggers, 1200);
+    const refreshTimer3 = setTimeout(refreshScrollTriggers, 2500);
 
     // Page switches (hash routing) need the virtual scroll reset; a plain
     // window.scrollTo would be fought by Lenis on its next frame.
@@ -78,6 +90,11 @@ export default function useSmoothScroll(enabled = true) {
     return () => {
       document.removeEventListener('click', onClick);
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('load', refreshScrollTriggers);
+      window.removeEventListener('occ:reveal', refreshScrollTriggers);
+      clearTimeout(refreshTimer1);
+      clearTimeout(refreshTimer2);
+      clearTimeout(refreshTimer3);
       window.removeEventListener('scroll-lock', lock);
       window.removeEventListener('scroll-unlock', unlock);
       window.removeEventListener('occ:scroll-top', scrollTop);

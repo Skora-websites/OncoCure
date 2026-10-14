@@ -3,7 +3,7 @@ import Section, { Label, PlaceholderTag } from '../components/ui/Blocks.jsx';
 import SplitReveal, { RevealBlock } from '../components/anim/SplitReveal.jsx';
 import InlineCta from '../components/ui/InlineCta.jsx';
 import ClosingCta from '../components/ClosingCta.jsx';
-import { useSeo } from '../lib/seo.js';
+import { useSeo, stripHtmlAndTruncate } from '../lib/seo.js';
 import { getBlogBySlug, listBlogs } from '../lib/contentApi.js';
 import { navigate } from '../lib/hashRoute.js';
 import { openConsult } from '../lib/consultBus.js';
@@ -58,9 +58,32 @@ export default function BlogDetailPage({ slug }) {
     };
   }, [slug]);
 
+  const siteSuffix = ` — ${clinic.name}`;
+  const seoTitle = post
+    ? post.metaTitle?.trim()
+      ? `${post.metaTitle.trim()}${siteSuffix}`
+      : `${post.title}${siteSuffix}`
+    : `Article${siteSuffix}`;
+
+  const rawContent =
+    post?.content ||
+    (post?.body
+      ? post.body
+          .map((s) => `${s.heading || ''} ${(s.paragraphs || []).join(' ')}`)
+          .join(' ')
+      : post?.excerpt || '');
+
+  const seoDescription =
+    post?.metaDescription?.trim() ||
+    stripHtmlAndTruncate(rawContent, 160) ||
+    clinic.meta.description;
+
+  const seoKeywords = post?.metaKeywords?.trim() || null;
+
   useSeo({
-    title: post ? `${post.title} — ${clinic.name}` : `Article — ${clinic.name}`,
-    description: post?.excerpt ?? clinic.meta.description,
+    title: seoTitle,
+    description: seoDescription,
+    keywords: seoKeywords,
     path: `/blogs/${slug}`,
     image: post?.image,
     jsonLd: post
@@ -125,9 +148,9 @@ export default function BlogDetailPage({ slug }) {
         <div className="mx-auto w-full max-w-[52rem] px-5 sm:px-8">
           <RevealBlock y={14}>
             <nav aria-label="Breadcrumb" className="label-sm flex flex-wrap items-center gap-2">
-              <Crumb href="#/">Home</Crumb>
+              <Crumb href="/">Home</Crumb>
               <span aria-hidden="true" className="text-ink-30">/</span>
-              <Crumb href="#/blogs">Blogs</Crumb>
+              <Crumb href="/blogs">Blogs</Crumb>
               <span aria-hidden="true" className="text-ink-30">/</span>
               <Crumb current>{post.category}</Crumb>
             </nav>
@@ -189,37 +212,48 @@ export default function BlogDetailPage({ slug }) {
               </p>
             </RevealBlock>
 
-            {post.body.map((section, i) => (
-              <section key={i} className="mt-10">
-                <RevealBlock y={16}>
-                  <h2 className="h-serif text-[1.375rem] leading-snug text-ink sm:text-[1.625rem]">
-                    {section.heading}
-                  </h2>
-                </RevealBlock>
-                {section.paragraphs.map((para, j) => (
-                  <RevealBlock key={j} delay={0.05 + j * 0.04} y={16}>
-                    <p className="mt-4 text-[0.9375rem] leading-[1.85] text-ink-70 sm:text-base">
-                      {para}
-                    </p>
+            {post.content ? (
+              <RevealBlock delay={0.1} y={16}>
+                <div
+                  className="mt-10 max-w-none text-ink-70 [&>h2]:h-serif [&>h2]:text-[1.375rem] sm:[&>h2]:text-[1.625rem] [&>h2]:text-ink [&>h2]:mt-10 [&>h2]:mb-4 [&>h3]:h-serif [&>h3]:text-[1.2rem] [&>h3]:text-ink [&>h3]:mt-8 [&>h3]:mb-3 [&>p]:mt-4 [&>p]:leading-[1.85] [&>p]:text-[0.9375rem] sm:[&>p]:text-base [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mt-4 [&>ul]:space-y-2 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mt-4 [&>ol]:space-y-2 [&>li]:text-[0.9375rem] sm:[&>li]:text-base [&>blockquote]:mt-6 [&>blockquote]:rounded-r-xl [&>blockquote]:border-l-4 [&>blockquote]:border-teal-700 [&>blockquote]:bg-teal-50/50 [&>blockquote]:py-3 [&>blockquote]:px-5 [&>blockquote]:italic [&>blockquote]:text-teal-900 [&>img]:my-8 [&>img]:rounded-2xl [&>img]:w-full [&>img]:shadow-soft"
+                  dangerouslySetInnerHTML={{ __html: post.content }}
+                />
+              </RevealBlock>
+            ) : Array.isArray(post.body) ? (
+              post.body.map((section, i) => (
+                <section key={i} className="mt-10">
+                  <RevealBlock y={16}>
+                    <h2 className="h-serif text-[1.375rem] leading-snug text-ink sm:text-[1.625rem]">
+                      {section.heading}
+                    </h2>
                   </RevealBlock>
-                ))}
-              </section>
-            ))}
+                  {section.paragraphs?.map((para, j) => (
+                    <RevealBlock key={j} delay={0.05 + j * 0.04} y={16}>
+                      <p className="mt-4 text-[0.9375rem] leading-[1.85] text-ink-70 sm:text-base">
+                        {para}
+                      </p>
+                    </RevealBlock>
+                  ))}
+                </section>
+              ))
+            ) : null}
 
-            {/* Closing note */}
-            <RevealBlock delay={0.1} y={18}>
-              <aside className="mt-12 rounded-2xl border border-teal-200/70 bg-teal-100/40 p-7 sm:p-9">
-                <Label tone="teal">From the clinic</Label>
-                <p className="mt-3 text-[0.9375rem] leading-[1.8] text-teal-900 sm:text-base">
-                  {post.closing}
-                </p>
-              </aside>
-            </RevealBlock>
+            {/* Closing note if present */}
+            {post.closing ? (
+              <RevealBlock delay={0.1} y={18}>
+                <aside className="mt-12 rounded-2xl border border-teal-200/70 bg-teal-100/40 p-7 sm:p-9">
+                  <Label tone="teal">From the clinic</Label>
+                  <p className="mt-3 text-[0.9375rem] leading-[1.8] text-teal-900 sm:text-base">
+                    {post.closing}
+                  </p>
+                </aside>
+              </RevealBlock>
+            ) : null}
           </article>
 
           {/* Related posts */}
           {related.length > 0 ? (
-            <section className="mt-16 border-t border-line pt-12">
+            <section className="mt-16 border-t border-line pt-12 pb-6 sm:pb-8">
               <RevealBlock y={14}>
                 <h2 className="h-serif text-[1.375rem] text-ink sm:text-[1.625rem]">
                   More in {post.category}
@@ -229,7 +263,7 @@ export default function BlogDetailPage({ slug }) {
                 {related.map((r) => (
                   <RevealBlock key={r.slug} y={18}>
                     <a
-                      href={`#/blogs/${r.slug}`}
+                      href={`/blogs/${r.slug}`}
                       className="group block h-full rounded-2xl border border-line bg-paper p-6 transition-colors duration-500 hover:border-plum-400"
                     >
                       <p className="label-sm text-ink-45">
@@ -252,12 +286,18 @@ export default function BlogDetailPage({ slug }) {
                   </RevealBlock>
                 ))}
               </div>
+
+              {/* Embedded Inline CTA trackfield card inside the section */}
+              <InlineCta {...inlineCta} onAction={openConsult} className="mt-20 sm:mt-28 lg:mt-32" />
             </section>
-          ) : null}
+          ) : (
+            <div className="py-6 sm:py-8">
+              <InlineCta {...inlineCta} onAction={openConsult} />
+            </div>
+          )}
         </div>
       </main>
 
-      <InlineCta {...inlineCta} onAction={openConsult} />
       <ClosingCta />
     </>
   );

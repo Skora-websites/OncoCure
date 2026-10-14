@@ -109,23 +109,23 @@ function DoctorCard({ doctor, index }) {
           </header>
 
           {/* 2. Portrait — second on mobile; the left column from lg */}
-          <div className="relative mx-auto aspect-square w-44 shrink-0 sm:w-52 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:w-full lg:max-w-[13rem] lg:self-center xl:max-w-[11rem] 2xl:max-w-[13rem]">
+          <div className="relative mx-auto aspect-square w-44 shrink-0 sm:w-52 md:w-52 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:w-full lg:max-w-[13rem] lg:self-center xl:max-w-[11rem] 2xl:max-w-[13rem]">
             {/* Soft accent blob, offset behind the circle */}
             <span
               aria-hidden="true"
-              className={`absolute -top-5 -left-5 h-[86%] w-[86%] rounded-full sm:-top-6 sm:-left-6 ${tone.blob}`}
+              className={`absolute -top-5 -left-5 aspect-square h-[86%] w-[86%] rounded-full sm:-top-6 sm:-left-6 ${tone.blob}`}
             />
             {/* The site's hairline ring with a slowly orbiting accent dot */}
             <OrbitRing
-              ringClass={`-inset-2.5 border-2 ${tone.ring}`}
+              ringClass={`-inset-2.5 aspect-square rounded-full border-2 ${tone.ring}`}
               dotClass={tone.dot}
             />
-            <div className="circle-mask relative h-full w-full overflow-hidden bg-cream-deep shadow-soft">
+            <div className="circle-mask relative aspect-square h-full w-full overflow-hidden rounded-full bg-cream-deep shadow-soft isolate">
               <img
                 src={doctor.photo}
                 alt={doctor.photoAlt}
-                className="h-full w-full object-cover"
-                style={{ objectPosition: doctor.photoPos || '50% 25%' }}
+                className="aspect-square h-full w-full rounded-full object-cover"
+                style={{ objectPosition: doctor.photoPos || '50% 20%' }}
                 loading="lazy"
               />
             </div>

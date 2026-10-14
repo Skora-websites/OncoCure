@@ -1,0 +1,802 @@
+{
+  "blogs": [
+    {
+      "id": "what-happens-at-a-first-oncology-consultation",
+      "slug": "what-happens-at-a-first-oncology-consultation",
+      "title": "What happens at a first oncology consultation",
+      "excerpt": "Walking into a first appointment with an oncologist is easier when you know what the visit is for — and what to bring.",
+      "content": "<h3>The visit is a conversation first</h3><p></p><h3>What to bring</h3><p></p><h3>What you should leave with</h3><p></p>",
+      "body": [
+        {
+          "heading": "The visit is a conversation first",
+          "paragraphs": [
+            "A first oncology consultation is not a treatment appointment. Its purpose is to build the full picture: your medical history, your symptoms, what tests have already been done, and — just as important — what you are worried about and what you want to understand.",
+            "Expect to talk, in your own words, about when things started and how they have progressed. Nothing is too small to mention; details that feel minor to you are often clinically meaningful."
+          ]
+        },
+        {
+          "heading": "What to bring",
+          "paragraphs": [
+            "Bring every report, scan image and prescription you have, even ones that seem irrelevant or old. Bring a family member or friend if you can — a second pair of ears hears things the first pair misses. And bring your written questions; there is no such thing as too many.",
+            "If reports are in a different language or format, mention this when booking so nothing is delayed on the day."
+          ]
+        },
+        {
+          "heading": "What you should leave with",
+          "paragraphs": [
+            "By the end of a good first consultation you should know: what is known so far about your condition, what is still uncertain, which tests come next and why, and roughly what the path forward looks like.",
+            "If any of that is unclear, it is entirely appropriate to say so and ask for it to be explained again, in plain language. A consultation that ends in confusion has not finished its job."
+          ]
+        }
+      ],
+      "category": "Understanding Cancer",
+      "image": "/images/photo/about-consult.jpg",
+      "imageAlt": "A clinician going through reports with a patient during a consultation.",
+      "date": "2026-09-18",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "getting-a-second-opinion-is-normal",
+      "slug": "getting-a-second-opinion-is-normal",
+      "title": "Getting a second opinion is normal — and wise",
+      "excerpt": "Seeking another specialist's view of your diagnosis or treatment plan is routine practice in good cancer care, not a betrayal of your doctor.",
+      "content": "<h3>Why second opinions are standard practice</h3><p></p><h3>How to do it well</h3><p></p><h3>What a second opinion is not</h3><p></p>",
+      "body": [
+        {
+          "heading": "Why second opinions are standard practice",
+          "paragraphs": [
+            "Cancer treatment decisions are complex and consequential, and medicine expects them to be checked. Oncologists themselves seek second opinions on difficult cases — that is exactly what tumour boards and multidisciplinary meetings are.",
+            "A second opinion reviews your pathology, staging and proposed plan independently, and confirms or refines it. Most often it confirms the plan, which brings real peace of mind. Sometimes it adds an option that had not been discussed."
+          ]
+        },
+        {
+          "heading": "How to do it well",
+          "paragraphs": [
+            "Collect your complete records first — biopsy reports, imaging, blood results and the treatment plan. A review is only as good as the information it is based on.",
+            "Be open with both doctors. Most treating physicians welcome a second review; if yours reacts badly to the request, that is useful information in itself."
+          ]
+        },
+        {
+          "heading": "What a second opinion is not",
+          "paragraphs": [
+            "It is not a test of loyalty, and it does not obligate you to change anything. The decision about where and how you are treated always remains yours, made with clear information."
+          ]
+        }
+      ],
+      "category": "Understanding Cancer",
+      "image": "/images/photo/consult-two.jpg",
+      "imageAlt": "Two clinicians reviewing a case together.",
+      "date": "2026-09-04",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "how-chemotherapy-cycles-work",
+      "slug": "how-chemotherapy-cycles-work",
+      "title": "How chemotherapy cycles actually work",
+      "excerpt": "Cycles, rest weeks and pre-cycle blood checks all have a logic. Understanding the rhythm makes the weeks easier to live with.",
+      "content": "<h3>Why treatment comes in cycles</h3><p></p><h3>The checks before every cycle</h3><p></p><h3>Living between cycles</h3><p></p>",
+      "body": [
+        {
+          "heading": "Why treatment comes in cycles",
+          "paragraphs": [
+            "Chemotherapy drugs harm rapidly dividing cells — cancer cells, but also healthy ones such as bone marrow and the lining of the mouth and gut. Treatment is therefore given in cycles: a treatment day or days, then a rest period during which healthy cells recover.",
+            "The cycle length depends on the drugs, and the total number of cycles depends on the goal — curing, controlling, or easing symptoms."
+          ]
+        },
+        {
+          "heading": "The checks before every cycle",
+          "paragraphs": [
+            "Before each cycle, blood counts are checked to confirm the body has recovered enough to proceed. If counts are low, treatment is deferred a few days — this is normal and safe, not a setback, even though it is disappointing on the day.",
+            "Weight, side effects and overall wellbeing are reviewed at the same time, and doses can be adjusted accordingly."
+          ]
+        },
+        {
+          "heading": "Living between cycles",
+          "paragraphs": [
+            "Most people have a pattern: harder days immediately after treatment, then recovery. Learning your own pattern lets you plan rest, work and family life around it.",
+            "Report fever, chills or new symptoms during a rest week immediately — a phone call is always better than waiting it out."
+          ]
+        }
+      ],
+      "category": "Treatment & Therapies",
+      "image": "/images/photo/lab-research.jpg",
+      "imageAlt": "A treatment preparation area in a clinical setting.",
+      "date": "2026-08-21",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "immunotherapy-vs-chemotherapy",
+      "slug": "immunotherapy-vs-chemotherapy",
+      "title": "Immunotherapy and chemotherapy are not the same thing",
+      "excerpt": "Both are systemic cancer treatments, but they work on entirely different principles — which changes what to expect and what to watch for.",
+      "content": "<h3>Two different ideas</h3><p></p><h3>Suitability depends on testing</h3><p></p><h3>What to watch for</h3><p></p>",
+      "body": [
+        {
+          "heading": "Two different ideas",
+          "paragraphs": [
+            "Chemotherapy attacks dividing cells directly, cancer cells included. Immunotherapy instead removes the brakes that cancers put on the immune system, allowing the body's own defences to act.",
+            "This difference matters practically. Immunotherapy is given on a schedule like chemotherapy, but its effects can appear differently and sometimes later, and response is assessed on a specific review rhythm."
+          ]
+        },
+        {
+          "heading": "Suitability depends on testing",
+          "paragraphs": [
+            "Immunotherapy is not universally applicable. Its use depends on cancer type, stage and specific markers on tumour testing. This is why molecular and biomarker testing has become a routine part of treatment planning rather than a special step."
+          ]
+        },
+        {
+          "heading": "What to watch for",
+          "paragraphs": [
+            "Because the immune system acts throughout the body, immunotherapy can occasionally inflame healthy organs — skin, gut, lungs, glands and others. Most effects are manageable when caught early, which is why everyone starting these medicines learns exactly which symptoms to report and how fast to report them.",
+            "Never assume a new symptom is \"just part of treatment\" — call the treating team."
+          ]
+        }
+      ],
+      "category": "Treatment & Therapies",
+      "image": "/images/photo/consult-care.jpg",
+      "imageAlt": "A consultation in progress at the clinic.",
+      "date": "2026-08-07",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "cancer-pain-is-treatable",
+      "slug": "cancer-pain-is-treatable",
+      "title": "Cancer pain is treatable — please do not endure it",
+      "excerpt": "Pain that is taken seriously is pain that can usually be treated. Enduring it silently helps no one.",
+      "content": "<h3>A quiet, common problem</h3><p></p><h3>Pain is assessed, not guessed</h3><p></p><h3>Speak early, not late</h3><p></p>",
+      "body": [
+        {
+          "heading": "A quiet, common problem",
+          "paragraphs": [
+            "Many people with cancer treat pain as something to be endured — a badge of stoicism, or a fear that pain means the disease is worsening. Both beliefs get in the way of care. Pain deserves treatment in its own right, at every stage of the journey."
+          ]
+        },
+        {
+          "heading": "Pain is assessed, not guessed",
+          "paragraphs": [
+            "Modern pain care starts with a formal assessment: where the pain is, what it feels like, when it comes, what eases it. Different pains — bone, nerve, pressure, treatment-related — respond to different approaches.",
+            "Care is often led with an anesthesia and pain specialist, which brings approaches beyond routine painkillers when they are needed."
+          ]
+        },
+        {
+          "heading": "Speak early, not late",
+          "paragraphs": [
+            "Pain is far easier to control before it becomes severe. Tell the team at the first sign, keep a simple note of when it comes, and be honest about what you are actually taking rather than what was prescribed.",
+            "There is no prize for endurance. There is a great deal to gain from comfort."
+          ]
+        }
+      ],
+      "category": "Pain & Symptom Care",
+      "image": "/images/photo/calm-leaf.jpg",
+      "imageAlt": "A calm, still-life detail photographed at the clinic.",
+      "date": "2026-07-24",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "eating-well-during-treatment",
+      "slug": "eating-well-during-treatment",
+      "title": "Eating well during treatment — what actually matters",
+      "excerpt": "Appetite changes and taste changes are near-universal during treatment. Practical adjustments beat any special \"cancer diet\".",
+      "content": "<h3>First, the myths</h3><p></p><h3>The real goals</h3><p></p><h3>When to ask for help</h3><p></p>",
+      "body": [
+        {
+          "heading": "First, the myths",
+          "paragraphs": [
+            "There is no food that cures cancer, and no food that secretly feeds it. Extreme restriction during treatment usually does harm. Sugar does not drive cancer the way the internet suggests, but overall balance does matter."
+          ]
+        },
+        {
+          "heading": "The real goals",
+          "paragraphs": [
+            "During treatment the goals are simple: maintain weight, maintain strength, stay hydrated, and keep eating enough — even if the menu is monotonous for a while. Weight loss that creeps up is one of the most under-reported problems in cancer care.",
+            "When taste changes or nausea interfere, small frequent meals, food at room temperature, and eating by the clock rather than by appetite all help more than any supplement."
+          ]
+        },
+        {
+          "heading": "When to ask for help",
+          "paragraphs": [
+            "Tell the team early about trouble swallowing, persistent vomiting, diarrhoea or rapid weight loss — these are treatable and should not be written off as \"just treatment\". Significant weight loss deserves a formal nutrition referral."
+          ]
+        }
+      ],
+      "category": "Living Well",
+      "image": "/images/photo/care-hands.jpg",
+      "imageAlt": "A quiet moment of care — a patient's hand held gently.",
+      "date": "2026-07-10",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "what-is-cancer-staging",
+      "slug": "what-is-cancer-staging",
+      "title": "Cancer staging, explained without jargon",
+      "excerpt": "Staging is the single most important input to a treatment plan. Here is what the numbers and letters actually mean.",
+      "content": "<h3>What staging measures</h3><p></p><h3>Why tests repeat</h3><p></p><h3>Ask for the picture in words</h3><p></p>",
+      "body": [
+        {
+          "heading": "What staging measures",
+          "paragraphs": [
+            "Staging describes how far a cancer has developed: whether it is confined to where it started, has reached nearby lymph nodes, or has spread to other organs. Most solid cancers are staged I through IV, refined by the TNM system — tumour size, node involvement, metastasis.",
+            "Staging is not a grade of hope. It is an engineering input: each stage maps to treatment approaches with the best established results for that situation."
+          ]
+        },
+        {
+          "heading": "Why tests repeat",
+          "paragraphs": [
+            "Staging is a snapshot at a point in time. Scans are repeated during treatment not because something is suspected to be wrong, but because response assessment — measuring what changed — is how plans are continued, adjusted or completed on evidence."
+          ]
+        },
+        {
+          "heading": "Ask for the picture in words",
+          "paragraphs": [
+            "You are entitled to know your stage and what it means in plain language. Ask where the disease is, what the staging tests showed, and how the stage shapes the plan being proposed. A good team answers this without prompting."
+          ]
+        }
+      ],
+      "category": "Understanding Cancer",
+      "image": "/images/photo/hero-consult.jpg",
+      "imageAlt": "A specialist explaining results to a patient.",
+      "date": "2026-06-26",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "cancer-screening-basics",
+      "slug": "cancer-screening-basics",
+      "title": "Screening basics: which checks, and when",
+      "excerpt": "A plain summary of the routine checks for common cancers, and why \"age-appropriate screening\" is worth a conversation.",
+      "content": "<h3>What screening means</h3><p></p><h3>The established checks</h3><p></p><h3>When symptoms exist, it is not screening</h3><p></p>",
+      "body": [
+        {
+          "heading": "What screening means",
+          "paragraphs": [
+            "Screening looks for cancer — or its precursors — in people who have no symptoms. It works for some cancers and not others; a good test must be both sensitive and safe enough to justify using it in healthy people."
+          ]
+        },
+        {
+          "heading": "The established checks",
+          "paragraphs": [
+            "For common cancers, established screening includes breast examination and mammography for women in the recommended age groups, cervical screening tests, bowel screening, and oral cavity examination — particularly relevant given tobacco habits in India.",
+            "Exactly which check applies to you, and at what age and interval, depends on age, family history and risk factors. That is a conversation, not a form."
+          ]
+        },
+        {
+          "heading": "When symptoms exist, it is not screening",
+          "paragraphs": [
+            "A lump, bleeding, unexplained weight loss or a persistent change that lasts weeks is a symptom, not a screening question — it needs prompt evaluation, not a wait for the next screening round."
+          ]
+        }
+      ],
+      "category": "Prevention & Screening",
+      "image": "/images/photo/clinic-still.jpg",
+      "imageAlt": "The clinic interior, calm and ordered.",
+      "date": "2026-06-12",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "supporting-a-family-member",
+      "slug": "supporting-a-family-member",
+      "title": "Supporting a family member through treatment",
+      "excerpt": "Caregivers carry their own load. Practical ways to help — and permission to look after yourself too.",
+      "content": "<h3>The useful things</h3><p></p><h3>The things to avoid</h3><p></p><h3>Care for the caregiver</h3><p></p>",
+      "body": [
+        {
+          "heading": "The useful things",
+          "paragraphs": [
+            "The most useful caregiver contributions are unglamorous: keeping a list of medicines, driving to appointments, writing down the doctor's answers, noticing whether food is actually being eaten.",
+            "Come into consultations when invited. A second pair of ears, and someone to ask the question the patient hesitated to ask, is genuinely valuable."
+          ]
+        },
+        {
+          "heading": "The things to avoid",
+          "paragraphs": [
+            "Avoid rescuing by stealth — hiding information \"to protect\" the patient almost always backfires. Avoid miracle cures from well-meaning relatives; bring any remedy or supplement to the treating team instead of deciding silently."
+          ]
+        },
+        {
+          "heading": "Care for the caregiver",
+          "paragraphs": [
+            "Caregiving is a long road and burnout helps nobody. Share the tasks, take real breaks, and ask the clinic about counselling — support for families is part of care, not an indulgence."
+          ]
+        }
+      ],
+      "category": "Living Well",
+      "image": "/images/photo/reception-plants.jpg",
+      "imageAlt": "A quiet corner of the clinic with plants.",
+      "date": "2026-05-29",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "oral-cancer-treatment-at-home",
+      "slug": "oral-cancer-treatment-at-home",
+      "title": "Tablet-based cancer treatment: the essentials",
+      "excerpt": "More cancer treatment now happens at home, as tablets. The freedom is real — so is the discipline it asks of you.",
+      "content": "<h3>A growing share of treatment</h3><p></p><h3>The discipline that matters</h3><p></p><h3>Keep the dialogue open</h3><p></p>",
+      "body": [
+        {
+          "heading": "A growing share of treatment",
+          "paragraphs": [
+            "Targeted tablets, hormonal tablets and some chemotherapy medicines are now taken at home rather than infused in a day-care unit. The convenience is genuine, and so is the responsibility: there is no nurse checking each dose."
+          ]
+        },
+        {
+          "heading": "The discipline that matters",
+          "paragraphs": [
+            "Take the treatment exactly as prescribed — same time, right conditions, never double-dosing after a missed tablet. Keep the schedule for monitoring blood tests even when you feel well; much of what these medicines do is only visible in bloodwork."
+          ]
+        },
+        {
+          "heading": "Keep the dialogue open",
+          "paragraphs": [
+            "Side effects are the main reason people quietly stop taking treatment. Do not stop silently — almost every side effect has an answer, from dose adjustment to supportive medication. Tell the team first."
+          ]
+        }
+      ],
+      "category": "Treatment & Therapies",
+      "image": "/images/photo/doctor-writing.png",
+      "imageAlt": "A clinician writing up a treatment plan.",
+      "date": "2026-05-15",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "fatigue-during-cancer-treatment",
+      "slug": "fatigue-during-cancer-treatment",
+      "title": "Fatigue during treatment is real — and manageable",
+      "excerpt": "Cancer-related fatigue is not ordinary tiredness and does not fix itself with a good night's sleep — but it can be worked with.",
+      "content": "<h3>Not ordinary tiredness</h3><p></p><h3>What helps</h3><p></p><h3>Say it out loud</h3><p></p>",
+      "body": [
+        {
+          "heading": "Not ordinary tiredness",
+          "paragraphs": [
+            "Treatment-related fatigue is a heavy, whole-body exhaustion that rest does not simply clear. It is one of the most common experiences during cancer treatment, and one of the least reported — people assume it must simply be endured."
+          ]
+        },
+        {
+          "heading": "What helps",
+          "paragraphs": [
+            "Counter-intuitively, gentle regular activity — walking, light movement — helps fatigue more than bed rest. So do good sleep routines, adequate hydration, and treating the contributors: anaemia, poor sleep, pain, low mood and thyroid or nutritional issues are all checkable."
+          ]
+        },
+        {
+          "heading": "Say it out loud",
+          "paragraphs": [
+            "Report fatigue at reviews the way you would report pain. Its causes are worth investigating, its management is part of supportive care, and pretending to cope hides information your team needs."
+          ]
+        }
+      ],
+      "category": "Pain & Symptom Care",
+      "image": "/images/photo/consult-bed.jpg",
+      "imageAlt": "A quiet treatment room prepared for a patient.",
+      "date": "2026-05-01",
+      "readTime": "5 min read",
+      "status": "published",
+      "metaTitle": null,
+      "metaKeywords": null,
+      "metaDescription": null,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    }
+  ],
+  "services": [
+    {
+      "id": "cancer-consultation-evaluation",
+      "slug": "cancer-consultation-evaluation",
+      "title": "Cancer Consultation & Evaluation",
+      "group": "Oncology Services",
+      "summary": "A comprehensive first consultation and evaluation for a new cancer diagnosis, built around your history, reports and concerns.",
+      "description": "A comprehensive first consultation and evaluation for a new cancer diagnosis, built around your history, reports and concerns.",
+      "covers": [
+        "Comprehensive cancer consultation and evaluation",
+        "New cancer diagnosis and treatment planning",
+        "Management of solid tumours and haematological malignancies",
+        "Follow-up care and cancer surveillance"
+      ],
+      "tags": [],
+      "accent": "plum",
+      "orderIndex": 0,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "second-opinion-review",
+      "slug": "second-opinion-review",
+      "title": "Second-Opinion Review",
+      "group": "Oncology Services",
+      "summary": "An independent review of an existing diagnosis or treatment plan, with every question answered patiently and clearly.",
+      "description": "An independent review of an existing diagnosis or treatment plan, with every question answered patiently and clearly.",
+      "covers": [
+        "Second-opinion consultation and treatment review",
+        "Personalised treatment plans based on cancer type, stage, molecular profile and overall health",
+        "Treatment planning for newly diagnosed and recurrent / metastatic cancers"
+      ],
+      "tags": [],
+      "accent": "teal",
+      "orderIndex": 1,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "personalised-treatment-planning",
+      "slug": "personalised-treatment-planning",
+      "title": "Personalised Treatment Planning",
+      "group": "Oncology Services",
+      "summary": "Treatment plans shaped around your cancer type, stage, molecular profile and overall health — not a standard protocol alone.",
+      "description": "Treatment plans shaped around your cancer type, stage, molecular profile and overall health — not a standard protocol alone.",
+      "covers": [
+        "Personalised treatment plans based on cancer type, stage, molecular profile and overall health",
+        "Multidisciplinary cancer care and coordination with surgical and radiation oncology teams",
+        "Genetic and molecular testing guidance, where indicated",
+        "Cancer staging and treatment response assessment"
+      ],
+      "tags": [],
+      "accent": "plum",
+      "orderIndex": 2,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "staging-response-assessment",
+      "slug": "staging-response-assessment",
+      "title": "Staging & Response Assessment",
+      "group": "Oncology Services",
+      "summary": "Precise staging at diagnosis, and structured assessment of how the disease is responding at every phase of treatment.",
+      "description": "Precise staging at diagnosis, and structured assessment of how the disease is responding at every phase of treatment.",
+      "covers": [
+        "Cancer staging and treatment response assessment",
+        "Treatment planning for newly diagnosed and recurrent / metastatic cancers",
+        "Follow-up care and cancer surveillance",
+        "Management of solid tumours and haematological malignancies"
+      ],
+      "tags": [],
+      "accent": "teal",
+      "orderIndex": 3,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "chemotherapy",
+      "slug": "chemotherapy",
+      "title": "Chemotherapy",
+      "group": "Cancer Treatments",
+      "summary": "Drug treatment that destroys or slows cancer cells — planned, monitored and supported at every cycle.",
+      "description": "Drug treatment that destroys or slows cancer cells — planned, monitored and supported at every cycle.",
+      "covers": [
+        "Chemotherapy",
+        "Neoadjuvant and adjuvant systemic therapy",
+        "Maintenance therapy",
+        "Supportive treatment for cancer- and treatment-related complications"
+      ],
+      "tags": [],
+      "accent": "plum",
+      "orderIndex": 4,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "immunotherapy",
+      "slug": "immunotherapy",
+      "title": "Immunotherapy",
+      "group": "Cancer Treatments",
+      "summary": "Treatment that helps your own immune system recognise and fight cancer cells.",
+      "description": "Treatment that helps your own immune system recognise and fight cancer cells.",
+      "covers": [
+        "Immunotherapy",
+        "Personalised treatment plans based on cancer type, stage, molecular profile and overall health",
+        "Supportive treatment for cancer- and treatment-related complications"
+      ],
+      "tags": [],
+      "accent": "teal",
+      "orderIndex": 5,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "targeted-therapy",
+      "slug": "targeted-therapy",
+      "title": "Targeted Therapy",
+      "group": "Cancer Treatments",
+      "summary": "Medicines designed around the specific molecular changes driving an individual cancer.",
+      "description": "Medicines designed around the specific molecular changes driving an individual cancer.",
+      "covers": [
+        "Targeted therapy",
+        "Genetic and molecular testing guidance, where indicated",
+        "Personalised treatment plans based on cancer type, stage, molecular profile and overall health"
+      ],
+      "tags": [],
+      "accent": "plum",
+      "orderIndex": 6,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "hormonal-endocrine-therapy",
+      "slug": "hormonal-endocrine-therapy",
+      "title": "Hormonal / Endocrine Therapy",
+      "group": "Cancer Treatments",
+      "summary": "Treatment for hormone-sensitive cancers that works by changing the body's hormonal environment.",
+      "description": "Treatment for hormone-sensitive cancers that works by changing the body's hormonal environment.",
+      "covers": [
+        "Hormonal / endocrine therapy",
+        "Maintenance therapy",
+        "Follow-up care and cancer surveillance"
+      ],
+      "tags": [],
+      "accent": "teal",
+      "orderIndex": 7,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "oral-anti-cancer-therapies",
+      "slug": "oral-anti-cancer-therapies",
+      "title": "Oral Anti-Cancer Therapies",
+      "group": "Cancer Treatments",
+      "summary": "Tablet-based cancer treatment, prescribed and monitored with the same rigour as clinic-based therapy.",
+      "description": "Tablet-based cancer treatment, prescribed and monitored with the same rigour as clinic-based therapy.",
+      "covers": [
+        "Oral anti-cancer therapies",
+        "Maintenance therapy",
+        "Supportive treatment for cancer- and treatment-related complications"
+      ],
+      "tags": [],
+      "accent": "plum",
+      "orderIndex": 8,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "cancer-pain-symptom-management",
+      "slug": "cancer-pain-symptom-management",
+      "title": "Cancer Pain & Symptom Management",
+      "group": "Cancer Care & Support",
+      "summary": "Anesthesia-led care for cancer-related pain, treatment side effects and other symptoms — managed alongside treatment, not after it.",
+      "description": "Anesthesia-led care for cancer-related pain, treatment side effects and other symptoms — managed alongside treatment, not after it.",
+      "covers": [
+        "Management of cancer-related pain and other symptoms",
+        "Management of chemotherapy and treatment-related side effects",
+        "Infection and treatment-related complication management",
+        "Anesthesia-led pain assessment and management"
+      ],
+      "tags": [],
+      "accent": "teal",
+      "orderIndex": 9,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "nutritional-lifestyle-guidance",
+      "slug": "nutritional-lifestyle-guidance",
+      "title": "Nutritional & Lifestyle Guidance",
+      "group": "Cancer Care & Support",
+      "summary": "Practical guidance on food, activity and daily habits during treatment — grounded, not faddish.",
+      "description": "Practical guidance on food, activity and daily habits during treatment — grounded, not faddish.",
+      "covers": [
+        "Nutritional and lifestyle guidance during cancer treatment",
+        "Counselling and guidance for patients and caregivers"
+      ],
+      "tags": [],
+      "accent": "plum",
+      "orderIndex": 10,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    },
+    {
+      "id": "supportive-palliative-care",
+      "slug": "supportive-palliative-care",
+      "title": "Supportive & Palliative Care",
+      "group": "Cancer Care & Support",
+      "summary": "Supportive and palliative care for advanced cancer — comfort, clarity and dignity for patients and families.",
+      "description": "Supportive and palliative care for advanced cancer — comfort, clarity and dignity for patients and families.",
+      "covers": [
+        "Supportive and palliative care for patients with advanced cancer",
+        "Counselling and guidance for patients and caregivers",
+        "End-of-life and palliative care planning when appropriate",
+        "Survivorship and long-term cancer care"
+      ],
+      "tags": [],
+      "accent": "teal",
+      "orderIndex": 11,
+      "createdAt": "2026-10-13T06:43:18.636Z",
+      "updatedAt": "2026-10-13T06:43:18.636Z"
+    }
+  ],
+  "consultations": [
+    {
+      "id": "consult-1791965051700-u3iz",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T08:04:11.700Z"
+    },
+    {
+      "id": "consult-1791963467896-60my",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T07:37:47.896Z"
+    },
+    {
+      "id": "consult-1791963434352-og3e",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T07:37:14.352Z"
+    }
+  ],
+  "contacts": [],
+  "siteDetails": {
+    "key": "main",
+    "name": "Onco Cure Clinic",
+    "tagline": "Care · Compassion · Cure",
+    "phone": "+91 96569 17798",
+    "phoneSecondary": "+91 87500 52773",
+    "whatsapp": "+919656917798",
+    "email": "oncocureclinic@gmail.com",
+    "address": {
+      "line1": "A-08, Upper Ground Floor",
+      "line2": "Omaxe India Trade Centre",
+      "city": "Greater Noida",
+      "state": "Uttar Pradesh",
+      "pincode": "201310",
+      "mapUrl": "https://maps.app.goo.gl/rSbwSjq1cgw98RBg7"
+    },
+    "hours": [
+      {
+        "id": "oncology",
+        "label": "Oncology",
+        "days": "Monday to Saturday",
+        "time": "6:30 pm – 9:30 pm"
+      },
+      {
+        "id": "pain",
+        "label": "Pain Clinic",
+        "days": "Monday to Saturday",
+        "time": "7:30 pm – 8:30 pm"
+      },
+      {
+        "id": "sunday",
+        "label": "Oncology & Pain",
+        "days": "Sunday",
+        "time": "10:00 am – 1:00 pm"
+      }
+    ],
+    "socials": {
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "twitter": "",
+      "youtube": ""
+    },
+    "metaDefaults": {
+      "title": "Onco Cure Clinic — Specialist Cancer Care in Greater Noida",
+      "description": "Onco Cure Clinic is a patient-centred cancer care clinic in Greater Noida, led by Medical Oncologist Dr Sahil Bambroo, offering compassionate, personalised and evidence-based oncology care.",
+      "keywords": "cancer doctor greater noida, oncologist noida, medical oncologist dr sahil bambroo"
+    },
+    "updatedAt": "2026-10-13T06:43:18.636Z"
+  },
+  "pageSeo": [
+    {
+      "id": "page-home",
+      "path": "/",
+      "label": "Home",
+      "metaTitle": "Onco Cure Clinic — Specialist Cancer Care in Greater Noida",
+      "metaKeywords": "oncologist greater noida, cancer doctor noida, medical oncology, chemotherapy, cancer clinic",
+      "metaDescription": "Onco Cure Clinic is a specialist oncology and pain clinic in Greater Noida, offering medical oncology and anesthesia-led pain care with a patient-first approach.",
+      "canonicalUrl": ""
+    },
+    {
+      "id": "page-about",
+      "path": "/about",
+      "label": "About Clinic",
+      "metaTitle": "About Onco Cure Clinic — Cancer Care & Clinical Philosophy",
+      "metaKeywords": "about onco cure, dr sahil bambroo, oncology team greater noida, cancer specialist background",
+      "metaDescription": "Learn about Onco Cure Clinic in Greater Noida, founded by Dr. Sahil Bambroo to provide compassionate, scientifically grounded oncology and supportive care.",
+      "canonicalUrl": ""
+    },
+    {
+      "id": "page-services",
+      "path": "/services",
+      "label": "Services",
+      "metaTitle": "Oncology Clinical Services — Onco Cure Clinic",
+      "metaKeywords": "chemotherapy, immunotherapy, targeted therapy, cancer second opinions, oncology daycare",
+      "metaDescription": "The complete scope of specialist cancer care at Onco Cure Clinic, Greater Noida — consultation, second opinions, systemic therapies, and pain management.",
+      "canonicalUrl": ""
+    },
+    {
+      "id": "page-blogs",
+      "path": "/blogs",
+      "label": "Articles & Blogs",
+      "metaTitle": "Cancer Education & Insights — Onco Cure Clinic",
+      "metaKeywords": "cancer articles, oncology advice, patient education, chemotherapy guide, cancer care blog",
+      "metaDescription": "Educational guides and specialist clinical insights on cancer symptoms, immunotherapy, targeted treatments, and recovery by Dr. Sahil Bambroo.",
+      "canonicalUrl": ""
+    },
+    {
+      "id": "page-contact",
+      "path": "/contact",
+      "label": "Contact & Appointments",
+      "metaTitle": "Contact Onco Cure Clinic — Book an Oncology Consultation",
+      "metaKeywords": "contact onco cure clinic, appointment cancer doctor greater noida, clinic address, hospital directions",
+      "metaDescription": "Get in touch with Onco Cure Clinic in Greater Noida. Schedule a first consultation or second opinion with medical oncologist Dr. Sahil Bambroo.",
+      "canonicalUrl": ""
+    }
+  ],
+  "adminAccount": {
+    "username": "admin",
+    "password": "admin123",
+    "name": "Dr. Apoorva",
+    "email": "dr.apoorva@oncocure.co.in",
+    "image": "/images/photo/drapoorva.jpeg",
+    "role": "Super Administrator"
+  }
+}

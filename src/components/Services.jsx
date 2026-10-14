@@ -31,7 +31,6 @@ export default function Services() {
   const listRef = useRef(null);
   const circleRef = useRef(null);
   const imgRefs = useRef([]);
-  const activeIndex = useRef(-1);
   // Small-screen cross-fade panel: the touch equivalent of the cursor circle.
   const panelRef = useRef(null);
   const panelImgRefs = useRef([]);

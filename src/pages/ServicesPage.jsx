@@ -104,7 +104,7 @@ export default function ServicesPage() {
           {items.map((s) => (
             <article key={s.slug} className="group h-full">
               <a
-                href={`#/services/${s.slug}`}
+                href={`/services/${s.slug}`}
                 className="flex h-full flex-col text-center sm:text-left"
                 aria-label={`${s.title} — read the full description`}
               >

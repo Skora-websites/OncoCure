@@ -112,9 +112,9 @@ export const doctors = [
     ],
     bio: 'Leads the clinic’s oncology service, covering the complete pathway from a new cancer diagnosis and treatment planning through to follow-up and survivorship care.',
     accent: 'plum',
-    photo: '/images/photo/drsahil.jpeg',
+    photo: '/images/photo/drsahil.jpg',
     photoAlt: 'Dr Sahil Bambroo, Medical Oncologist at Onco Cure Clinic.',
-    photoPos: '50% 25%',
+    photoPos: '50% 20%',
     photoNote: 'Official portrait supplied by the clinic.',
   },
   {
