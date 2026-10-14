@@ -684,6 +684,17 @@
   ],
   "consultations": [
     {
+      "id": "consult-1791977979765-lcy2",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T11:39:39.765Z"
+    },
+    {
       "id": "consult-1791975593546-vxob",
       "name": "Test Patient",
       "phone": "+91 9999999999",
@@ -795,6 +806,17 @@
     }
   ],
   "contacts": [
+    {
+      "id": "contact-1791977979770-lnbf",
+      "name": "Test Inquirer",
+      "email": "inquirer@example.com",
+      "phone": "+91 9876543210",
+      "subject": "Reports & Scan Review",
+      "message": "I would like to inquire about a PET-CT report review.",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T11:39:39.770Z"
+    },
     {
       "id": "contact-1791975593551-0g92",
       "name": "Test Inquirer",

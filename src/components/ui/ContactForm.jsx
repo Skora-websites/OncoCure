@@ -1,14 +1,5 @@
 import { useState } from 'react';
 
-const SUBJECT_OPTIONS = [
-  'General Inquiry',
-  'Second Opinion Guidance',
-  'Chemotherapy & Treatment Information',
-  'Reports & Scan Review',
-  'Pain Clinic & Symptom Care',
-  'Appointment & Schedule Inquiries',
-  'Other',
-];
 
 /**
  * ContactForm — Dedicated public contact & inquiry form.
@@ -138,24 +129,6 @@ export default function ContactForm({ className = '' }) {
           />
         </div>
 
-        {/* Email Address */}
-        <div className="sm:col-span-1">
-          <label htmlFor="contact-email" className="label-sm block text-ink-70 mb-1.5 font-medium">
-            Email Address <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="email"
-            id="contact-email"
-            name="email"
-            autoComplete="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="you@example.com"
-            className={field}
-            required
-          />
-        </div>
-
         {/* Phone Number */}
         <div className="sm:col-span-1">
           <label htmlFor="contact-phone" className="label-sm block text-ink-70 mb-1.5 font-medium">
@@ -173,24 +146,22 @@ export default function ContactForm({ className = '' }) {
           />
         </div>
 
-        {/* Subject / Topic */}
-        <div className="sm:col-span-1">
-          <label htmlFor="contact-subject" className="label-sm block text-ink-70 mb-1.5 font-medium">
-            Topic of Inquiry
+        {/* Email Address */}
+        <div className="sm:col-span-2">
+          <label htmlFor="contact-email" className="label-sm block text-ink-70 mb-1.5 font-medium">
+            Email Address <span className="text-red-500">*</span>
           </label>
-          <select
-            id="contact-subject"
-            name="subject"
-            value={formData.subject}
+          <input
+            type="email"
+            id="contact-email"
+            name="email"
+            autoComplete="email"
+            value={formData.email}
             onChange={handleChange}
-            className={`${field} cursor-pointer`}
-          >
-            {SUBJECT_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
+            placeholder="you@example.com"
+            className={field}
+            required
+          />
         </div>
 
         {/* Message */}
