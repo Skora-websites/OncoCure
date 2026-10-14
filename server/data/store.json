@@ -453,7 +453,9 @@
       "accent": "plum",
       "orderIndex": 0,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-consultation.jpg",
+      "imageAlt": "An oncologist talking through results with a patient at a consultation."
     },
     {
       "id": "second-opinion-review",
@@ -471,7 +473,9 @@
       "accent": "teal",
       "orderIndex": 1,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-second-opinion.jpg",
+      "imageAlt": "Two clinicians discussing a case together at a review meeting."
     },
     {
       "id": "personalised-treatment-planning",
@@ -490,7 +494,9 @@
       "accent": "plum",
       "orderIndex": 2,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-treatment-planning.jpg",
+      "imageAlt": "A clinician writing out a personalised treatment plan."
     },
     {
       "id": "staging-response-assessment",
@@ -509,7 +515,9 @@
       "accent": "teal",
       "orderIndex": 3,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-staging.jpg",
+      "imageAlt": "Diagnostic imaging being reviewed for staging and response assessment."
     },
     {
       "id": "chemotherapy",
@@ -528,7 +536,9 @@
       "accent": "plum",
       "orderIndex": 4,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-chemotherapy.jpg",
+      "imageAlt": "Chemotherapy being prepared and administered in a day-care unit."
     },
     {
       "id": "immunotherapy",
@@ -546,7 +556,9 @@
       "accent": "teal",
       "orderIndex": 5,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-immunotherapy.jpg",
+      "imageAlt": "An intravenous drip set up for an infusion treatment."
     },
     {
       "id": "targeted-therapy",
@@ -564,7 +576,9 @@
       "accent": "plum",
       "orderIndex": 6,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-targeted.jpg",
+      "imageAlt": "Laboratory research supporting molecularly targeted therapy."
     },
     {
       "id": "hormonal-endocrine-therapy",
@@ -582,7 +596,9 @@
       "accent": "teal",
       "orderIndex": 7,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-hormonal.jpg",
+      "imageAlt": "Tablet medication used in long-term hormonal therapy."
     },
     {
       "id": "oral-anti-cancer-therapies",
@@ -600,7 +616,9 @@
       "accent": "plum",
       "orderIndex": 8,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-oral.jpg",
+      "imageAlt": "Oral anti-cancer medication as prescribed tablets."
     },
     {
       "id": "cancer-pain-symptom-management",
@@ -619,7 +637,9 @@
       "accent": "teal",
       "orderIndex": 9,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-pain.jpg",
+      "imageAlt": "A patient's hand held gently in a clinician's — quiet reassurance."
     },
     {
       "id": "nutritional-lifestyle-guidance",
@@ -636,7 +656,9 @@
       "accent": "plum",
       "orderIndex": 10,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-nutrition.jpg",
+      "imageAlt": "Fresh vegetables — practical nutrition during treatment."
     },
     {
       "id": "supportive-palliative-care",
@@ -655,10 +677,78 @@
       "accent": "teal",
       "orderIndex": 11,
       "createdAt": "2026-10-13T06:43:18.636Z",
-      "updatedAt": "2026-10-13T06:43:18.636Z"
+      "updatedAt": "2026-10-13T06:43:18.636Z",
+      "image": "/images/photo/svc-palliative.jpg",
+      "imageAlt": "A clinician in a white coat gently holding a patient's hand."
     }
   ],
   "consultations": [
+    {
+      "id": "consult-1791974040977-2yyi",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T10:34:00.977Z"
+    },
+    {
+      "id": "consult-1791973766821-4p6z",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T10:29:26.821Z"
+    },
+    {
+      "id": "consult-1791973526173-uu1r",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T10:25:26.173Z"
+    },
+    {
+      "id": "consult-1791972617205-0epj",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T10:10:17.205Z"
+    },
+    {
+      "id": "consult-1791972475508-4l7j",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T10:07:55.508Z"
+    },
+    {
+      "id": "consult-1791972345306-5y5k",
+      "name": "Test Patient",
+      "phone": "+91 9999999999",
+      "email": "",
+      "concern": "Medical Oncology",
+      "message": "Initial consultation request",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-14T10:05:45.306Z"
+    },
     {
       "id": "consult-1791965051700-u3iz",
       "name": "Test Patient",

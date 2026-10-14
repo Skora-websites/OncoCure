@@ -58,12 +58,14 @@ export default function Footer() {
           
           {/* Column 1: Brand & Identity */}
           <div className="lg:col-span-4">
-            <img
-              src={clinic.logo.full}
-              alt={clinic.name}
-              className="h-11 w-auto brightness-0 invert select-none"
-              draggable="false"
-            />
+            <a href="/" className="inline-block" aria-label="Go to homepage">
+              <img
+                src={clinic.logo.full}
+                alt={clinic.name}
+                className="h-11 w-auto brightness-0 invert select-none"
+                draggable="false"
+              />
+            </a>
             <p className="mt-4 max-w-sm text-[0.8125rem] leading-[1.75] text-cream/65">
               {footer.blurb}
             </p>

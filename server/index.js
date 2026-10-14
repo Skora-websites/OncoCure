@@ -97,6 +97,28 @@ try {
   // Read-only filesystem in serverless environments (e.g. Vercel)
 }
 
+// Read .env file if present in project root
+try {
+  const envPath = path.join(ROOT_DIR, '.env');
+  if (fs.existsSync(envPath)) {
+    const raw = fs.readFileSync(envPath, 'utf-8');
+    for (const line of raw.split(/\r?\n/)) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const eqIdx = trimmed.indexOf('=');
+      if (eqIdx > 0) {
+        const key = trimmed.slice(0, eqIdx).trim();
+        const val = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, '');
+        if (!process.env[key]) {
+          process.env[key] = val;
+        }
+      }
+    }
+  }
+} catch {
+  // Silent fallback
+}
+
 const app = express();
 const PORT = process.env.PORT || 5055;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/oncocure';
@@ -107,7 +129,8 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Ensure DB is connected in serverless environments before handling requests
 app.use(async (_req, _res, next) => {
-  if (process.env.MONGODB_URI && !isMongoConnected) {
+  if (process.env.MONGODB_URI && (!isMongoConnected || mongoose.connection.readyState !== 1)) {
+    isMongoConnected = false;
     await initMongo().catch(() => {});
   }
   next();
@@ -141,6 +164,22 @@ function loadLocalStore() {
       if (!localStore.adminAccount) {
         localStore.adminAccount = { ...initialAdminAccount };
         saveLocalStore();
+      }
+      if (Array.isArray(localStore.services)) {
+        let changed = false;
+        localStore.services = localStore.services.map((s, idx) => {
+          const init = initialServices.find((is) => is.slug === s.slug) || initialServices[idx];
+          if (!s.image && init?.image) {
+            changed = true;
+            return {
+              ...s,
+              image: init.image,
+              imageAlt: s.imageAlt || init.imageAlt || s.title,
+            };
+          }
+          return s;
+        });
+        if (changed) saveLocalStore();
       }
     } else {
       seedInitialLocalStore();
@@ -196,6 +235,8 @@ function seedInitialLocalStore() {
     covers: s.covers || [],
     tags: s.tags || [],
     accent: s.accent || 'plum',
+    image: s.image || '/images/photo/svc-consultation.jpg',
+    imageAlt: s.imageAlt || s.title,
     orderIndex: idx,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -240,6 +281,7 @@ function seedInitialLocalStore() {
 }
 
 let mongoConnectingPromise = null;
+let lastMongoError = null;
 
 async function initMongo() {
   if (isMongoConnected && mongoose.connection.readyState === 1) return;
@@ -248,9 +290,11 @@ async function initMongo() {
   mongoConnectingPromise = (async () => {
     try {
       mongoose.set('strictQuery', false);
-      await mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 3000 });
+      const uri = process.env.MONGODB_URI || MONGODB_URI;
+      await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
       isMongoConnected = true;
-      console.log('✅ Connected to MongoDB at', MONGODB_URI);
+      lastMongoError = null;
+      console.log('✅ Connected to MongoDB at', uri.replace(/:([^@]+)@/, ':****@'));
 
       // Seed Mongo if empty
       const blogCount = await Blog.countDocuments();
@@ -282,6 +326,7 @@ async function initMongo() {
       }
     } catch (err) {
       isMongoConnected = false;
+      lastMongoError = err.message;
       console.log('ℹ️ MongoDB server not reachable (' + err.message + '). Using persistent JSON store fallback.');
       loadLocalStore();
     } finally {
@@ -375,6 +420,8 @@ app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
     storage: isMongoConnected ? 'mongodb' : 'json_store',
+    hasMongoUri: Boolean(process.env.MONGODB_URI),
+    mongoError: isMongoConnected ? null : lastMongoError,
     timestamp: new Date().toISOString(),
   });
 });

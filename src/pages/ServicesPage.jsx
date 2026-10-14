@@ -1,44 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import PageHero from '../components/ui/PageHero.jsx';
-import Section, { SectionIntro } from '../components/ui/Blocks.jsx';
+import Section from '../components/ui/Blocks.jsx';
 import { RevealBlock, StaggerGroup, applyTouchImageSettles } from '../components/anim/SplitReveal.jsx';
 import Pagination from '../components/ui/Pagination.jsx';
 import { useSeo } from '../lib/seo.js';
 import { listServices, PAGE_SIZE } from '../lib/contentApi.js';
-import { parseHash } from '../lib/hashRoute.js';
+import { useHashLocation } from '../lib/hashRoute.js';
 import { clinic } from '../data/clinic.js';
 
-/**
- * ---------------------------------------------------------------------------
- * SERVICES PAGE (#/services)
- * ---------------------------------------------------------------------------
- * Twelve headline services as VERTICAL cards — image → title → description,
- * three per desktop row, two on sm, one on mobile. Six per page with offset
- * pagination carried in the hash (`#/services?page=2`). Each card opens the
- * service's detail page.
- *
- * Card imagery is the agreed stock pool — every card carries a visible
- * placeholder tag until the clinic supplies approved visuals.
- */
-
-/* Read ?page= from the hash (1-based). */
-const pageFromHash = () => {
-  const { params } = parseHash();
-  const n = parseInt(params.get('page') ?? '1', 10);
-  return Number.isFinite(n) && n > 0 ? n : 1;
-};
-
 export default function ServicesPage() {
-  const [page, setPage] = useState(pageFromHash);
+  const { params } = useHashLocation();
+  const pageParam = parseInt(params.get('page') ?? '1', 10);
+  const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
   const [data, setData] = useState(null);
   const gridRef = useRef(null);
-
-  // Keep ?page= honest when the hash changes (nav away and back).
-  useEffect(() => {
-    const onHash = () => setPage(pageFromHash());
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
-  }, []);
 
   const offset = (page - 1) * PAGE_SIZE;
 
@@ -87,17 +62,11 @@ export default function ServicesPage() {
       />
 
       <Section tone="cream" spacing="normal">
-        <SectionIntro
-          label="The Full List"
-          title="Every service, plainly described"
-          intro="Twelve headline services, each opening onto a fuller description of what it involves. Six are shown per page."
-        />
-
         <div ref={gridRef}>
         <StaggerGroup
           key={page}
           watch={items.length}
-          className="mt-14 grid gap-8 sm:grid-cols-2 lg:mt-18 lg:grid-cols-3 lg:gap-9"
+          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-9"
           stagger={0.07}
           delay={0.05}
         >

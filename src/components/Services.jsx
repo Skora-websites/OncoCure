@@ -5,6 +5,17 @@ import { services } from '../data/clinic.js';
 import Section, { SectionIntro } from './ui/Blocks.jsx';
 import { RevealBlock, StaggerGroup } from './anim/SplitReveal.jsx';
 import PillButton from './ui/PillButton.jsx';
+import { navigate } from '../lib/hashRoute.js';
+
+/** Mapping of home headline services to their detail page slugs */
+const SERVICE_SLUG_MAP = {
+  consultation: 'cancer-consultation-evaluation',
+  planning: 'personalised-treatment-planning',
+  treatments: 'chemotherapy',
+  'pain-symptoms': 'cancer-pain-symptom-management',
+  support: 'supportive-palliative-care',
+  followup: 'staging-response-assessment',
+};
 
 /** One distinct image per step, shown in the cursor-following circle. */
 const stepImages = [
@@ -306,11 +317,18 @@ export default function Services() {
         <div ref={listRef}>
           <StaggerGroup className="mt-16 border-t border-cream/20 lg:mt-20" stagger={0.08}>
           {services.map((service, i) => {
+            const slug = SERVICE_SLUG_MAP[service.id];
+            const href = slug ? `/services/${slug}` : '/services';
             return (
               <article
                 key={service.id}
-                className="group relative grid grid-cols-[auto_1fr] items-start gap-x-5 border-b border-cream/20 py-8 transition-colors duration-500 hover:bg-plum-900/55 sm:gap-x-8 sm:py-10 lg:grid-cols-[auto_minmax(0,26rem)_1fr_auto] lg:items-center lg:gap-10"
+                className="group relative grid grid-cols-[auto_1fr] items-start gap-x-5 border-b border-cream/20 py-8 transition-colors duration-500 hover:bg-plum-900/55 sm:gap-x-8 sm:py-10 lg:grid-cols-[auto_minmax(0,26rem)_1fr_auto] lg:items-center lg:gap-10 cursor-pointer"
               >
+                <a
+                  href={href}
+                  className="absolute inset-0 z-10"
+                  aria-label={`${service.title} — view service details`}
+                />
                 <span className="label-sm relative pt-1 text-cream/45 transition-colors duration-500 group-hover:text-cream/80 lg:pt-0">
                   {String(i + 1).padStart(2, '0')}
                 </span>
@@ -339,11 +357,16 @@ export default function Services() {
           className="mt-12 flex flex-col items-center gap-5 text-center"
           y={20}
         >
-          <PillButton tone="light" arrow>
+          <PillButton
+            tone="light"
+            arrow
+            interactive
+            onClick={() => navigate('/services')}
+          >
             All Services
           </PillButton>
           <p className="max-w-md text-sm leading-relaxed text-cream/55">
-            The complete list of services offered at the clinic is set out below.
+            Explore our complete range of specialized oncology and pain management services.
           </p>
         </RevealBlock>
       </div>

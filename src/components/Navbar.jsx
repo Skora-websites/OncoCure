@@ -75,7 +75,7 @@ export default function Navbar() {
         <div className="mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12">
           <div className="flex h-22 items-center justify-between gap-6 sm:h-22">
             {/* Wordmark — the supplied brand artwork, not re-typed text */}
-            <a href="#main" className="shrink-0">
+            <a href="/" className="shrink-0" aria-label="Go to homepage">
               <img
                 src={clinic.logo.full}
                 alt={`${clinic.name}`}

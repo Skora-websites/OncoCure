@@ -264,7 +264,7 @@ export default function BlogsTab() {
                       <td className="px-6 py-4 text-right">
                         <div className="inline-flex items-center gap-2">
                           <a
-                            href={`/blog/${item.slug}`}
+                            href={`/blogs/${item.slug}`}
                             target="_blank"
                             rel="noreferrer"
                             className="rounded-lg p-1.5 text-slate-400 hover:text-teal-800 hover:bg-slate-50 transition"

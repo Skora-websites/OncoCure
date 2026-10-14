@@ -41,13 +41,17 @@ export default function BlogsPage() {
   const debounceRef = useRef(null);
 
   useEffect(() => {
-    const onHash = () => {
+    const onLocationChange = () => {
       const s = stateFromHash();
       setQ(s.q);
       setPage(s.page);
     };
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
+    window.addEventListener('popstate', onLocationChange);
+    window.addEventListener('hashchange', onLocationChange);
+    return () => {
+      window.removeEventListener('popstate', onLocationChange);
+      window.removeEventListener('hashchange', onLocationChange);
+    };
   }, []);
 
   const offset = (page - 1) * PAGE_SIZE;

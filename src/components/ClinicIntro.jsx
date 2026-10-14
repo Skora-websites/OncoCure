@@ -137,7 +137,7 @@ export default function ClinicIntro() {
             {/* Story Link */}
             <div className="pt-1">
               <a
-                href="#/about"
+                href="/about"
                 className="group inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-plum-700 transition-colors hover:text-plum-900"
               >
                 <span>Explore our background &amp; clinical story</span>
