@@ -25,13 +25,47 @@ export default function AdminPage() {
     role: 'Admin',
   });
 
-  // Fetch admin profile
+  // Transparently attach Bearer token and credentials to all admin API calls
+  useEffect(() => {
+    const originalFetch = window.fetch;
+    window.fetch = async (input, init = {}) => {
+      const url = typeof input === 'string' ? input : input instanceof URL ? input.href : (input && input.url) || '';
+      if (typeof url === 'string' && url.includes('/api/')) {
+        const token = localStorage.getItem('oncocure_admin_token');
+        const headers = new Headers(init.headers || {});
+        if (token && !headers.has('Authorization')) {
+          headers.set('Authorization', `Bearer ${token}`);
+        }
+        init = { ...init, headers, credentials: init.credentials || 'include' };
+      }
+      const response = await originalFetch(input, init);
+      if (response.status === 401 && typeof url === 'string' && !url.includes('/api/admin/login')) {
+        localStorage.removeItem('oncocure_admin_auth');
+        localStorage.removeItem('oncocure_admin_token');
+        setIsAuthenticated(false);
+      }
+      return response;
+    };
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, []);
+
+  // Fetch admin profile and verify session
   useEffect(() => {
     if (!isAuthenticated) return;
     fetch('/api/admin/profile')
-      .then((r) => r.json())
+      .then((r) => {
+        if (r.status === 401) {
+          localStorage.removeItem('oncocure_admin_auth');
+          localStorage.removeItem('oncocure_admin_token');
+          setIsAuthenticated(false);
+          return null;
+        }
+        return r.json();
+      })
       .then((data) => {
-        if (data.name) {
+        if (data && data.name) {
           setAdminUser({
             name: data.name,
             username: data.username || 'admin',

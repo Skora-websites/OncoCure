@@ -293,9 +293,35 @@ async function initMongo() {
 }
 
 // -----------------------------------------------------------------------------
-// Authentication Middleware (Token & Cookie support)
+// Authentication Middleware (Stateless HMAC-signed Token & Cookie support)
 // -----------------------------------------------------------------------------
-const activeAdminTokens = new Set();
+const AUTH_SECRET = process.env.ADMIN_AUTH_SECRET || 'oncocure_secret_admin_token_2026';
+
+let adminLastLogoutAt = 0;
+
+function signToken(payload) {
+  const data = Buffer.from(JSON.stringify({ ...payload, iat: Date.now() })).toString('base64url');
+  const hmac = crypto.createHmac('sha256', AUTH_SECRET).update(data).digest('base64url');
+  return `${data}.${hmac}`;
+}
+
+function verifyToken(token) {
+  if (!token || typeof token !== 'string') return null;
+  const parts = token.split('.');
+  if (parts.length !== 2) return null;
+  const [data, hmac] = parts;
+  try {
+    const expectedHmac = crypto.createHmac('sha256', AUTH_SECRET).update(data).digest('base64url');
+    if (hmac.length !== expectedHmac.length) return null;
+    if (!crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(expectedHmac))) return null;
+    const payload = JSON.parse(Buffer.from(data, 'base64url').toString('utf-8'));
+    if (payload.exp && Date.now() > payload.exp) return null;
+    if (payload.iat && payload.iat < adminLastLogoutAt) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
 
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization || '';
@@ -305,8 +331,12 @@ function authMiddleware(req, res, next) {
   const cookieToken = cookieMatch ? cookieMatch[1] : '';
 
   const token = bearerToken || cookieToken;
-  if (token && activeAdminTokens.has(token)) {
-    return next();
+  if (token) {
+    const verified = verifyToken(token);
+    if (verified) {
+      req.adminUser = verified;
+      return next();
+    }
   }
   return res.status(401).json({ error: 'Unauthorized: Administrator authentication required.' });
 }
@@ -1179,11 +1209,14 @@ app.post('/api/admin/login', async (req, res) => {
     }
 
     if (acc && acc.username.toLowerCase() === u && acc.password === p) {
-      const token = crypto.randomBytes(32).toString('hex');
-      activeAdminTokens.add(token);
+      const token = signToken({
+        username: acc.username,
+        role: acc.role,
+        exp: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 days valid
+      });
       res.setHeader(
         'Set-Cookie',
-        `oncocure_admin_token=${token}; Path=/; HttpOnly; SameSite=Lax`
+        `oncocure_admin_token=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60}`
       );
       return res.json({
         success: true,
@@ -1204,18 +1237,8 @@ app.post('/api/admin/login', async (req, res) => {
   }
 });
 
-app.post('/api/admin/logout', (req, res) => {
-  const authHeader = req.headers.authorization || '';
-  const bearerToken = authHeader.replace(/^Bearer\s+/i, '').trim();
-  const cookieHeader = req.headers.cookie || '';
-  const cookieMatch = cookieHeader.match(/oncocure_admin_token=([^;]+)/);
-  const cookieToken = cookieMatch ? cookieMatch[1] : '';
-  const token = bearerToken || cookieToken;
-
-  if (token) {
-    activeAdminTokens.delete(token);
-  }
-
+app.post('/api/admin/logout', (_req, res) => {
+  adminLastLogoutAt = Date.now();
   res.setHeader(
     'Set-Cookie',
     'oncocure_admin_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax'
