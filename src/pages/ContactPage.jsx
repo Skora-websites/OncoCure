@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { contactPage, consult, cta } from '../data/clinic.js';
 import { useClinic } from '../lib/clinicApi.js';
 import PageHero from '../components/ui/PageHero.jsx';
+import ContactForm from '../components/ui/ContactForm.jsx';
 import ConsultationForm from '../components/ui/ConsultationForm.jsx';
 import { useSeo } from '../lib/seo.js';
 import {
@@ -27,6 +28,7 @@ import {
  */
 export default function ContactPage() {
   const clinic = useClinic();
+  const [formMode, setFormMode] = useState('contact'); // 'contact' | 'consultation'
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -274,23 +276,68 @@ export default function ContactPage() {
                   className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-plum-700 via-teal-600 to-transparent"
                 />
 
-                {/* Form Header */}
-                <div className="border-b border-line/70 pb-5 sm:pb-6">
-                  <span className="label-sm inline-flex items-center gap-2 font-semibold text-plum-700">
-                    <span className="h-1.5 w-1.5 rounded-full bg-plum-600 animate-pulse" />
-                    APPOINTMENT &amp; SECOND OPINION DESK
-                  </span>
-                  <h2 className="h-serif mt-2 text-[clamp(1.75rem,3.2vw,2.35rem)] leading-[1.12] text-ink">
-                    {contactPage.formHeading}
-                  </h2>
-                  <p className="mt-2 max-w-2xl text-[0.9375rem] leading-[1.7] text-ink-70">
-                    {consult.intro}
-                  </p>
+                {/* Mode Switcher Tabs */}
+                <div className="flex flex-wrap items-center gap-2 border-b border-line/70 pb-4">
+                  <button
+                    type="button"
+                    onClick={() => setFormMode('contact')}
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-all ${
+                      formMode === 'contact'
+                        ? 'bg-plum-800 text-cream shadow-xs'
+                        : 'border border-line bg-paper/70 text-ink-70 hover:border-plum-300 hover:text-ink'
+                    }`}
+                  >
+                    <EnvelopeSimple weight="bold" className="h-3.5 w-3.5" />
+                    <span>Send a Message</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormMode('consultation')}
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-all ${
+                      formMode === 'consultation'
+                        ? 'bg-teal-800 text-cream shadow-xs'
+                        : 'border border-line bg-paper/70 text-ink-70 hover:border-teal-300 hover:text-ink'
+                    }`}
+                  >
+                    <Clock weight="bold" className="h-3.5 w-3.5" />
+                    <span>Book Consultation</span>
+                  </button>
                 </div>
 
-                {/* The Form (grows flexibly inside the container) */}
+                {/* Form Header */}
+                <div className="border-b border-line/70 py-4 sm:py-5">
+                  {formMode === 'contact' ? (
+                    <>
+                      <span className="label-sm inline-flex items-center gap-2 font-semibold text-plum-700">
+                        <span className="h-1.5 w-1.5 rounded-full bg-plum-600 animate-pulse" />
+                        GENERAL &amp; PATIENT INQUIRY DESK
+                      </span>
+                      <h2 className="h-serif mt-2 text-[clamp(1.75rem,3.2vw,2.35rem)] leading-[1.12] text-ink">
+                        Send us a message
+                      </h2>
+                      <p className="mt-2 max-w-2xl text-[0.9375rem] leading-[1.7] text-ink-70">
+                        Have a question about cancer care, reports review, second opinions, or clinic timings? Fill in the details below and our administrative desk will respond to you promptly.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <span className="label-sm inline-flex items-center gap-2 font-semibold text-teal-800">
+                        <span className="h-1.5 w-1.5 rounded-full bg-teal-600 animate-pulse" />
+                        APPOINTMENT &amp; SECOND OPINION DESK
+                      </span>
+                      <h2 className="h-serif mt-2 text-[clamp(1.75rem,3.2vw,2.35rem)] leading-[1.12] text-ink">
+                        Request a clinical consultation
+                      </h2>
+                      <p className="mt-2 max-w-2xl text-[0.9375rem] leading-[1.7] text-ink-70">
+                        Share your preferred consultation details and our clinic team will contact you back to confirm your appointment slot with Dr. Sahil Bambroo or Dr. Apurva Sadhoo.
+                      </p>
+                    </>
+                  )}
+                </div>
+
+                {/* The Form */}
                 <div className="grow py-5 sm:py-6">
-                  <ConsultationForm />
+                  {formMode === 'contact' ? <ContactForm /> : <ConsultationForm />}
                 </div>
 
                 {/* Reassurance Chips at Base */}

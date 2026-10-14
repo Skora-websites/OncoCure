@@ -65,6 +65,25 @@ test('Public consultation form submission works without authentication', async (
   assert.equal(data.name, 'Test Patient');
 });
 
+test('Public contact form submission works without authentication', async () => {
+  const res = await fetch(`${baseUrl}/api/contacts`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: 'Test Inquirer',
+      email: 'inquirer@example.com',
+      phone: '+91 9876543210',
+      subject: 'Reports & Scan Review',
+      message: 'I would like to inquire about a PET-CT report review.',
+    }),
+  });
+  assert.equal(res.status, 201);
+  const data = await res.json();
+  assert.equal(data.name, 'Test Inquirer');
+  assert.equal(data.subject, 'Reports & Scan Review');
+  assert.equal(data.status, 'new');
+});
+
 test('Admin login rejects invalid credentials', async () => {
   const res = await fetch(`${baseUrl}/api/admin/login`, {
     method: 'POST',
