@@ -29,6 +29,11 @@ export default function AdminLogin({ onLoginSuccess }) {
         return;
       }
 
+      if (res.status === 404 || res.status === 502 || res.status === 503) {
+        setError(`Backend API server unreachable (${res.status} on /api/admin/login). Please ensure the Node.js service is running and reverse-proxied.`);
+        return;
+      }
+
       const data = await res.json().catch(() => ({}));
       setError(data.error || 'Invalid administrator credentials. Please check your username and password.');
     } catch {

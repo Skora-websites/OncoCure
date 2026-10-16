@@ -12,6 +12,11 @@
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
   
+  # Forward /api requests to local Node.js server on port 5055 if mod_proxy is enabled
+  <IfModule mod_proxy.c>
+    RewriteRule ^api/(.*) http://127.0.0.1:5055/api/$1 [P,L]
+  </IfModule>
+
   # Forward API requests if proxying on same server (optional fallback)
   RewriteCond %{REQUEST_URI} ^/api [NC]
   RewriteRule ^ - [L]
