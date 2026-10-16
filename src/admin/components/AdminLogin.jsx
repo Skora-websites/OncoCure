@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 export default function AdminLogin({ onLoginSuccess }) {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -41,12 +41,6 @@ export default function AdminLogin({ onLoginSuccess }) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleFillDemo = () => {
-    setUsername('admin');
-    setPassword('admin123');
-    setError('');
   };
 
   return (
@@ -191,17 +185,6 @@ export default function AdminLogin({ onLoginSuccess }) {
                     </svg>
                   </div>
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-1">
-                <button
-                  type="button"
-                  onClick={handleFillDemo}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-stone-50 px-2.5 py-1 text-[11px] font-mono text-stone-600 hover:bg-stone-100 transition"
-                  title="Autofill admin / admin123"
-                >
-                  <span>Preset Desk Access (admin / admin123)</span>
-                </button>
               </div>
 
               <button
