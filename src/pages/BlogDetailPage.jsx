@@ -85,6 +85,7 @@ export default function BlogDetailPage({ slug }) {
     description: seoDescription,
     keywords: seoKeywords,
     path: `/blogs/${slug}`,
+    canonicalUrl: post?.canonicalUrl,
     image: post?.image,
     jsonLd: post
       ? [

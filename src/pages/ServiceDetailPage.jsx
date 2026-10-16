@@ -77,6 +77,7 @@ export default function ServiceDetailPage({ slug }) {
     title: seoTitle,
     description: seoDescription,
     keywords: seoKeywords,
+    canonicalUrl: service?.canonicalUrl,
     path: `/services/${slug}`,
     image: service?.image || '/images/photo/consult-care.jpg',
     jsonLd: service

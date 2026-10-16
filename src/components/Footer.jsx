@@ -19,7 +19,7 @@ const NAV_HREFS = {
  */
 export default function Footer() {
   const clinic = useClinic();
-  const whatsappDigits = (clinic.contact.whatsapp || '919656917798').replace(/\D/g, '');
+  const whatsappDigits = (clinic.contact.whatsapp || '918750052773').replace(/\D/g, '');
 
   const scrollToTop = () => {
     window.dispatchEvent(new Event('occ:scroll-top'));

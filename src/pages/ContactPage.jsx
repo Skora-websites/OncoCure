@@ -43,7 +43,7 @@ export default function ContactPage() {
   });
 
   const phones = clinic.contact?.phones || [];
-  const whatsappDigits = (clinic.contact?.whatsapp || '919656917798').replace(/\D/g, '');
+  const whatsappDigits = (clinic.contact?.whatsapp || '918750052773').replace(/\D/g, '');
   const email = clinic.contact?.email || 'oncocureclinic@gmail.com';
   const addressLines = clinic.contact?.addressLines || [
     'A-08, Upper Ground Floor',

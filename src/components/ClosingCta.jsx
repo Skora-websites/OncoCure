@@ -13,7 +13,7 @@ export default function ClosingCta() {
   const clinic = useClinic();
   const primaryPhone = clinic.contact.phones?.[0]?.tel || clinic.contact.primaryPhone || '+919656917798';
   const displayPhone = clinic.contact.phones?.[0]?.display || clinic.contact.primaryPhone || '+91 96569 17798';
-  const whatsappDigits = (clinic.contact.whatsapp || '919656917798').replace(/\D/g, '');
+  const whatsappDigits = (clinic.contact.whatsapp || '918750052773').replace(/\D/g, '');
 
   return (
     <Section id="contact" tone="cream" spacing="tall">

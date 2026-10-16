@@ -177,6 +177,7 @@ export default function BlogsTab() {
                   <th className="px-6 py-4">Category</th>
                   <th className="px-6 py-4">Status</th>
                   <th className="px-6 py-4">SEO Health</th>
+                  <th className="px-6 py-4">Canonical</th>
                   <th className="px-6 py-4">Read Time</th>
                   <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
@@ -251,6 +252,27 @@ export default function BlogsTab() {
                         ) : (
                           <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 text-[10px] font-medium text-slate-600">
                             Auto Defaults
+                          </span>
+                        )}
+                      </td>
+
+                      {/* Canonical URL */}
+                      <td className="px-6 py-4">
+                        {item.canonicalUrl ? (
+                          <a
+                            href={item.canonicalUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-[11px] text-teal-800 underline decoration-teal-200 decoration-2 underline-offset-2 hover:text-teal-900"
+                            title={item.canonicalUrl}
+                          >
+                            {item.canonicalUrl.length > 34
+                              ? item.canonicalUrl.slice(0, 30) + '…'
+                              : item.canonicalUrl}
+                          </a>
+                        ) : (
+                          <span className="font-mono text-[11px] text-slate-400">
+                            /blog/{item.slug}
                           </span>
                         )}
                       </td>

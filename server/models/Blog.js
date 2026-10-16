@@ -19,6 +19,7 @@ const BlogSchema = new mongoose.Schema(
     metaTitle: { type: String, default: null, maxlength: 255 },
     metaKeywords: { type: String, default: null, maxlength: 500 },
     metaDescription: { type: String, default: null, maxlength: 500 },
+    canonicalUrl: { type: String, default: null, maxlength: 500 },
   },
   { timestamps: true }
 );

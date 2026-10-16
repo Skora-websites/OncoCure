@@ -118,7 +118,7 @@ export default function BlogsPage() {
         titleAccent="gently shared."
         description="Answers to the questions families ask us most — about diagnosis, therapies, nutrition and comfort — explained the way we would explain them in person."
         image="/images/photo/reception-plants.jpg"
-        imageAlt="A quiet corner of the clinic with plants."
+        imageAlt="A quiet corner of the clinic reception with comfortable seating."
       />
 
       <Section tone="cream" spacing="normal">

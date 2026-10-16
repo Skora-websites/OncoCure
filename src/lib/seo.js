@@ -91,7 +91,9 @@ export function useSeo(seo = null) {
 
     const applyMetadata = (title, description, keywords, canonicalHref) => {
       if (!live) return;
-      document.title = title;
+      // Routes that pass only a `path` (e.g. home) carry no title — fall back
+      // to the site's canonical title rather than writing the string "undefined".
+      document.title = title || HOME.title;
       upsertMeta('name', 'description', description);
 
       const kw = (keywords || '').trim();

@@ -136,3 +136,142 @@ test('Admin login succeeds with valid credentials and issues session token and c
   });
   assert.equal(postLogoutRes.status, 401);
 });
+
+test('Blog SEO canonicalUrl round-trips through POST / PUT / GET', async () => {
+  const loginRes = await fetch(`${baseUrl}/api/admin/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: 'admin', password: 'admin123' }),
+  });
+  assert.equal(loginRes.status, 200);
+  const loginData = await loginRes.json();
+  assert.ok(loginData.token);
+
+  const targetCanonical = 'https://oncocure.co.in/blogs/canonical-test-article';
+
+  // Create a blog with a canonical URL
+  const createRes = await fetch(`${baseUrl}/api/blogs`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${loginData.token}` },
+    body: JSON.stringify({
+      title: 'Canonical Test Article',
+      slug: 'canonical-test-article',
+      excerpt: 'A blog created to exercise the canonicalUrl SEO field.',
+      content: '<p>Canonical round-trip test.</p>',
+      category: 'Understanding Cancer',
+      status: 'published',
+      canonicalUrl: targetCanonical,
+    }),
+  });
+  assert.equal(createRes.status, 201);
+  const created = await createRes.json();
+  assert.equal(created.canonicalUrl, targetCanonical);
+
+  // GET the blog by slug and confirm the canonical landed
+  const getRes = await fetch(`${baseUrl}/api/blogs/${encodeURIComponent(created.slug)}`);
+  assert.equal(getRes.status, 200);
+  const fetched = await getRes.json();
+  assert.equal(fetched.canonicalUrl, targetCanonical);
+
+  // Update to a different canonical URL
+  const updatedCanonical = 'https://example.com/articles/canonical-now-changed';
+  const updateRes = await fetch(`${baseUrl}/api/blogs/${created.id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${loginData.token}` },
+    body: JSON.stringify({ canonicalUrl: updatedCanonical }),
+  });
+  assert.equal(updateRes.status, 200);
+  const updated = await updateRes.json();
+  assert.equal(updated.canonicalUrl, updatedCanonical);
+
+  // Clearing the canonical should null it out
+  const clearRes = await fetch(`${baseUrl}/api/blogs/${created.id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${loginData.token}` },
+    body: JSON.stringify({ canonicalUrl: '' }),
+  });
+  assert.equal(clearRes.status, 200);
+  const cleared = await clearRes.json();
+  assert.equal(cleared.canonicalUrl, null);
+});
+
+test('Service SEO canonicalUrl round-trips through POST / PUT / GET', async () => {
+  const loginRes = await fetch(`${baseUrl}/api/admin/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: 'admin', password: 'admin123' }),
+  });
+  assert.equal(loginRes.status, 200);
+  const loginData = await loginRes.json();
+  assert.ok(loginData.token);
+
+  const slugSuffix = Date.now().toString(36);
+  const targetCanonical = `https://oncocure.co.in/services/chemotherapy-canonical-${slugSuffix}`;
+  const testSlug = `chemo-canonical-test-${slugSuffix}`;
+
+  // Create a service with a canonical URL (POST /api/services)
+  const createRes = await fetch(`${baseUrl}/api/services`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${loginData.token}` },
+    body: JSON.stringify({
+      title: 'Chemotherapy Canonical Test',
+      slug: testSlug,
+      group: 'Medical Oncology',
+      summary: 'A service created to exercise the canonicalUrl SEO field.',
+      description: '<p>Chemotherapy canonical round-trip test.</p>',
+      canonicalUrl: targetCanonical,
+    }),
+  });
+  assert.equal(createRes.status, 201);
+  const created = await createRes.json();
+  assert.equal(created.canonicalUrl, targetCanonical);
+  assert.equal(created.slug, testSlug);
+
+  // List services and confirm the canonical is present on the created service (GET /api/services)
+  const listRes = await fetch(`${baseUrl}/api/services`);
+  assert.equal(listRes.status, 200);
+  const list = await listRes.json();
+  assert.ok(Array.isArray(list.items));
+  const found = list.items.find((s) => s.slug === testSlug);
+  const byId = list.items.find((s) => s.id === created.id);
+  assert.ok(found, 'created service should appear in the services list');
+  assert.equal(found.canonicalUrl, targetCanonical, 'canonicalUrl should round-trip through the services list');
+  assert.equal(byId?.canonicalUrl, targetCanonical, 'same service by id should also have the canonical in the list');
+
+  // Update to a different canonical URL via PUT /api/services/:id
+  const updatedCanonical = 'https://example.com/services/canonical-now-changed';
+  const updateRes = await fetch(`${baseUrl}/api/services/${created.id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${loginData.token}` },
+    body: JSON.stringify({ canonicalUrl: updatedCanonical }),
+  });
+  assert.equal(updateRes.status, 200);
+  const updated = await updateRes.json();
+  assert.equal(updated.canonicalUrl, updatedCanonical);
+
+  // Confirm the update is reflected in the list too
+  const listRes2 = await fetch(`${baseUrl}/api/services`);
+  assert.equal(listRes2.status, 200);
+  const list2 = await listRes2.json();
+  const found2 = list2.items.find((s) => s.id === created.id);
+  assert.ok(found2, 'updated service should still appear in the services list');
+  assert.equal(found2.canonicalUrl, updatedCanonical, 'updated canonicalUrl should be visible in the services list');
+
+  // Clearing the canonical should null it out (empty string -> null)
+  const clearRes = await fetch(`${baseUrl}/api/services/${created.id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${loginData.token}` },
+    body: JSON.stringify({ canonicalUrl: '' }),
+  });
+  assert.equal(clearRes.status, 200);
+  const cleared = await clearRes.json();
+  assert.equal(cleared.canonicalUrl, null);
+
+  // Confirm the clear is reflected in the list too
+  const listRes3 = await fetch(`${baseUrl}/api/services`);
+  assert.equal(listRes3.status, 200);
+  const list3 = await listRes3.json();
+  const found3 = list3.items.find((s) => s.id === created.id);
+  assert.ok(found3, 'cleared service should still appear in the services list');
+  assert.equal(found3.canonicalUrl, null, 'cleared canonicalUrl should be null in the services list');
+});

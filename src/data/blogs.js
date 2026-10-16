@@ -310,9 +310,10 @@ export const blogs = [
     date: '2026-05-29',
     readMinutes: 6,
     image: '/images/photo/reception-plants.jpg',
-    imageAlt: 'A quiet corner of the clinic with plants.',
+    imageAlt: 'A quiet corner of the clinic reception with comfortable seating.',
     excerpt:
       'Caregivers carry their own load. Practical ways to help — and permission to look after yourself too.',
+    canonicalUrl: '/blogs/supporting-a-family-member',
     body: [
       {
         heading: 'The useful things',

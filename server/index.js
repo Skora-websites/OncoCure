@@ -221,6 +221,7 @@ function seedInitialLocalStore() {
     metaTitle: null,
     metaKeywords: null,
     metaDescription: null,
+    canonicalUrl: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }));
@@ -610,6 +611,7 @@ app.post('/api/blogs', authMiddleware, async (req, res) => {
       metaTitle = null,
       metaKeywords = null,
       metaDescription = null,
+      canonicalUrl = null,
     } = req.body;
 
     if (!title || !slug) {
@@ -633,8 +635,8 @@ app.post('/api/blogs', authMiddleware, async (req, res) => {
       status,
       // Feature 1: Persist SEO meta tags
       metaTitle: metaTitle ? metaTitle.trim().slice(0, 255) : null,
-      metaKeywords: metaKeywords ? metaKeywords.trim().slice(0, 500) : null,
-      metaDescription: metaDescription ? metaDescription.trim().slice(0, 500) : null,
+      metaKeywords: metaKeywords ? metaKeywords.trim().slice(0, 500) : null,      metaDescription: metaDescription ? metaDescription.trim().slice(0, 500) : null,
+      canonicalUrl: canonicalUrl ? String(canonicalUrl).trim().slice(0, 500) : null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -647,6 +649,7 @@ app.post('/api/blogs', authMiddleware, async (req, res) => {
     // Check duplicate slug in localStore
     const existingIdx = localStore.blogs.findIndex((b) => b.slug === doc.slug);
     if (existingIdx !== -1) {
+
       doc.slug = `${doc.slug}-${Date.now().toString().slice(-4)}`;
     }
     localStore.blogs.unshift(doc);
@@ -676,6 +679,12 @@ app.put('/api/blogs/:id', authMiddleware, async (req, res) => {
     }
     if (updates.metaDescription !== undefined) {
       updates.metaDescription = updates.metaDescription ? updates.metaDescription.trim().slice(0, 500) : null;
+    }
+    if (updates.canonicalUrl !== undefined) {
+      updates.canonicalUrl =
+        updates.canonicalUrl && String(updates.canonicalUrl).trim()
+          ? String(updates.canonicalUrl).trim().slice(0, 500)
+          : null;
     }
     updates.updatedAt = new Date().toISOString();
 
@@ -745,6 +754,7 @@ app.post('/api/services', authMiddleware, async (req, res) => {
       metaTitle = null,
       metaKeywords = null,
       metaDescription = null,
+      canonicalUrl = null,
     } = req.body;
 
     if (!title) {
@@ -767,6 +777,7 @@ app.post('/api/services', authMiddleware, async (req, res) => {
       metaTitle: metaTitle ? String(metaTitle).trim().slice(0, 255) : null,
       metaKeywords: metaKeywords ? String(metaKeywords).trim().slice(0, 500) : null,
       metaDescription: metaDescription ? String(metaDescription).trim().slice(0, 500) : null,
+      canonicalUrl: canonicalUrl ? String(canonicalUrl).trim().slice(0, 500) : null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -776,6 +787,11 @@ app.post('/api/services', authMiddleware, async (req, res) => {
       return res.status(201).json(created);
     }
 
+    // Guard against duplicate slug in localStore mode (consistent with the blogs CRUD path)
+    const existingIdx = localStore.services.findIndex((s) => s.slug === doc.slug);
+    if (existingIdx !== -1) {
+      doc.slug = `${doc.slug}-${Date.now().toString().slice(-4)}`;
+    }
     localStore.services.push(doc);
     saveLocalStore();
     res.status(201).json(doc);
@@ -798,6 +814,12 @@ app.put('/api/services/:id', authMiddleware, async (req, res) => {
     }
     if ('metaDescription' in updates) {
       updates.metaDescription = updates.metaDescription ? String(updates.metaDescription).trim().slice(0, 500) : null;
+    }
+    if ('canonicalUrl' in updates) {
+      updates.canonicalUrl =
+        updates.canonicalUrl && String(updates.canonicalUrl).trim()
+          ? String(updates.canonicalUrl).trim().slice(0, 500)
+          : null;
     }
 
     if (isMongoConnected) {

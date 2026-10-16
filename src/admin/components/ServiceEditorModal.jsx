@@ -20,6 +20,7 @@ export default function ServiceEditorModal({ service, isOpen, onClose, onSave })
   const [metaTitle, setMetaTitle] = useState('');
   const [metaKeywords, setMetaKeywords] = useState('');
   const [metaDescription, setMetaDescription] = useState('');
+  const [canonicalUrl, setCanonicalUrl] = useState('');
 
   // WordPress-style slug locking tracking
   const isSlugUserModified = useRef(false);
@@ -62,6 +63,7 @@ export default function ServiceEditorModal({ service, isOpen, onClose, onSave })
       setMetaTitle(service.metaTitle || '');
       setMetaKeywords(service.metaKeywords || '');
       setMetaDescription(service.metaDescription || '');
+      setCanonicalUrl(service.canonicalUrl || '');
 
       // On edit form, a prefilled/saved slug behaves as locked
       isSlugUserModified.current = Boolean(service.slug);
@@ -81,6 +83,7 @@ export default function ServiceEditorModal({ service, isOpen, onClose, onSave })
       setMetaTitle('');
       setMetaKeywords('');
       setMetaDescription('');
+      setCanonicalUrl('');
 
       isSlugUserModified.current = false;
       setSlugLockedState(false);
@@ -194,6 +197,7 @@ export default function ServiceEditorModal({ service, isOpen, onClose, onSave })
       metaTitle: metaTitle.trim().slice(0, 255) || null,
       metaKeywords: metaKeywords.trim().slice(0, 500) || null,
       metaDescription: metaDescription.trim().slice(0, 500) || null,
+      canonicalUrl: canonicalUrl.trim() || null,
     };
 
     try {
@@ -213,6 +217,8 @@ export default function ServiceEditorModal({ service, isOpen, onClose, onSave })
   const isMetaTitleOver = metaTitleCount > 60;
   const metaDescCount = metaDescription.length;
   const isMetaDescOver = metaDescCount > 160;
+  const canonicalUrlCount = canonicalUrl.length;
+  const isCanonicalOver = canonicalUrlCount > 500;
 
   return (
     <div
@@ -289,7 +295,7 @@ export default function ServiceEditorModal({ service, isOpen, onClose, onSave })
             }`}
           >
             <span>3. SEO Settings</span>
-            {(isMetaTitleOver || isMetaDescOver) && (
+            {(isMetaTitleOver || isMetaDescOver || isCanonicalOver) && (
               <span className="h-2 w-2 rounded-full bg-red-500" />
             )}
           </button>
@@ -664,6 +670,45 @@ export default function ServiceEditorModal({ service, isOpen, onClose, onSave })
                 />
                 <p className="mt-1 text-[11px] text-slate-400">
                   Separate relevant medical index keywords with commas.
+                </p>
+              </div>
+
+              {/* Canonical URL (strong override; main URL auto-used when empty) */}
+              <div>
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    Canonical URL (optional, absolute)
+                  </label>
+                  <span
+                    className={`text-xs font-bold transition-colors ${
+                      isCanonicalOver ? 'text-red-600 animate-pulse' : 'text-slate-500'
+                    }`}
+                  >
+                    {canonicalUrlCount} / 500 characters
+                  </span>
+                </div>
+                <input
+                  type="url"
+                  value={canonicalUrl}
+                  onChange={(e) => setCanonicalUrl(e.target.value)}
+                  placeholder="e.g. https://oncocure.co.in/services/chemotherapy"
+                  className={`mt-1.5 w-full rounded-xl border p-3 text-xs text-slate-800 focus:outline-none transition ${
+                    isCanonicalOver
+                      ? 'border-red-500 bg-red-50/30 focus:border-red-600'
+                      : 'border-slate-200 focus:border-teal-700'
+                  }`}
+                />
+                {/* Progress bar */}
+                <div className="mt-1.5 h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      isCanonicalOver ? 'bg-red-500' : 'bg-teal-700'
+                    }`}
+                    style={{ width: `${Math.min(100, (canonicalUrlCount / 500) * 100)}%` }}
+                  />
+                </div>
+                <p className="mt-1 text-[11px] text-slate-400">
+                  Preferred URL to index. Leave empty to keep the service's main URL under /services/{'<'}slug{'>'}.
                 </p>
               </div>
             </div>

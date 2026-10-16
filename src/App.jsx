@@ -23,10 +23,9 @@ import AboutPage from './pages/AboutPage.jsx';
 import ServicesPage from './pages/ServicesPage.jsx';
 import ServiceDetailPage from './pages/ServiceDetailPage.jsx';
 import BlogsPage from './pages/BlogsPage.jsx';
-import BlogDetailPage from './pages/BlogDetailPage.jsx';
-import AdminPage from './pages/AdminPage.jsx';
-
+import BlogDetailPage from './pages/BlogDetailPage.jsx';import AdminPage from './pages/AdminPage.jsx';
 import { inlineCta } from './data/clinic.js';
+import WhatsAppChatButton from './components/WhatsappChatButton.jsx';
 
 /**
  * Minimal hash routing — no router dependency yet. The path after `#` decides
@@ -100,6 +99,9 @@ export default function App() {
       <main id="main">{page}</main>
 
       <Footer />
+
+      {/* Sticky WhatsApp chat button — bottom-right of the viewport on all public pages. */}
+      <WhatsAppChatButton />
     </div>
   );
 }

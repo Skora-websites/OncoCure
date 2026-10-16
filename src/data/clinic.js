@@ -53,7 +53,7 @@ export const clinic = {
       { label: '8750052773', tel: '+918750052773', display: '+91 87500 52773' },
     ],
     primaryPhone: '+91 96569 17798',
-    whatsapp: '+919656917798',
+    whatsapp: '+918750052773',
     /** Short link supplied by the clinic. */
     mapsUrl: 'https://maps.app.goo.gl/rSbwSjq1cgw98RBg7',
   },
