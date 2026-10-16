@@ -71,7 +71,7 @@ export default function AdminLogin({ onLoginSuccess }) {
         {/* Hero Narrative */}
         <div className="relative z-10 max-w-lg space-y-6">
           <div className="inline-block rounded-full border border-teal-300/30 bg-teal-900/40 px-3.5 py-1 text-[11px] font-mono tracking-wider uppercase text-teal-200 backdrop-blur-sm">
-            Clinical Governance · Evidence-Based Oncology
+            Clinical Governance - Evidence-Based Oncology
           </div>
           <h1 className="font-serif text-3xl xl:text-4xl leading-tight font-medium tracking-tight text-white">
             Clinical operations, inquiries & educational oncology in one refined system.
@@ -95,7 +95,7 @@ export default function AdminLogin({ onLoginSuccess }) {
 
         {/* Brand Footer */}
         <div className="relative z-10 text-[11px] text-slate-400">
-          <p>© {new Date().getFullYear()} Onco Cure Clinic. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Onco Cure Clinic. All rights reserved.</p>
         </div>
       </div>
 
@@ -176,7 +176,7 @@ export default function AdminLogin({ onLoginSuccess }) {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
+                    placeholder="********"
                     className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 pl-10 pr-10 text-sm text-slate-900 transition-colors placeholder:text-slate-400 focus:border-teal-700 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-700/10"
                   />
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
@@ -198,10 +198,10 @@ export default function AdminLogin({ onLoginSuccess }) {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                     </svg>
-                    Signing in…
+                    Signing in...
                   </span>
                 ) : (
-                  'Sign In to Dashboard →'
+                  'Sign In to Dashboard ->'
                 )}
               </button>
             </form>
@@ -211,7 +211,7 @@ export default function AdminLogin({ onLoginSuccess }) {
                 href="/"
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-800 hover:text-teal-900 hover:underline"
               >
-                ← Return to Public Clinic Website
+                &larr; Return to Public Clinic Website
               </a>
             </div>
           </div>
