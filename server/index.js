@@ -1315,6 +1315,21 @@ app.post('/api/admin/logout', (_req, res) => {
   res.json({ success: true });
 });
 
+// Serve uploaded files statically
+app.use('/images/uploads', express.static(UPLOADS_DIR));
+
+// In production, serve built frontend assets and SPA fallback
+const DIST_DIR = path.join(ROOT_DIR, 'dist');
+if (fs.existsSync(DIST_DIR)) {
+  app.use(express.static(DIST_DIR));
+  app.use((req, res, next) => {
+    if (req.method === 'GET' && !req.path.startsWith('/api')) {
+      return res.sendFile(path.join(DIST_DIR, 'index.html'));
+    }
+    next();
+  });
+}
+
 export { app, loadLocalStore };
 
 // Start listening
