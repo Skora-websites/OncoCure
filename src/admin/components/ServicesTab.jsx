@@ -46,12 +46,16 @@ export default function ServicesTab() {
     fetchServices();
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (targetId) => {
+    if (!targetId) return;
     if (!confirm('Are you sure you want to delete this clinical oncology service?')) return;
     try {
-      const res = await fetch(`/api/services/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/services/${targetId}`, { method: 'DELETE' });
       if (res.ok) {
-        setServices((prev) => prev.filter((s) => s.id !== id));
+        setServices((prev) => prev.filter((s) => s.id !== targetId && s._id !== targetId && s.slug !== targetId));
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert('Delete failed: ' + (err.error || res.statusText));
       }
     } catch (err) {
       alert('Delete failed: ' + err.message);
@@ -158,7 +162,7 @@ export default function ServicesTab() {
                   const isDescOver = (svc.metaDescription || '').length > 160;
 
                   return (
-                    <tr key={svc.id} className="hover:bg-[#FAF7F2]/40 transition">
+                    <tr key={svc.id || svc._id || svc.slug} className="hover:bg-[#FAF7F2]/40 transition">
                       {/* Service Name & Thumbnail */}
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3.5">
@@ -253,7 +257,7 @@ export default function ServicesTab() {
                           </button>
                           <button
                             type="button"
-                            onClick={() => handleDelete(svc.id)}
+                            onClick={() => handleDelete(svc.id || svc._id || svc.slug)}
                             title="Delete Service"
                             className="rounded-lg p-1 text-slate-400 hover:bg-red-50 hover:text-red-600 transition"
                           >

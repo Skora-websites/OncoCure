@@ -42,16 +42,17 @@ export default function ContactsTab() {
     }
   }, [selected]);
 
-  const handleStatusChange = async (id, status) => {
+  const handleStatusChange = async (targetId, status) => {
+    if (!targetId) return;
     try {
-      const res = await fetch(`/api/contacts/${id}`, {
+      const res = await fetch(`/api/contacts/${targetId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       });
       if (res.ok) {
-        setItems((prev) => prev.map((c) => (c.id === id ? { ...c, status } : c)));
-        if (selected && selected.id === id) {
+        setItems((prev) => prev.map((c) => (c.id === targetId || c._id === targetId ? { ...c, status } : c)));
+        if (selected && (selected.id === targetId || selected._id === targetId)) {
           setSelected((prev) => ({ ...prev, status }));
         }
       }
@@ -62,16 +63,18 @@ export default function ContactsTab() {
 
   const handleSaveNotes = async () => {
     if (!selected) return;
+    const targetId = selected.id || selected._id;
+    if (!targetId) return;
     setSavingNotes(true);
     try {
-      const res = await fetch(`/api/contacts/${selected.id}`, {
+      const res = await fetch(`/api/contacts/${targetId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notes }),
       });
       if (res.ok) {
         setItems((prev) =>
-          prev.map((c) => (c.id === selected.id ? { ...c, notes } : c))
+          prev.map((c) => (c.id === targetId || c._id === targetId ? { ...c, notes } : c))
         );
         setSelected((prev) => ({ ...prev, notes }));
         setNotesToast('Notes saved.');
@@ -84,13 +87,17 @@ export default function ContactsTab() {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (targetId) => {
+    if (!targetId) return;
     if (!confirm('Are you sure you want to delete this message?')) return;
     try {
-      const res = await fetch(`/api/contacts/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/contacts/${targetId}`, { method: 'DELETE' });
       if (res.ok) {
-        setItems((prev) => prev.filter((c) => c.id !== id));
-        if (selected && selected.id === id) setSelected(null);
+        setItems((prev) => prev.filter((c) => c.id !== targetId && c._id !== targetId));
+        if (selected && (selected.id === targetId || selected._id === targetId)) setSelected(null);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert('Failed to delete: ' + (err.error || res.statusText));
       }
     } catch (err) {
       alert('Error: ' + err.message);
@@ -227,7 +234,7 @@ export default function ContactsTab() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredItems.map((item) => (
-                  <tr key={item.id} className="hover:bg-[#FAF7F2]/40 transition">
+                  <tr key={item.id || item._id} className="hover:bg-[#FAF7F2]/40 transition">
                     {/* Sender */}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -279,7 +286,7 @@ export default function ContactsTab() {
                     <td className="px-6 py-4">
                       <select
                         value={item.status}
-                        onChange={(e) => handleStatusChange(item.id, e.target.value)}
+                        onChange={(e) => handleStatusChange(item.id || item._id, e.target.value)}
                         className={`rounded-full border px-3 py-1 text-xs font-semibold cursor-pointer outline-none transition ${getStatusColor(
                           item.status
                         )}`}
@@ -305,7 +312,7 @@ export default function ContactsTab() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => handleDelete(item.id)}
+                          onClick={() => handleDelete(item.id || item._id)}
                           title="Delete Message"
                           className="rounded-lg p-1 text-slate-400 hover:bg-red-50 hover:text-red-600 transition"
                         >

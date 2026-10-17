@@ -53,12 +53,16 @@ export default function BlogsTab() {
     fetchBlogs();
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (targetId) => {
+    if (!targetId) return;
     if (!confirm('Are you sure you want to delete this educational article?')) return;
     try {
-      const res = await fetch(`/api/blogs/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/blogs/${targetId}`, { method: 'DELETE' });
       if (res.ok) {
-        setBlogs((prev) => prev.filter((b) => b.id !== id && b.slug !== id));
+        setBlogs((prev) => prev.filter((b) => b.id !== targetId && b._id !== targetId && b.slug !== targetId));
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert('Delete failed: ' + (err.error || res.statusText));
       }
     } catch (err) {
       alert('Delete failed: ' + err.message);
@@ -189,7 +193,7 @@ export default function BlogsTab() {
                   const isDescOver = (item.metaDescription || '').length > 160;
 
                   return (
-                    <tr key={item.id} className="hover:bg-[#FAF7F2]/40 transition">
+                    <tr key={item.id || item._id || item.slug} className="hover:bg-[#FAF7F2]/40 transition">
                       {/* Article Title & Thumbnail */}
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3.5">
@@ -308,7 +312,7 @@ export default function BlogsTab() {
                           </button>
                           <button
                             type="button"
-                            onClick={() => handleDelete(item.id)}
+                            onClick={() => handleDelete(item.id || item._id || item.slug)}
                             title="Delete Article"
                             className="rounded-lg p-1 text-slate-400 hover:bg-red-50 hover:text-red-600 transition"
                           >

@@ -42,18 +42,19 @@ export default function ConsultationsTab() {
     }
   }, [selected]);
 
-  const handleStatusChange = async (id, newStatus) => {
+  const handleStatusChange = async (targetId, newStatus) => {
+    if (!targetId) return;
     try {
-      const res = await fetch(`/api/consultations/${id}`, {
+      const res = await fetch(`/api/consultations/${targetId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),
       });
       if (res.ok) {
         setItems((prev) =>
-          prev.map((c) => (c.id === id ? { ...c, status: newStatus } : c))
+          prev.map((c) => (c.id === targetId || c._id === targetId ? { ...c, status: newStatus } : c))
         );
-        if (selected && selected.id === id) {
+        if (selected && (selected.id === targetId || selected._id === targetId)) {
           setSelected((prev) => ({ ...prev, status: newStatus }));
         }
       }
@@ -64,16 +65,18 @@ export default function ConsultationsTab() {
 
   const handleSaveNotes = async () => {
     if (!selected) return;
+    const targetId = selected.id || selected._id;
+    if (!targetId) return;
     setSavingNotes(true);
     try {
-      const res = await fetch(`/api/consultations/${selected.id}`, {
+      const res = await fetch(`/api/consultations/${targetId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notes }),
       });
       if (res.ok) {
         setItems((prev) =>
-          prev.map((c) => (c.id === selected.id ? { ...c, notes } : c))
+          prev.map((c) => (c.id === targetId || c._id === targetId ? { ...c, notes } : c))
         );
         setSelected((prev) => ({ ...prev, notes }));
         setNotesToast('Staff notes saved successfully!');
@@ -86,13 +89,17 @@ export default function ConsultationsTab() {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (targetId) => {
+    if (!targetId) return;
     if (!confirm('Are you sure you want to permanently remove this consultation request?')) return;
     try {
-      const res = await fetch(`/api/consultations/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/consultations/${targetId}`, { method: 'DELETE' });
       if (res.ok) {
-        setItems((prev) => prev.filter((c) => c.id !== id));
-        if (selected && selected.id === id) setSelected(null);
+        setItems((prev) => prev.filter((c) => c.id !== targetId && c._id !== targetId));
+        if (selected && (selected.id === targetId || selected._id === targetId)) setSelected(null);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert('Failed to delete: ' + (err.error || res.statusText));
       }
     } catch (err) {
       alert('Failed to delete: ' + err.message);
@@ -294,7 +301,7 @@ export default function ConsultationsTab() {
                     <td className="px-6 py-4">
                       <select
                         value={item.status}
-                        onChange={(e) => handleStatusChange(item.id, e.target.value)}
+                        onChange={(e) => handleStatusChange(item.id || item._id, e.target.value)}
                         className={`rounded-full border px-3 py-1 text-xs font-semibold cursor-pointer outline-none transition ${getStatusColor(
                           item.status
                         )}`}
@@ -321,7 +328,7 @@ export default function ConsultationsTab() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => handleDelete(item.id)}
+                          onClick={() => handleDelete(item.id || item._id)}
                           title="Delete Request"
                           className="rounded-lg p-1 text-slate-400 hover:bg-red-50 hover:text-red-600 transition"
                         >
@@ -426,7 +433,7 @@ export default function ConsultationsTab() {
                   <div className="mt-1">
                     <select
                       value={selected.status}
-                      onChange={(e) => handleStatusChange(selected.id, e.target.value)}
+                      onChange={(e) => handleStatusChange(selected.id || selected._id, e.target.value)}
                       className={`rounded-full border px-3 py-1 text-xs font-semibold ${getStatusColor(
                         selected.status
                       )}`}

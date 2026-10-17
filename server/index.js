@@ -690,7 +690,7 @@ app.put('/api/blogs/:id', authMiddleware, async (req, res) => {
 
     if (isMongoConnected) {
       const updated = await Blog.findOneAndUpdate(
-        { $or: [{ id }, { slug: id }] },
+        makeIdFilter(id, true),
         updates,
         { new: true }
       );
@@ -698,7 +698,8 @@ app.put('/api/blogs/:id', authMiddleware, async (req, res) => {
       return res.json(updated);
     }
 
-    const idx = localStore.blogs.findIndex((b) => b.id === id || b.slug === id);
+    const cleanId = String(id).trim();
+    const idx = localStore.blogs.findIndex((b) => b.id === cleanId || b.slug === cleanId || String(b._id) === cleanId);
     if (idx === -1) return res.status(404).json({ error: 'Blog not found' });
 
     localStore.blogs[idx] = { ...localStore.blogs[idx], ...updates };
@@ -709,14 +710,31 @@ app.put('/api/blogs/:id', authMiddleware, async (req, res) => {
   }
 });
 
+// Helper to match custom string ID, slug, or MongoDB ObjectId safely
+function makeIdFilter(id, includeSlug = true) {
+  if (!id) return { _id: null };
+  const cleanId = String(id).trim();
+  const conditions = [{ id: cleanId }];
+  if (includeSlug) {
+    conditions.push({ slug: cleanId });
+  }
+  if (mongoose.Types.ObjectId.isValid(cleanId)) {
+    conditions.push({ _id: cleanId });
+  }
+  return { $or: conditions };
+}
+
 app.delete('/api/blogs/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     if (isMongoConnected) {
-      await Blog.findOneAndDelete({ $or: [{ id }, { slug: id }] });
+      await Blog.deleteMany(makeIdFilter(id, true));
       return res.json({ success: true, id });
     }
-    localStore.blogs = localStore.blogs.filter((b) => b.id !== id && b.slug !== id);
+    const cleanId = String(id).trim();
+    localStore.blogs = localStore.blogs.filter(
+      (b) => b.id !== cleanId && b.slug !== cleanId && String(b._id) !== cleanId
+    );
     saveLocalStore();
     res.json({ success: true, id });
   } catch (err) {
@@ -824,7 +842,7 @@ app.put('/api/services/:id', authMiddleware, async (req, res) => {
 
     if (isMongoConnected) {
       const updated = await Service.findOneAndUpdate(
-        { $or: [{ id }, { slug: id }] },
+        makeIdFilter(id, true),
         updates,
         { new: true }
       );
@@ -832,7 +850,8 @@ app.put('/api/services/:id', authMiddleware, async (req, res) => {
       return res.json(updated);
     }
 
-    const idx = localStore.services.findIndex((s) => s.id === id || s.slug === id);
+    const cleanId = String(id).trim();
+    const idx = localStore.services.findIndex((s) => s.id === cleanId || s.slug === cleanId || String(s._id) === cleanId);
     if (idx === -1) return res.status(404).json({ error: 'Service not found' });
     localStore.services[idx] = { ...localStore.services[idx], ...updates };
     saveLocalStore();
@@ -846,10 +865,13 @@ app.delete('/api/services/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     if (isMongoConnected) {
-      await Service.findOneAndDelete({ $or: [{ id }, { slug: id }] });
+      await Service.deleteMany(makeIdFilter(id, true));
       return res.json({ success: true, id });
     }
-    localStore.services = localStore.services.filter((s) => s.id !== id && s.slug !== id);
+    const cleanId = String(id).trim();
+    localStore.services = localStore.services.filter(
+      (s) => s.id !== cleanId && s.slug !== cleanId && String(s._id) !== cleanId
+    );
     saveLocalStore();
     res.json({ success: true, id });
   } catch (err) {
@@ -913,12 +935,13 @@ app.patch('/api/consultations/:id', authMiddleware, async (req, res) => {
     if (notes !== undefined) updates.notes = notes;
 
     if (isMongoConnected) {
-      const updated = await Consultation.findOneAndUpdate({ id }, updates, { new: true });
+      const updated = await Consultation.findOneAndUpdate(makeIdFilter(id, false), updates, { new: true });
       if (!updated) return res.status(404).json({ error: 'Consultation not found' });
       return res.json(updated);
     }
 
-    const idx = localStore.consultations.findIndex((c) => c.id === id);
+    const cleanId = String(id).trim();
+    const idx = localStore.consultations.findIndex((c) => c.id === cleanId || String(c._id) === cleanId);
     if (idx === -1) return res.status(404).json({ error: 'Consultation not found' });
     localStore.consultations[idx] = { ...localStore.consultations[idx], ...updates };
     saveLocalStore();
@@ -932,10 +955,13 @@ app.delete('/api/consultations/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     if (isMongoConnected) {
-      await Consultation.findOneAndDelete({ id });
+      await Consultation.deleteMany(makeIdFilter(id, false));
       return res.json({ success: true, id });
     }
-    localStore.consultations = localStore.consultations.filter((c) => c.id !== id);
+    const cleanId = String(id).trim();
+    localStore.consultations = localStore.consultations.filter(
+      (c) => c.id !== cleanId && String(c._id) !== cleanId
+    );
     saveLocalStore();
     res.json({ success: true, id });
   } catch (err) {
@@ -999,12 +1025,13 @@ app.patch('/api/contacts/:id', authMiddleware, async (req, res) => {
     if (notes !== undefined) updates.notes = notes;
 
     if (isMongoConnected) {
-      const updated = await Contact.findOneAndUpdate({ id }, updates, { new: true });
+      const updated = await Contact.findOneAndUpdate(makeIdFilter(id, false), updates, { new: true });
       if (!updated) return res.status(404).json({ error: 'Contact not found' });
       return res.json(updated);
     }
 
-    const idx = localStore.contacts.findIndex((c) => c.id === id);
+    const cleanId = String(id).trim();
+    const idx = localStore.contacts.findIndex((c) => c.id === cleanId || String(c._id) === cleanId);
     if (idx === -1) return res.status(404).json({ error: 'Contact not found' });
     localStore.contacts[idx] = { ...localStore.contacts[idx], ...updates };
     saveLocalStore();
@@ -1018,10 +1045,13 @@ app.delete('/api/contacts/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     if (isMongoConnected) {
-      await Contact.findOneAndDelete({ id });
+      await Contact.deleteMany(makeIdFilter(id, false));
       return res.json({ success: true, id });
     }
-    localStore.contacts = localStore.contacts.filter((c) => c.id !== id);
+    const cleanId = String(id).trim();
+    localStore.contacts = localStore.contacts.filter(
+      (c) => c.id !== cleanId && String(c._id) !== cleanId
+    );
     saveLocalStore();
     res.json({ success: true, id });
   } catch (err) {
